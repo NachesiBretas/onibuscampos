@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/rate-calculation/variable-cost" class="list-group-item">
+          <h4 class="list-group-item-heading">Custos variáveis</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos custos variáveis</p>
+        </a>
+        <a href="/rate-calculation/fuel" class="list-group-item"><i class="fa fa-tint"></i> Combustível</a>
+        <a href="/rate-calculation/lubricant" class="list-group-item"><i class="fa fa-life-ring"></i> Lubrificantes </a>
+        <a href="/rate-calculation/tread" class="list-group-item active"><i class="fa fa-dashboard"></i> Rodagem </a>
+        <a href="/rate-calculation/accessories" class="list-group-item"><i class="fa fa-gears"></i> Peças e acessórios </a>
+        <a href="/rate-calculation/km-production" class="list-group-item"><i class="fa fa-road"></i> Produção quilométrica </a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/rate-calculation">Cálculo de tarifa</a></li>
+        <li><a href="/rate-calculation/cost">Custos</a></li>
+        <li><a href="/rate-calculation/variable-cost">Custos variáveis</a></li>
+        <li class="active">Rodagem</li>
+      </ol>
+
+      <div class="page-header">
+      <h1>Cadastro de veículo <small>defina aqui os dados principais do veículo</small></h1>
+      <hr>
+      <?=$this->mainForm?>
+      </div>
+      <div class="col-sm-13">
+        <br><br>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Padrões de veículos</th>
+            <th>Ítem de Rodagem</th>
+            <th>Coeficiente de Consumo</th>
+            <th>Excluir</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <?$pattern = new Application_Model_DbTable_VehiclePattern();
+                  $select = $pattern->select()->setIntegrityCheck(false);
+                  $select ->from(array('v' => 'vehicle_pattern'),array('name'))
+                          ->where('v.id = ?',$body->vehicle_pattern_id);
+                  $row = $pattern->fetchRow($select);?>
+                  <td><?=$row->name?></td>
+                  <td><?=$body->tread_item?></td>
+                  <td><?=$body->coefficient?></td>
+                  <td><a href="#delete_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir o dia"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhuma data pré-cadastrada.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    </div>
+  </div>

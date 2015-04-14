@@ -1,0 +1,189 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+        <div class="list-group">
+          <a href="/mail" class="list-group-item">
+            <h4><p class="list-group-item-heading">Caixa de mensagens</p></h4>
+          </a>
+          <a href="#myModal_1" class="list-group-item">
+            <p class="list-group-item-heading" data-toggle="modal" data-target="#myModal_1"><span class="glyphicon glyphicon-envelope"></span> Nova Mensagem</p>
+          </a>
+          <a href="/mail/inbox" class="list-group-item">
+            <p class="list-group-item-heading"><span class="glyphicon glyphicon-download-alt"></span> Caixa de Entrada</p>
+          </a>
+          <a href="/mail/outbox" class="list-group-item active">
+            <p class="list-group-item-heading"><span class="glyphicon glyphicon-open"></span> Caixa de Saída</p>
+          </a>
+        </div>
+    </div>
+    <div class="col-md-9">
+          <ol class="breadcrumb">
+            <li><a href="/dashboard">Página inicial</a></li>
+            <li><a href="/mail">Caixa de Mensagem</a></li>
+            <li class="active">Caixa de Saída</li>
+          </ol>
+      <div class="page-header">
+        <h1>Pesquisa <small>gerencie aqui as mensagens enviadas</small></h1>
+          <hr>
+          <form class="form-inline" action="/mail/outbox" method="get" role="form">
+            <div class="form-group col-xs-3">
+              <input type="text" class="form-control" placeholder="Busque mensagem" name="field" value="<?=$this->field?>">
+            </div>
+            <div class="form-group" class="col-xs-3">
+              <select name="optionSearch" class="form-control">
+                <option value="0">pesquise por:</option>
+                <option value="1"><?if($this->optionSearch == 1) echo "selected="; ?>Destinatário</option>
+                <option value="2"><?if($this->optionSearch == 2) echo "selected="; ?>Titulo</option>
+                <option value="3"><?if($this->optionSearch == 3) echo "selected="; ?>Data de Envio</option>
+              </select>
+            </div>
+              <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+          <table class="table table-bordered">
+            <thead>
+              <tr> 
+                <th>Destinatário</th>
+                <th class='text-center'> Título </th>
+                <th> Data de Envio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?if(count($this->list)){
+                  foreach($this->list as $mail){?>
+                    <tr class="clida">
+                      <td onclick="aux_resp_outbox('<?=$mail['id']?>','<?=$mail['name']?>','<?=$mail['date_aux_received']?>')"><a class="lida"
+                      href="#myModal_2" data-toggle="modal"><?=$mail['name']?>
+                      <?if(isset($mail['contador']))
+                           if($mail['contador'] != ''){?>
+                              <? echo "("; echo $mail['contador']; echo ")";
+                              }?>
+                      </a></td>
+                      <td><?=$mail['title']?></td>
+                      <td><?=$mail['date_aux']?></td>
+                    </tr>
+                  <?} } else{?>
+                  <tr>
+                    <td colspan="7">Sua caixa de saída está vazia.</td>
+                  </tr>
+                <?}?>
+            </tbody>
+          </table>
+          <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+        </div>
+        </div>
+        </div> 
+    </div><!-- /conteiner -->
+<div class="modal fade" id="myModal_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Mensagem</h4>
+        </div>
+        <form method="post" class="form-horizontal" action="/mail/new" enctype="multipart/form-data">
+        <div class="modal-body">
+            <div class="form-group">
+              <label class="col-sm-2">Destinatário</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control new" name="receiver" id="receiver" placeholder="Destinatário" data-items="4" autocomplete="off">
+                  <span style="cursor: pointer; display: none;" class="glyphicon glyphicon-remove" id="removeReceiverNew"></span>
+              <input type="hidden" class="receiver_id" id="receiver_id" name="receiver_id">
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2">Título</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control new" name="title" id="title" placeholder="Título">
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2">Mensagem</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control new" name="body" id="body"rows="5" placeholder="Digite sua mensagem aqui"></textarea>
+                </div>
+            </div>
+        </div>  
+        <div class="modal-footer">
+        <button id="annex_btn" type="button" class="btn btn-warning btn-sm col-xs-2 annex_btn" data-toggle="collapse" data-target="#file_input">Anexo</button>
+         <div id="file_input" class="collapse"><label class="col-sm-2">Anexo</label>
+                  <fieldset>
+                      <input  type="file" name="annex" id="annex">
+                      <button id="cancel_btn" type="button" class="btn btn-danger cancel_btn" data-toggle="collapse" data-target="#file_input">Cancelar</button>
+                      <hr>
+                  </fieldset>
+          </div>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button id="submit_new" type="submit" class="btn btn-success" disabled>Enviar</button>
+        </div>        
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+<div class="modal fade" id="myModal_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">
+            <div id='loadingmessage' style='display:none'>
+              <img src='/img/loadinggraphic.gif'/></div>
+            <div id="name_child" style='display:none'></div>
+        </h4>
+      </div>
+          <div class="modal-body" id='aux'></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="myModal_4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Mensagem</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" class="form-horizontal" action="/mail/forward" enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="col-sm-2">Destinatário</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control resp" name="receiver_forw" id="receiver_forw" placeholder="Destinatário" data-items="4"
+                autocomplete="off">
+                <span style="cursor: pointer; display: none;" class="glyphicon glyphicon-remove" id="removeReceiverForw"></span>
+            <input type="hidden" class="receiver_id_forw" id="receiver_id_forw" name="receiver_id">
+            <input type="hidden" id="parent_id" name="parent">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2">Título</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control resp" name="title" id="title_forw" placeholder="Título">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2">Mensagem</label>
+              <div class="col-sm-10">
+                <textarea class="form-control resp" name="body" id="body_forw" rows="5" placeholder="Digite sua mensagem aqui"></textarea>
+              </div>
+          </div>
+          <div class="form-group">
+                <label class="col-sm-2">Anexo</label>
+                  <div id="message_forw" class="col-sm-10"></div>
+                  <input type="hidden" class="annex_forw" id="annex_forw" name="annex">
+                  <input type="hidden" class="forwarded_message_id" id="forwarded_message_id" name="forwarded_message">
+                  <input type="hidden" class="parent_null" id="parent_null" name="parent">
+          </div>
+      </div>  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="submit" id="submit_forw" class="btn btn-success" disabled>Enviar</button>
+      </div>        
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

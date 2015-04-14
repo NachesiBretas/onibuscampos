@@ -1,0 +1,31 @@
+<div class="row" >
+  <div class="col-md-3">
+    <div class="panel panel-default" style=" text-align:center">
+    <strong style="font-size:17px;">Dia:
+    <?=Application_Model_General::DateToBr($this->date)?></strong>
+        <table class="table table-bordered table-hover">
+          <?if(!is_null($this->list)){
+	          foreach ($this->list as $value) {?>
+	          <tr>
+	            <td><?=$value->str_hour;?></td>
+	            <td><?=$value->name;?></td>
+              <?if($value->status == '10'){
+                  $status = "Baixa";
+                }
+                else if($value->status == '2'){
+                  $status = "Cadastro";
+                }
+                else{
+                  $status = "Edição";
+                }?>
+              <td><?=$status;?></td>
+	          </tr>
+          <?  }
+          }
+          else{?>
+          	<tr><td>Não foram agendados horários para este dia</td></tr>
+          	<?}?>
+        </table>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/scheduling" class="list-group-item">
+          <h4 class="list-group-item-heading">Agendamento</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos atendimentos</p>
+        </a>
+        <a href="/scheduling/treatment" class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> Calendário</a>
+        <a href="/scheduling/calendar" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Recessos</a>
+        <a href="/scheduling/hour" class="list-group-item active"><span class="glyphicon glyphicon-saved"></span> Horários</a>
+        <a href="/scheduling/print" class="list-group-item"><span class="glyphicon glyphicon-print"></span> Imprirmir calendário</a>
+        <!-- <a href="/scheduling/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a> -->
+        <!-- <a href="/scheduling/graphic" class="list-group-item"><span class="glyphicon glyphicon-picture"></span> Gráfico</a> -->
+      </div>
+    </div><!--/col-md-->
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página Inicial</a></li>
+        <li><a href="/scheduling">Agendamento</a></li>
+        <li class="active">Horários</li>
+      </ol>  
+      <hr>
+  		<div>
+      	<h1>Cadastro de Horário <small>cadastre o horário aqui</small></h1>
+    	</div>
+      <div>
+       <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+        <div class="form-group"><label for="hour" class="col-lg-2 control-label optional">Horário</label>
+        <div class="col-lg-5">
+        <input type="text" name="hour" id="hour" value="" placeholder="horário" class="form-control hourMask"></div></div>
+        <div class="form-group"><div class="col-lg-5">
+        <input type="submit" name="submit" id="submit" value="Salvar" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary"></div></div></form>      </div>
+      <div>
+       <?=$this->schedulingHourForm?>
+      </div>
+      <hr>
+      <table class="table table-hover table-bordered">
+    		<thead>
+    			<th>Horário</th>
+    		</thead>
+    		<tbody>
+    			<?if( is_object($this->schedulingHour) ){
+    				foreach($this->schedulingHour as $schedulingHour){?>
+    				<tr>
+    					<td><?=$schedulingHour->hour?></td>
+    					<td><a href="/scheduling/delete-hour/id/<?=$schedulingHour->id?>">Excluir</a></td>
+    				</tr>
+  				<?} }?>
+  			</tbody>
+  		</table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/finance" class="list-group-item">
+          <h4 class="list-group-item-heading">Grupos Tarifários</h4>
+        </a>
+        <a href="/finance/group-fare-new" class="list-group-item active"><i class="fa fa-pencil"></i> Novo</a>
+        <a href="/finance/group-fare" class="list-group-item"><i class="fa fa-search"></i> Pesquisar</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/finance">Financeiro</a></li>
+        <li><a href="/finance/group-fare">Grupos Tarifários</a></li>
+        <li class="active">Novo</li>
+      </ol> 
+      <hr>
+      <div class="page-header">
+        <h1>Novo grupo tarifário <small>defina aqui os dados do grupo</small></h1>
+        <hr>
+        <?=$this->groupFareForm?>
+      </div>
+    </div>
+  </div>
+</div>

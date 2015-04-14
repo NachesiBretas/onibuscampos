@@ -1,0 +1,48 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+	  	<div class="list-group">
+	  		<a href="/mco" class="list-group-item">
+	  			<h4 class="list-group-item-heading">MCO</h4>
+    				<p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+	  		</a>
+			  <a href="/mco/new" class="list-group-item active"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+			  <a href="/mco/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+			  <a href="/mco/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+			</div>
+		</div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li class="active">Novo</li>
+      </ol> 
+      <div class="page-header">
+        <h1>Novo MCO <small>carregue aqui os dados da bilhetagem eletrônica</small></h1>
+        <hr>
+        <?if($this->success){?>
+        	<div class="well well-lg">
+        		<span class="glyphicon glyphicon-thumbs-up"></span> Arquivo inserido corretamente no sistema.<br>
+        		<p>Para poder visualizar os resultados, clique <a href="#">aqui</a></p>
+        	</div>
+        <?}else{?>
+        <form enctype="multipart/form-data" class="form-horizontal" method="post" action="/mco/new" id='formMCO' name='formMCO'>
+					<div class="form-group"><label for="start_date" class="col-lg-2 control-label required">Arquivo</label>
+						<div class="col-lg-5">
+						<input type="file" name="mco_file" id="mco_file"></div>
+					</div>
+					<div class="form-group"><div class="col-lg-5">
+						<input type="submit" name="submit" id="submitMCO" value="Salvar" class="col-lg-offset-5 btn btn-primary"></div>
+					</div>
+				</form>
+				<?}?>
+				<div id="barProgressMCO" style='margin-left: 80px; display: none'>
+				  <img src='/img/loading.gif' id='loading' style='margin-left: 70px;'> <br><br>
+				  <p>Salvando e fazendo os cálculos</p>
+				  <p style='margin-left: 40px;'>Por favor aguarde...</p>
+				</div>
+      </div>
+    </div>
+  </div>
+</div>

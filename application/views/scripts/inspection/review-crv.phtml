@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/inspection" class="list-group-item">
+          <h4 class="list-group-item-heading">Vistoria</h4>
+            <p class="list-group-item-text">Gerencie aqui as vistorias</p>
+        </a>
+        <a href="/fleet/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar veículo</a>
+        <a href="/inspection/view" class="list-group-item"><i class="fa fa-check-square-o"></i> Vistoriar veículo</a>
+        <a href="/inspection/down" class="list-group-item"><i class="fa fa-trash"></i> Baixa de veículo</a>
+        <a href="/inspection/review-crv" class="list-group-item active"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li class="active">Segunda via CRV</li>
+      </ol>
+      <div class="page-header">
+        <h1>Segunda via CRV <small>gerencia as segundas vias de CRV</small></h1>
+        <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Placa</th>
+            <th>Justificativa</th>
+            <th>Ação</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><?=$body->plate?></td>
+                  <td><?=$body->justify?></td>
+                  <td>
+                    <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
+                  	<a href="#accept_<?=$body->id?>" class="btn btn-success btn-sm help" data-toggle="modal" title="Emitir segunda via"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                  	<a href="#deny_<?=$body->id?>" class="btn btn-danger btn-sm help" data-toggle="modal" title="Rejeitar emissão"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+                  </td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrado nenhum veículo para revisão.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<?if(count($this->list)){
+  foreach($this->list as $body){?>
+  <form action="/inspection/accept-crv" method="post">
+    <div class="modal fade" id="accept_<?=$body->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Finalizar Processo</h4>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza que deseja aceitar a emissão de 2 via de CRV do veículo <strong><?=$body->plate?></strong>?</p>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="id" value="<?=$body->id?>">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Aceitar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+
+  <form action="/inspection/deny-crv" method="post">
+    <div class="modal fade" id="deny_<?=$body->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Finalizar Processo</h4>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza que deseja rejeitar a emissão de 2 via de CRV do veículo <strong><?=$body->plate?></strong>?</p>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="id" value="<?=$body->id?>">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-danger">Rejeitar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+<?} }?>

@@ -1,0 +1,167 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+        <table class="table table-bordered table-hover" style="font-size:11px">
+          <tr>
+            <td><strong>Serviço:</strong></td>
+            <td><?=$this->vehicleRow->service_name?></td>
+            <td><strong>Placa:</strong></td>
+            <td><?=$this->vehicleRow->plate?> </td>          
+            <td><strong>Número de ordem:</strong></td>
+            <td><?=$this->vehicleRow->external_number?></td>
+          </tr>
+          <tr>
+            <td><strong>Renavam:</strong></td>
+            <td><?=$this->vehicleRow->renavam?> </td>
+            <td><strong>Padrão:</strong></td>
+            <td><?=$this->vehicleRow->pattern_name?></td>
+            <td><strong>Cor:</strong></td>
+            <td><?=$this->vehicleRow->color_name?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Tipo:</strong></td>
+            <td><?=$this->vehicleRow->type_name?></td>
+            <td><strong>Número de chassi:</strong></td>
+            <td><?=$this->vehicleRow->chassi_number?></td>
+            <td><strong>Modelo do chassi:</strong></td>
+            <td><?=$this->vehicleRow->chassi_model_name?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Ano do chassi:</strong></td>
+            <td><?=$this->vehicleRow->chassi_year?></td>
+            <td><strong>Modelo da carroceria:</strong></td>
+            <td><?=$this->vehicleRow->body_model_name?></td>
+            <td><strong>Ano da carroceria:</strong></td>
+            <td><?=$this->vehicleRow->body_year?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Suspensão:</strong></td>
+            <td><?=$this->vehicleRow->suspension_name?></td>
+            <td><strong>Câmbio:</strong></td>
+            <td><?=$this->vehicleRow->cambium_name?></td>
+            <td><strong>Localização do motor:</strong></td>
+            <td><?=$this->vehicleRow->motor_localization_name?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Potência do motor:</strong></td>
+            <td><?=$this->vehicleRow->motor_power?> cv</td>
+            <td><strong>Tipo de assento:</strong></td>
+            <td><?=$this->vehicleRow->seat_type_name?></td>
+            <td><strong>Peso:</strong></td>
+            <td><?=$this->vehicleRow->weight?> kg</td>
+          </tr>
+
+          <tr>
+            <td><strong>Comprimento antes da roleta:</strong></td>
+            <td><?=$this->vehicleRow->length_before_roulette?> cm</td>
+            <td><strong>Comprimento após roleta:</strong></td>
+            <td><?=$this->vehicleRow->length_after_roulette?> cm</td>
+            <td><strong>Largura antes da roleta:</strong></td>
+            <td><?=$this->vehicleRow->width_before_roulette?> cm</td>
+          </tr>
+
+          <tr>
+            <td><strong>Largura após roleta:</strong></td>
+            <td><?=$this->vehicleRow->width_after_roulette?> cm</td>
+            <td><strong>Largura da porta dianteira (direita):</strong></td>
+            <td><?=$this->vehicleRow->width_door_front_right?> cm</td>
+            <td><strong>Largura da porta central 1 (direita):</strong></td>
+            <td><?if($this->vehicleRow->width_door_middle1_right){?><?=$this->vehicleRow->width_door_middle1_right?> cm<?}?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Largura da porta central 2 (direita):</strong></td>
+            <td><?if($this->vehicleRow->width_door_middle2_right){?><?=$this->vehicleRow->width_door_middle2_right?> cm<?}?></td>
+            <td><strong>Largura da porta traseira (direita):</strong></td>
+            <td><?=$this->vehicleRow->width_door_back_right?> cm</td>
+            <td><strong>Largura da porta dianteira (esquerda):</strong></td>
+            <td><?if($this->vehicleRow->width_door_front_left){?><?=$this->vehicleRow->width_door_front_left?> cm<?}?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Largura da porta central 1 (esquerda):</strong></td>
+            <td><?if($this->vehicleRow->width_door_middle1_left){?><?=$this->vehicleRow->width_door_middle1_left?> cm<?}?></td>
+            <td><strong>Largura da porta central 2 (esquerda):</strong></td>
+            <td><?if($this->vehicleRow->width_door_middle2_left){?><?=$this->vehicleRow->width_door_middle2_left?> cm<?}?></td>
+            <td><strong>Largura da porta traseira (esquerda):</strong></td>
+            <td><?if($this->vehicleRow->width_door_back_left){?><?=$this->vehicleRow->width_door_back_left?> cm<?}?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Comprimento da área de deficientes:</strong></td>
+            <td><?if($this->vehicleRow->length_deficient){?><?=$this->vehicleRow->length_deficient?> cm<?}?></td>
+            <td><strong>Largura da área de deficientes:</strong></td>
+            <td><?if($this->vehicleRow->width_deficient){?><?=$this->vehicleRow->width_deficient?> cm<?}?></td>
+            <td><strong>Capacidade tanque:</strong></td>
+            <td><?=$this->vehicleRow->tank1?> litros</td>
+          </tr>
+
+          <tr>
+            <td><strong>Capacidade tanque 2:</strong></td>
+            <td><?if($this->vehicleRow->tank2){?><?=$this->vehicleRow->tank2?> litros<?}?></td>
+            <td><strong>Número de assentos:</strong></td>
+            <td><?=$this->vehicleRow->amount_seats?></td>
+            <td><strong>Elevador:</strong></td>
+            <td><?if($this->vehicleRow->elevator){?>Sim<?}?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Data de instalação do elevador:</strong></td>
+            <td><?=$this->vehicleRow->elevator_date?></td>
+            <td><strong>Seguradora:</strong></td>
+            <td><?=$this->vehicleRow->insurer?></td>
+            <td><strong>Data do seguro:</strong></td>
+            <td><?=$this->vehicleRow->insurer_date?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Validador:</strong></td>
+            <td><?if($this->vehicleRow->eletronic_roulette){?>Sim<?}?></td>
+            <td><strong>Quantidade de Validadores:</strong></td>
+            <td><?if($this->vehicleRow->amount_validator)?></td>
+            <td><strong>Área de cobrador:</strong></td>
+            <td><?if($this->vehicleRow->collector_area){?>Sim<?}?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Ar condicionado:</strong></td>
+            <td><?if($this->vehicleRow->air_conditioning){?>Sim<?}?></td>
+            <td><strong>GPS:</strong></td>
+            <td><?if($this->vehicleRow->gps){?>Sim<?}?></td>
+            <td><strong>Wifi:</strong></td>
+            <td><?if($this->vehicleRow->wifi){?>Sim<?}?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Suporte de bicicleta:</strong></td>
+            <td><?if($this->vehicleRow->bike_support){?>Sim<?}?></td>
+            <td><strong>TV:</strong></td>
+            <td><?if($this->vehicleRow->tv){?>Sim<?}?></td>
+            <td><strong>Câmera:</strong></td>
+            <td><?if($this->vehicleRow->camera){?>Sim<?}?></td>
+
+          <tr>
+            <td><strong>Data de entrada:</strong></td>
+            <td><?=Application_Model_General::DateToBr($this->vehicleRow->start_historic_date)?></td>
+            <td><strong>Data de saída:</strong></td>
+            <td><?=Application_Model_General::DateToBr($this->vehicleRow->end_historic_date)?></td>
+          </tr>
+
+          <tr>
+            <td><strong>Empresa:</strong></td>
+            <td><?=$this->vehicleRow->company_name?></td>
+            <td><strong>RIT:</strong></td>
+            <td><?=$this->vehicleRow->consortium?></td>
+            <td><strong>Consórcio:</strong></td>
+            <td><?=$this->vehicleRow->consortium_name?></td>
+          </tr>
+
+        </table>
+
+      </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/fleet" class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="#" class="list-group-item active"><i class="fa fa-exchange"></i> Transferência</a>
+        <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;
+          if($institution == 1){?>
+        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados</a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/fleet">Frota</a></li>
+        <li class="active">Transferência</li>
+      </ol>
+      <div class="page-header">
+        <h1>Transferência <small>transfira seu veículo para outro consórcio.</small></h1>
+        <hr>
+        <form class="form-horizontal"  method="post">
+      		<div class="form-group">
+            <label for="consortium" class="col-lg-2 control-label optional">Placa</label>
+            <div class="col-lg-5">
+             <input type="text" class="form-control" value="<?=$this->vehicleRow->plate?>" disabled>
+            </div>
+          </div>
+      		<div class="form-group">
+            <label for="consortium" class="col-lg-2 control-label optional">Renavam</label>
+            <div class="col-lg-5">
+             <input type="text" class="form-control" value="<?=$this->vehicleRow->renavam?>" disabled>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="consortium" class="col-lg-2 control-label optional">Consórcio</label>
+            <div class="col-lg-5">
+              <select name="consortium" id="consortiumTransfer" class="form-control">
+                  <option value="0" label="-- Selecione o consórcio --">-- Selecione o consórcio --</option>
+                  <?foreach($this->consortiums as $consortium){?>
+                  <option value="<?=$consortium->id?>" label="<?=$consortium->name?>"><?=$consortium->name?></option>
+                  <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="consortium_company" class="col-lg-2 control-label optional">Empresa</label>
+            <div class="col-lg-5">
+              <select name="consortium_company" id="consortium_company" class="form-control consortium_company">
+                  <option value="0" label="-- Selecione o consórcio --">-- Selecione um consórcio --</option>
+                  <?foreach($consortiumCompanies as $consortiumCompany){?>
+                  <option value="<?=$consortiumCompany->id?>" label="<?=$consortiumCompany->name?>"><?=$consortiumCompany->name?></option>
+                  <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-5">
+              <input type="submit" name="submit" id="submit" value="Transferir" class="col-lg-offset-5 btn btn-primary"> 
+              <input type="hidden" name="vehicle_id" value="<?=$this->vehicleId?>">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+ 	</div>
+</div>

@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/inspection" class="list-group-item">
+          <h4 class="list-group-item-heading">Vistoria</h4>
+            <p class="list-group-item-text">Gerencie aqui as vistorias</p>
+        </a>
+        <a href="/fleet/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar veículo</a>
+        <a href="/inspection/view" class="list-group-item active"><i class="fa fa-check-square-o"></i> Vistoriar veículo</a>
+        <a href="/inspection/down" class="list-group-item"><i class="fa fa-trash"></i> Baixa de veículo</a>
+        <a href="/inspection/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li class="active">Vistoria</li>
+      </ol>
+      <div class="page-header">
+        <h1>Vistorias <small>defina aqui os dados das vistorias</small></h1>
+        <hr>
+        <form class="form-inline" action="/inspection/view/" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="pesquisa" name="field" value="<?=$this->field?>">
+            </div>
+            <div class="form-group col-md-3">
+              <select name="option" class="form-control">
+                <option value="0">Pesquisar por:</option>
+                <option value="1" <?if($this->option == 1) echo 'selected="selected"';?>>Placa</option>
+                <option value="2" <?if($this->option == 2) echo 'selected="selected"';?>>Renavam</option>
+                <option value="3" <?if($this->option == 3) echo 'selected="selected"';?>>Número de ordem</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Placa</th>
+            <th>Renavam</th>
+          </thead>
+          <tbody>
+            <?if(count($this->list)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><a href="/inspection/vehicle/id/<?=$body->id?>"><?=$body->plate?></a></td>
+                  <td><?=$body->renavam?></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7"><h4>Não há veículos cadastrados esperando vistoria.</h4></td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div>
+  </div>
+</div>

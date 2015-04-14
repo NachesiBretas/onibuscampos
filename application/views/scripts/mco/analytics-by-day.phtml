@@ -1,0 +1,67 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+	  	<div class="list-group">
+	  		<a href="/mco" class="list-group-item">
+	  			<h4 class="list-group-item-heading">MCO</h4>
+    				<p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+	  		</a>
+			  <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+			  <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+			  <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+			  <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+			  <?$mcoData = new Application_Model_DbTable_Mco();
+	          	$lockDay = $mcoData->fetchRow($mcoData->select()->where('id = ?',$this->mcoId));
+	          	if($lockDay->lock_day ==1){?>
+	           		<a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item"><span class="fa fa-bookmark"></span> Perda de Log</a>
+	          <?}?>
+			</div>
+		</div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/view">Pesquisa</a></li>
+        <li class="active">Análise</li>
+      </ol> 
+      <div class="page-header">
+        <h1>MCO<small> dados da bilhetagem eletrônica</small></h1>
+        <hr>
+        <div class="row-fluid">
+	        <div class="span6 well">
+	          <h2>Dados Operacionais</h2>
+	          <p>Visualizar os resultados da bilhetagem eletrônica.</p>
+	          <p><a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="btn btn-default">visualizar dados</a></p>
+	        </div>
+	        <div class="span6 well">
+	          <h2>Ajustes de Catraca</h2>
+	          <p>Verificar os ajustes de catraca e efetuar operações.</p>
+	          <p><a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="btn btn-default">verificar ajustes</a></p>
+	        </div>
+	      </div>
+	      <div class="row-fluid">
+	        <div class="span6 well">
+	          <h2>Diferenças de Catraca</h2>
+	          <p>Verificar as diferenças encontradas de catraca.</p>
+	          <p><a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="btn btn-default">verificar diferenças</a></p>
+	        </div>
+	        <div class="span6 well">
+	          <h2>Receitas</h2>
+	          <p>Exibe os resultados de receita.</p>
+	          <p><a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="btn btn-default">visualizar receita</a></p>
+	        </div>
+	      </div>
+	      <?if($lockDay->lock_day ==1){?>
+		      <div class="row-fluid">
+		        <div class="span6 well">
+		          <h2>Perda de Log</h2>
+		          <p>Cadastrar e alterar as perdas de log.</p>
+		          <p><a href="/mco/new-lost-log/id/<?=$this->mcoId?>" class="btn btn-default">gerenciar perdas de log</a></p>
+		        </div>
+		      </div>
+	      <?}?>
+      </div>
+    </div>
+  </div>
+</div>

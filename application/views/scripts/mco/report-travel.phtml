@@ -1,0 +1,82 @@
+<div class="container"><br>
+	<table style="text-align: center; height: 60%;width: 100%; margin: 0 auto" class="table table-bordered" border='2'>
+      <tr>
+        <th style="border: 2px solid white; border-color: #000; height: 185px ;width: 200px"><img alt="" src="/img/brasao2.jpg" height="100%" width="100%" align="center"></th>
+        <th style="border: 2px solid white; border-color: #000; text-align: center; line-height: 55px"><font size="3" face="verdana">Superintendência de Transporte Metropolitano</font><br>
+        <img width="100%" height="25%" src="/img/barra.jpg"><br><font face="verdana" size="3">Relatório de Relação de viagens</font></th>
+      </tr>
+    </table>
+    <br>
+    <h3 align="center"><?=$this->date[0]?> até <?=$this->date[1]?></h3> 
+	<br>
+	<div class="row">
+		<div class="col-sm-12"><br><br>
+			<table class="table table-bordered table-hover" border="1">
+				<thead>
+					<tr>
+						<th>Data da viagem</th>
+						<th>Nro. comunicação</th>
+						<th>Nro. do veículo</th>
+						<th>Hr de início da viagem</th>
+						<th>Hr ponto retorno</th>
+						<th>Hr de fim da viagem</th>
+						<th>Tempo 1º trecho</th>
+						<th>Tempo 2º trecho</th>
+						<th>Tempo viagem</th>
+						<th>Tipo viagem</th>
+						<th>Padrão</th>
+						<th>Roleta inicial</th>
+						<th>Roleta ponto retorno</th>
+						<th>Roleta final</th>
+						<th>Pass 1º trecho</th>
+						<th>Pass 2º trecho</th>
+						<th>Total passageiros</th>
+						<th>Capacidade total do veículo</th>
+						<th>Trânsito congestionado</th>
+						<th>Ocorrência</th>
+						<th>Placa</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?foreach($this->report as $data){?>
+					<tr>
+						<td><?=$data->date_exibition?></td>
+						<td><?=$data->line?></td>
+						<td><?=$data->vehicle_number?></td>
+						<td><?=$data->start_hour?></td>
+						<td><?=$data->mid_hour?></td>
+						<td><?=$data->end_hour?></td>
+						<td><?=Application_Model_General::hourToMinute($data->start_hour,$data->mid_hour)?></td>
+						<td><?=Application_Model_General::hourToMinute($data->mid_hour,$data->end_hour)?></td>
+						<td><?=Application_Model_General::hourToMinute($data->start_hour,$data->end_hour)?></td>
+						<td><?=$data->travel_type?></td>
+						<td><?=$data->name?></td>
+						<td><?=$data->start_roulette?></td>
+						<td><?=$data->mid_roulette?></td>
+						<td><?=$data->end_roulette?></td>
+						<td><?=$data->qtd_passenger_way?></td>
+						<td><?=$data->qtd_passenger_back?></td>
+						<td><?=$data->amount_passenger;?></td>
+						<td><?=$data->capacity?></td>
+						<td><?if($data->traffic_jam == 1) echo"SIM"; else echo""; ?></td>
+						<td><?
+							if($data->incident == 'a')
+								echo"TRÂNSITO CONGESTIONADO";
+							elseif ($data->incident == 'b')
+								echo"PANE";
+							elseif ($data->incident == 'c')
+								echo"SINISTRO";
+							elseif ($data->incident == 'd')
+								echo"ASSALTO";
+							else
+								echo"";
+						?></td>
+						<td><?=$data->plate?></td>
+					</tr>
+				<?	
+				}?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

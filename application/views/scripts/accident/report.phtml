@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="list-group">
+        <a href="/accident" class="list-group-item">
+          <h4 class="list-group-item-heading">Acidentes</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos Acidentes</p>
+        </a>
+        <a href="/accident/new" class="list-group-item"><i class="glyphicon glyphicon-arrow-up"></i> Upload do Arquivo REDS</a>
+        <a href="/accident/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/accident/report" class="list-group-item active"><span class="fa fa-list-alt"></span> Relatórios</a>
+        <a href="/accident/vis" class="list-group-item"><span class="fa fa-bar-chart-o"></span> Visualização</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/accident">Acidentes</a></li>
+        <li class="active">Relatórios</li>
+      </ol>
+      <div class="row-fluid">
+        <div class="span6 well">
+          <h2>Por data</h2>
+          <p>Relatório com todas as informações de acidentes de um período especifico.</p>
+          <form class="form-inline" action="/accident/report-accident-by-date" method="get" role="form">
+            <label> Data Inicio</label>
+            <input class="dateMask form-control" type="text" id="data" name="ini_date" placeholder="Digite a data de inicio"><br><br>
+            <label> Data Fim</label>
+            <input class="dateMask form-control" type="text" id="data" name="end_date" placeholder="Digite a data de de fim"><br><br>
+            <button type="submit" id='report_pdf' name='report' class="btn btn-primary" value="0">Gerar relatório</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/fleet" class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/fleet/process" class="list-group-item active"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/fleet">Frota</a></li>
+        <li class="active">Em processo</li>
+      </ol>
+      <div class="page-header">
+        <h1>Veículos em processo <small>andamento dos processos de veículos</small></h1>
+        <hr>
+        <form class="form-inline" action="/fleet/view" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="pesquisa" name="field" value="<?=$this->field?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table  table-bordered">
+          <thead>
+            <th colspan="2">Veículos</th>
+          </thead>
+          <tbody>
+            <?if(count($this->list)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td colspan="2"><b><?=$body->plate?></b></td>
+                </tr>
+                <tr>
+                	<td>
+                		<div class="progress">
+                      <?if($body->status == 9){?>
+                        <div class="progress-bar progress-bar-info help" title="Aguardando transferência SETOP" style="width: 50%">
+                        <span class="sr-only">50% Completo</span>
+                      </div>
+                      <?}elseif($body->status == 8){?>
+                      <div class="progress-bar progress-bar-danger help" title="Rejeitado - SETOP" style="width: 10%">
+                        <span class="sr-only">1% Completo</span>
+                      </div>
+                      <?}else{?>
+                			<div class="progress-bar progress-bar-warning help" title="<?if($body->status != 1) echo 'Finalizado'; else echo 'Aguardando Finalização';?> - Consórcio" style="width: 25%">
+                				<span class="sr-only">25% Completo</span>
+                			</div>
+                      <?if($body->status >= 2){?>
+                			<div class="progress-bar progress-bar-default help" title="<?if($body->status == 2) echo 'Aguardando Vistoria - DER-MG'; elseif($body->status >= 3) echo 'Vistoriado - DER-MG';?> " style="width: <?if($body->status >= 2) echo '25%'?>">
+                				<span class="sr-only">50% Completo</span>
+                			</div>
+                      <?}?>
+                      <?if($body->status >= 3){?>
+                      <div class="progress-bar progress-bar-success help" title="<?if($body->status == 3) echo 'Aguardando aprovação  - SETOP'; elseif($body->status >= 4) echo 'Aprovado - SETOP';?> " style="width: <?if($body->status >= 2) echo '25%'?>">
+                        <span class="sr-only">75% Completo</span>
+                      </div>
+                      <?}?>
+                      <?}?>
+                		</div>
+                	</td>
+                  <?if($body->status == 1){?>
+                    <td width="250"><a href="/fleet/edit/id/<?=$body->id?>" class="btn btn-default btn-sm help" title="Finalizar preenchimento"><i class="fa fa-pencil"></i></a> <a href="/fleet/vis/id/<?=$body->historic_id?>" class='btn btn-default btn-sm help' title="Visualizar dados"><i class="fa fa-eye"></i></a></td>
+                  <?}elseif($body->status == 2){?>
+                    <td width="250"> <a href="/agendamento/index/id/<?=$body->id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a></td>
+                  <?}elseif($body->status == 3){?>
+                    <td width="250"><a href="/fleet/vis/id/<?=$body->historic_id?>" class='btn btn-default btn-sm help' title="Visualizar dados"><i class="fa fa-eye"></i></a></td>
+                  <?}elseif($body->status == 9){?>
+                    <td width="250"><a href="/fleet/vis/id/<?=$body->historic_id?>" class='btn btn-default btn-sm help' title="Visualizar dados"><i class="fa fa-eye"></i></a></td>
+                  <?}?>
+                  
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7"><h4>Não há veículos em processo.</h4></td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div>
+  </div>
+</div>

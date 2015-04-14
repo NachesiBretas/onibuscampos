@@ -1,0 +1,137 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="list-group">
+        <a href="/mco" class="list-group-item">
+          <h4 class="list-group-item-heading">MCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+        </a>
+        <a href="/mco/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/mco/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/mco/report" class="list-group-item active"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+      </div>
+    </div>
+    <div class="span9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco">MCO</a></li>
+        <li class="active">Relatórios</li>
+      </ol>
+
+      <hr><h1>Selecione o Tipo de Relatório</h1>
+
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#overcrowded">
+            Superlotação das Linhas</a>
+              <div id="overcrowded" class="panel-collapse collapse">
+                <h5 style= "color:grey">Exibição das linhas que excederam o limite de passageiros.</h5>
+                <form class="form-inline" action="/mco/report-overcrowded" method="get" role="form">
+                  <label> Data Inicio</label>
+                  <input class="dateMask form-control" type="text" id="data" name="data_ini" placeholder="Digite a data de inicio"><br><br>
+                  <label> Data Fim</label>
+                  <input class="dateMask form-control" type="text" id="data" name="data_fim" placeholder="Digite a data de de fim"><br><br>
+                  <button type="submit" id='report_pdf' name='report' class="btn btn-primary" value="0">Gerar relatório</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#hour_production">
+              Indicadores de Produção por Hora</a>
+              <div id= "hour_production"class="panel-collapse collapse">
+                <h5 style= "color:grey">Exibição da produção das linhas por hora e por dia representados nos quadros de horário.</h5>
+                <form class="form-inline" action="/mco/report-hour-production" method="get" role="form">
+                  <label> Data Inicio</label>
+                  <input class="dateMask form-control" type="text" id="data" name="data_ini" placeholder="Digite a data de inicio"><br><br>
+                  <label> Data Fim</label>
+                  <input class="dateMask form-control" type="text" id="data" name="data_fim" placeholder="Digite a data de de fim"><br><br>
+                  <button type="submit" id='report_pdf' name='report' class="btn btn-primary" value="0">Gerar relatório</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="panel-title">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#cell_revenue">
+                Composição de Receita por Célula</a>
+                <div id="cell_revenue" class="panel-collapse collapse">
+                  <h5 style= "color:grey">Composição detalhada da receita por célula operacional e consórcio entre um período definido.</h5>
+                  <form class="form-inline" action="/mco/report-cell-revenue" method="get" role="form">
+                    <label> Data Inicio</label>
+                    <input class="dateMask form-control" type="text" id="data" name="data_ini" placeholder="Digite a data de inicio"><br><br>
+                    <label> Data Fim</label>
+                    <input class="dateMask form-control" type="text" id="data" name="data_fim" placeholder="Digite a data de de fim"><br><br>
+                    <label> Consórcio</label>
+                    <select name="consotiumOption" id="consotiumOption" class="form-control">
+                    <option value="0">--- Selecione o Consórcio ---</option>
+                    <?foreach($this->list as $consotiumOptions)
+                    {?>
+                      <option value="<?=$consotiumOptions['id']?>"><?if($consotiumOptions['name'] == ""){?>--- Selecione a Célula ---</option>
+                        <?}else{
+                          echo $consotiumOptions['name']?></option>
+                        <?}
+                    }?>
+                    </select><br><br>
+                    <label for="cellOption" class="control-label optional"> Célula Operacional
+                    <select name="cellOption" id="cellOption" class="form-control">
+                    </select><br><br>
+                    <input id="cellOptionName" name="cellOptionName" class="hidden">
+                    <input class="hidden" id="consotiumName" name="consotiumName">
+                    <button type="submit" id='report_pdf' name='report' class="btn btn-primary" value="0">Gerar relatório</button>
+                    <button type="submit" id='report_csv' name='report' class="btn btn-primary" value="1">Gerar csv</button>
+                    </form>
+                </div>
+            </div>
+          </div>
+          </label>
+          </form>
+          </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#revenue">
+              Composição de Receita Total</a>
+              <div id="revenue" class="panel-collapse collapse">
+              <h5 style= "color:grey">Composição detalhada da receita entre um período definido.</h5>
+              <form class="form-inline" action="/mco/report-revenue" method="get" role="form">
+                <label> Data Inicio</label>
+                <input class="dateMask form-control" type="text" id="data" name="data_ini" placeholder="Digite a data de inicio"><br><br>
+                <label> Data Fim</label>
+                <input class="dateMask form-control" type="text" id="data" name="data_fim" placeholder="Digite a data de de fim"><br><br>
+                <button type="submit" id='report_pdf' name='report' class="btn btn-primary" value="0">Gerar relatório</button>
+                <button type="submit" id='report_csv' name='report' class="btn btn-primary" value="1">Gerar csv</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#report_travel">
+              Relação de viagens</a>
+              <div id="report_travel" class="panel-collapse collapse">
+              <h5 style= "color:grey">Exibição das viagens realizadas.</h5>
+              <form class="form-inline" action="/mco/report-travel" method="get" role="form">
+                <label> Data Inicio</label>
+                <input class="dateMask form-control" type="text" id="data" name="data_ini" placeholder="Digite a data de inicio"><br><br>
+                <label> Data Fim</label>
+                <input class="dateMask form-control" type="text" id="data" name="data_fim" placeholder="Digite a data de de fim"><br><br>
+                <button type="submit" id='report_pdf' name='report' class="btn btn-primary" value="0">Gerar relatório</button>
+                </form>
+            </div>
+          </div>
+        </div>
+  </div>

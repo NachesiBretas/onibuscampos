@@ -1,0 +1,238 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+      <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;?>
+        <a <?if($institution !=2) echo"href=\"/fleet\""; else echo"href=\"/fleet/view\"";?> class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <?if($institution == 1 || $this->institution == 3 || $this->institution == 4){ ?>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <?}?>
+        <a href="/fleet/view" class="list-group-item active"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <?if($institution == 1){?>
+        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
+        <a href="/fleet/review-edited" class="list-group-item"><span class="glyphicon glyphicon-edit"></span> Cadastros editados <?if($this->vehiclesEdited){?><span class="badge"><?=$this->vehiclesEdited?></span><?}?></a>
+        <a href="/fleet/review-transfer" class="list-group-item"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>
+        <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+          <?if($this->institution == 4){?>
+            <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a <?if($institution !=2) echo"href=\"/fleet\""; else echo"href=\"/fleet/view\"";?>>Frota</a></li>
+        <li class="active">Pesquisa</li>
+      </ol>
+      <div class="page-header">
+        <h1>Pesquisa <small>gerencie aqui os dados da frota</small></h1>
+        <hr>
+          <form class="form-inline" action="/fleet/view" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="pesquisa" name="field" value="<?=$this->field?>" id="textSearchFleet">
+            </div>
+            <div class="form-group col-md-3">
+              <select name="option" class="form-control" id="searchFleet">
+                <option value="0">Pesquisar por:</option>
+                <option value="1" <?if($this->option == 1) echo 'selected="selected"';?>>Placa</option>
+                <option value="2" <?if($this->option == 2) echo 'selected="selected"';?>>Renavam</option>
+                <option value="3" <?if($this->option == 3) echo 'selected="selected"';?>>Número de ordem</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Placa</th>
+            <th>Renavam</th>
+            <th>Número de ordem</th>
+            <th>Data de baixa</th>
+            <th>Ações</th>
+          </thead>
+          <tbody>
+            <?if(count($this->list)){
+              foreach($this->list as $body){?>
+                <tr <?if($body->status == 4 && !$body->end_historic_date){?>class="success"<?}elseif($body->status == 1 || $body->status == 8){?>class="warning"<?}else{?>class="danger"<?}?>>
+                  <td><?=$body->plate?> </td>
+                  <td><?=$body->renavam?></td>
+                  <td><?=$body->external_number?></td>
+                  <td><?=Application_Model_General::DateToBr($body->end_historic_date)?></td>
+                  <td>
+                  <?if($body->status == 8){?>
+                      <button class="btn btn-default btn-sm help" title="Este veículo foi rejeitado pelo DER-MG"><i class="fa fa-exclamation"></i></button>
+                      <a href="/agendamento/index/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a>
+                  <?}else{?>
+                      <?if($institution == 1){?>
+                        <a href="/fleet/edit/id/<?=$body->vehicle_id?>" class="btn btn-default btn-sm help" title="Editar veículo"><i class="fa fa-pencil"></i></a>
+                        <?if($body->end_historic_date == ''){?>
+                        <a class="btn btn-default btn-sm help" data-toggle="modal" title="Emitir Certificado do veículo" data-target="#print_certificate_<?=$body->vehicle_id?>"><i class="fa fa-file"></i></a>
+                        <?}?>
+                        <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
+                        <?if($body->end_historic_date == ''){?>
+                        <a class="btn btn-default btn-sm help" data-toggle="modal" title="Remover veículo" data-target="#remove_<?=$body->vehicle_id?>"><i class="fa fa-trash"></i></a>
+                        <?}?>
+                        <a class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir veículo" data-target="#delete_<?=$body->vehicle_id?>"><i class="fa fa-ban"></i></a>
+                      <?}
+                      elseif($institution == 2){?>
+                        <a href="/fleet/edit/id/<?=$body->vehicle_id?>" class="btn btn-default btn-sm help" title="Editar veículo"><i class="fa fa-pencil"></i></a>
+                        <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
+                      <?}
+                      elseif($institution == 3){?>
+                        <?if($body->end_historic_date == ''){?>
+                        <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
+                        <!-- <a class="btn btn-default btn-sm help" data-toggle="modal" title="Emitir 2 via do CRV" data-target="#crv_<?=$body->vehicle_id?>"><i class="fa fa-file"></i></a> -->
+                        <a href="/fleet/transfer/id/<?=$body->vehicle_id?>" class="btn btn-default btn-sm help" title="Transferir veículo"><i class="fa fa-exchange"></i></a>
+                        <!-- <a class="btn btn-default btn-sm help" data-toggle="modal" title="Remover veículo" data-target="#remove_<?=$body->vehicle_id?>"><i class="fa fa-trash"></i></a> -->
+                        <a href="/agendamento/index/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a>
+                        <a href="/fleet/add-documents/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Anexar documentos"><i class="fa fa-cloud-upload"></i></a>
+                        <?}else{?>
+                        <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
+                        <a href="/agendamento/index/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a>
+                        <?}?>
+                      <?}
+                      elseif($institution == 4){?>
+                        <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
+                        <a href="/agendamento/index/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a>
+                      <?}
+                    }}?>
+                  </td>
+                </tr>
+              <? 
+            }
+            else{?>
+              <tr>
+                <td colspan="7"><h4>Não há veículos cadastrados.</h4></td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div><!--/span-->
+  </div>
+</div>
+
+
+<?if(count($this->list)){
+foreach($this->list as $body){?>
+<div class="modal fade" id="remove_<?=$body->vehicle_id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Baixa de veículo</h4>
+      </div>
+      <div class="modal-body">
+        <p>Você tem certeza que deseja realizar a baixa do veículo placa <strong><?=$body->plate?></strong>?</p>
+      </div>  
+      <div class="modal-footer">
+        <form method="post" action="/fleet/down" enctype="multipart/form-data">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-warning">Baixa</button>
+          <input type="hidden" value="<?=$body->vehicle_id?>" name="vehicle_id">
+        </form>
+      </div>        
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<form method="post" class="form-horizontal" action="/fleet/ask-crv" enctype="multipart/form-data">
+  <div class="modal fade" id="crv_<?=$body->vehicle_id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Emissão de 2 via de CRV</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+              <label class="col-sm-2">Justificativa</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control resp" name="body" rows="5" placeholder="Digite sua justificativa aqui"></textarea>
+                </div>
+            </div>
+        </div>  
+        <div class="modal-footer">
+            <input type="hidden" value="<?=$body->vehicle_id?>" name="vehicle_id">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Solicitar</button>
+        </div>        
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</form>
+
+<?if($institution == 1){?>
+<form method="post" class="form-horizontal" action="/fleet/print-certificate" enctype="multipart/form-data">
+  <div class="modal fade" id="print_certificate_<?=$body->vehicle_id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Emissão de Certificado do Veículo</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+              <label class="col-sm-2">Período</label>
+                <div class="col-sm-2">
+                  <textarea class="form-control" name="period" rows="1"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2">Validade</label>
+                <div class="col-sm-6">
+                  <select name="validity" class="form-control">
+                    <option>-- Selecione Anos/Meses --</option>
+                    <option>MÊS</option>
+                    <option>ANO</option>
+                    <option>MESES</option>
+                    <option>ANOS</option></select>
+                </div>
+            </div>
+        </div>  
+        <div class="modal-footer">
+            <input type="hidden" value="<?=$body->vehicle_id?>" name="vehicle_id">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Confirmar</button>
+        </div>
+      </div> 
+    </div>
+  </div>       
+</form>
+
+<form method="post" class="form-horizontal" action="/fleet/delete" enctype="multipart/form-data">
+  <div class="modal fade" id="delete_<?=$body->vehicle_id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Exclusão de veículos</h4>
+        </div>
+        <div class="modal-body">
+             <p>Tem certeza que deseja a exclusão desse veículo? Esta operação não tem volta.</p>
+        </div>  
+        <div class="modal-footer">
+            <input type="hidden" value="<?=$body->vehicle_id?>" name="vehicle_id">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </div>
+      </div> 
+    </div>
+  </div>       
+</form>
+<?}?>
+<?} }?>

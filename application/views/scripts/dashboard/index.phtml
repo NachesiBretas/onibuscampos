@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/dashboard" class="list-group-item">
+          <h4 class="list-group-item-heading">Página inicial</h4>
+            <p class="list-group-item-text">SIMETRO</p>
+        </a>
+        <?$authNamespace = new Zend_Session_Namespace('userInformation');?>
+        <?if($authNamespace->institution == 1 || $authNamespace->institution == 3 || $authNamespace->institution == 4){?>
+        <a href="/fleet" class="list-group-item"><i class="fa fa-truck"></i> Frota</a>
+        <?}?>
+        <?if($authNamespace->institution == 1){?>
+        <a href="/qco" class="list-group-item"><i class="fa fa-road"></i> QCO</a>
+        <a href="/mco" class="list-group-item"><i class="fa fa-cogs"></i> MCO</a>
+        <a href="/finance" class="list-group-item"><i class="fa fa-dollar"></i> Financeiro</a>
+        <a href="/indicators" class="list-group-item"><i class="fa fa-area-chart"></i> Indicadores</a>
+        <?}?>
+        <?if($authNamespace->institution == 2){?>
+        <a href="/inspection" class="list-group-item"><i class="fa fa-fire-extinguisher"></i> Vistoria</a>
+        <a href="/scheduling" class="list-group-item"><i class="fa fa-calendar"></i> Agendamento online</a>
+        <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li class="active">Página inicial</li>
+      </ol>
+      <div class="text-center">
+		    <img src='/img/onibus.jpg' class="img-responsive img-thumbnail"><br><br>
+		  </div>
+		 </div>
+		</div>
+	</div>

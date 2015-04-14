@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/mco" class="list-group-item">
+          <h4 class="list-group-item-heading">MCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+        </a>
+        <a href="/mco/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/mco/view" class="list-group-item active"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/mco/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco">MCO</a></li>
+        <li class="active">Pesquisa</li>
+      </ol>
+      <div class="page-header">
+        <h1>Pesquisa <small>gerencie aqui os dados da bilhetagem</small></h1>
+        <hr>
+          <form class="form-inline" action="/mco/view" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="MM/AAAA - Mês e ano da operação" name="field" value="<?=$this->field?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Mês da operação</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><a href="/mco/analytics/month/<?=$body->month?>"><?=$body->date_operation?></a></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhuma linha na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div><!--/span-->
+  </div>
+</div>

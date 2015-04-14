@@ -1,0 +1,94 @@
+<style type="text/css">
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+    }
+
+    .axis text {
+        font-family: sans-serif;
+        font-size: 11px;
+    }
+
+    #chart div {
+      font: 10px sans-serif;
+      background-color: steelblue;
+      text-align: right;
+      padding: 3px;
+      margin: 1px;
+      color: white;
+    }
+
+    .label {
+      fill: white;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+
+    .label-black {
+      fill: black;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+
+
+    .labelrit {
+      fill: black;
+    }
+  </style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/accident" class="list-group-item">
+          <h4 class="list-group-item-heading">Acidentes</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos Acidentes</p>
+        </a>
+        <a href="/accident/new" class="list-group-item"><i class="glyphicon glyphicon-arrow-up"></i> Upload do Arquivo REDS</a>
+        <a href="/accident/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/accident/report" class="list-group-item"><span class="fa fa-list-alt"></span> Relatórios</a>
+        <a href="/accident/vis" class="list-group-item active"><span class="fa fa-bar-chart-o"></span> Visualização</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/accident">Acidentes</a></li>
+        <li class="active">Visualização</li>
+      </ol>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <form class="form-inline" action="/accident/view" method="get" role="form">
+              <div class="form-group col-md-5 row">
+                <div class="col-md-6"><input type="text" class="form-control dateMask" placeholder="data de ínicio" id="ini_date" value=""><br><br></div>
+                <div class="col-md-6"><input type="text" class="form-control dateMask" placeholder="data de fim" id="end_date" value=""><br><br></div>
+              </div>
+              <button type="button" class="btn btn-primary" id="filter">Filtrar</button>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <h1>Acidentes por RIT</h1>
+            <div id="chart">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="alert alert-info alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>Caso os dados não sejam filtrados por data, serão carregados <b>TODOS</b> os dados de acidentes.</div>
+
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-md-6">
+            <h1>Acidentes por município</h1>
+            <div id="chart-city">
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,321 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/inspection" class="list-group-item">
+          <h4 class="list-group-item-heading">Vistoria</h4>
+            <p class="list-group-item-text">Gerencie aqui as vistorias</p>
+        </a>
+        <a href="/fleet/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar veículo</a>
+        <li class="list-group-item active">Edição</li>
+        <a href="/inspection/view" class="list-group-item"><i class="fa fa-check-square-o"></i> Vistoriar veículo</a>
+        <a href="/inspection/down" class="list-group-item"><i class="fa fa-trash"></i> Baixa de veículo</a>
+        <a href="/inspection/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/inspection/view">Vistoria</a></li>
+        <li class="active">Edição</li>
+      </ol>
+      <div class="page-header">
+        <h1><?=$this->vehicleRow->plate?> <small>defina aqui os dados da vistoria deste veículo</small></h1>
+        <hr>
+        <ul class="nav nav-tabs" id="myTab">
+          <li class="active"><a href="#data">Principal</a></li>
+          <li><a href="#seal_historic">Histórico de lacre</a></li>
+          <li><a href="#inspection_historic">Histórico de laudo de vistoria</a></li>
+          <li><a href="#notification_historic">Historico de notificações</a></li>
+        </ul>
+        <hr>
+        <div class="tab-content">
+        <div class="tab-pane active" id="data">
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#roulette">
+                  Lacre da Roleta
+                </a>
+              </h4>
+            </div>
+            <div id="roulette" class="panel-collapse collapse">
+              <div class="panel-body">
+                <?=$this->seal;?>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#crlv">
+                  CRLV
+                </a>
+              </h4>
+            </div>
+            <div id="crlv" class="panel-collapse collapse">
+              <div class="panel-body">
+                  <?$vehicle = new Application_Model_Vehicle();
+                  $document = $vehicle->returnDocument($this->vehicleId,'crlv');
+                  if(!$document){
+                    echo $this->crlvForm?>
+                  <?}
+                  else{?>
+                     <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                      <span class="glyphicon glyphicon-download"></span> Download
+                    </a>
+                  <?}?>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#maintenance">
+                  Termo de manutenção
+                </a>
+              </h4>
+            </div>
+            <div id="maintenance" class="panel-collapse collapse">
+              <div class="panel-body">
+                  <?$document = $vehicle->returnDocument($this->vehicleId,'maintenance');
+                  if(!$document){
+                    echo $this->maintenanceForm?>
+                  <?}else{?>
+                     <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                      <span class="glyphicon glyphicon-download"></span> Download
+                    </a>
+                  <?}?>
+              </div>
+            </div>
+          </div>
+          <?if($this->document == 'comodato'){?>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#comodato">
+                  Comodato
+                </a>
+              </h4>
+            </div>
+            <div id="comodato" class="panel-collapse collapse">
+              <div class="panel-body">
+                  <?$document = $vehicle->returnDocument($this->vehicleId,'comodato');?>
+                  <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                    <span class="glyphicon glyphicon-download"></span> Download
+                  </a>
+              </div>
+            </div>
+          </div>
+          <?}?>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#inspection">
+                  Laudo de Vistoria
+                </a>
+              </h4>
+            </div>
+            <div id="inspection" class="panel-collapse collapse">
+              <div class="panel-body">
+                <?=$this->inspectionForm?>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#notification">
+                  Notificação
+                </a>
+              </h4>
+            </div>
+            <div id="notification" class="panel-collapse collapse">
+              <div class="panel-body">
+                <?=$this->notificationForm?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?if($this->completed){?>
+        <hr>
+        <a href="#completed" class="btn btn-success help" data-toggle="modal" title="Finalizar vistoria"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+        &nbsp;
+        <a href="#block" class="btn btn-danger help" data-toggle="modal" title="Bloquear veículo"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+        <?}?>
+      </div>
+      <div class="tab-pane" id="seal_historic">
+      <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#newChangeSeal">Nova Troca de Lacre</a>
+          </h4>
+        </div>
+        <div class="panel-collapse collapse" id="newChangeSeal">
+          <div class="panel-body">
+            <?=$this->seal;?>
+          </div>
+        </div>
+      </div>
+      <?foreach ($this->sealData as $value){?>
+      <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#seal_<?=$value->id?>">
+                  Lacre - 
+                  <?$change_date = Application_Model_General::dateToBr($value->change_date);
+                  echo $change_date;?>
+                </a>
+              </h4>
+            </div>
+            <div id="seal_<?=$value->id?>" class="panel-collapse collapse">
+              <div class="panel-body">
+                 <? $value->change_date = $change_date;
+                 $this->seal->populate($value->toArray());
+                 echo $this->seal?>
+              </div>
+            </div>
+      </div>
+      <?}?>
+      </div>
+      </div>
+      <div class="tab-pane" id="inspection_historic">
+      <div class="panel-group">
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#newInspection">Novo Laudo de vistoria</a>
+            </h4>
+          </div>
+          <div class="panel-collapse collapse" id="newInspection">
+            <div class="panel-body">
+              <?=$this->inspectionForm;?>
+            </div>
+          </div>
+      </div>
+      <?foreach ($this->inspectionData as $inspection){?>
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#insp_historic_<?=$inspection->id?>">
+                Laudo de vistoria - 
+                <?$date_inspection = Application_Model_General::dateToBr($inspection->date_inspection);
+                  echo $date_inspection?>
+              </a>
+            </h4>
+          </div>
+          <div id="insp_historic_<?=$inspection->id?>" class="panel-collapse collapse">
+            <div class="panel-body">
+              <?$type='inspection_'.$inspection->date_inspection;
+              $document = $vehicle->returnDocument($this->vehicleId,$type);?>
+               <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                <span class="glyphicon glyphicon-download"></span> Download
+              </a>
+            </div>
+            <div class="panel-body">
+            <?$inspection->date_inspection = $date_inspection;
+              $this->inspectionForm->populate($inspection->toArray());
+              echo $this->inspectionForm->date_inspection."<br><br>".$this->inspectionForm->hour_inspection."<br><br>".$this->inspectionForm->roulette_number."<br><br>".$this->inspectionForm->observation;?>
+            </div>
+          </div>
+      </div>
+      <?}?>
+      </div>
+      </div>
+      <div class="tab-pane" id="notification_historic">
+      <div class="panel-group">
+      <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#newNotification">Nova notificação</a>
+              </h4>
+            </div>
+            <div class="panel-collapse collapse" id="newNotification">
+              <div class="panel-body">
+                <?=$this->notificationForm;?>
+              </div>
+            </div>
+      </div>
+      <?foreach ($this->notificationData as $notification){?>
+      <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#not_historic_<?=$notification->id?>">
+                  Notificação - 
+                  <? $date_notification = Application_Model_General::dateToBr($notification->date_notification);
+                  echo $date_notification?>
+                </a>
+              </h4>
+            </div>
+            <div id="not_historic_<?=$notification->id?>" class="panel-collapse collapse">
+              <div class="panel-body">
+                 <?$type='notification_'.$notification->date_notification;
+                 $document = $vehicle->returnDocument($this->vehicleId,$type);?>
+                 <a href="/fleet/download-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-default">
+                  <span class="glyphicon glyphicon-download"></span> Download
+                </a>
+              </div>
+              <div class="panel-body">
+              <?$notification->date_notification = $date_notification;
+                $this->notificationForm->populate($notification->toArray());
+                echo $this->notificationForm->date_notification."<br><br>".$this->notificationForm->hour_notification."<br><br>".$this->notificationForm->roulette_number."<br><br>".$this->notificationForm->observation;?>
+              </div>
+            </div>
+      </div>
+      <?}?>
+      </div>
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?if($this->completed){?>
+  <form action="/inspection/save-all" method="post">
+    <div class="modal fade" id="completed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Finalizar Processo</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Tem certeza que deseja salvar o laudo de vistoria <b>aprovando</b> o veículo e enviá-lo para a SETOP?</h4>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="vehicleId" value="<?=$this->vehicleId?>">
+            <input type="hidden" name="block" value="0">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Salvar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+
+  <form action="/inspection/save-all" method="post">
+    <div class="modal fade" id="block" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Finalizar Processo</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Tem certeza que deseja salvar o laudo de vistoria <b>reprovando / bloqueando</b> o veículo e enviá-lo para a SETOP?</h4>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="vehicleId" value="<?=$this->vehicleId?>">
+            <input type="hidden" name="block" value="1">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Salvar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+<?}?>

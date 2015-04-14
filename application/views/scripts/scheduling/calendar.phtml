@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/scheduling" class="list-group-item">
+          <h4 class="list-group-item-heading">Agendamento</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos atendimentos</p>
+        </a>
+        <a href="/scheduling/treatment" class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> Calendário</a>
+        <a href="/scheduling/calendar" class="list-group-item active"><span class="glyphicon glyphicon-book"></span> Recessos</a>
+        <a href="/scheduling/hour" class="list-group-item"><span class="glyphicon glyphicon-saved"></span> Horários</a>
+        <a href="/scheduling/print" class="list-group-item"><span class="glyphicon glyphicon-print"></span> Imprirmir calendário</a>
+        <!-- <a href="/scheduling/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a> -->
+        <!-- <a href="/scheduling/graphic" class="list-group-item"><span class="glyphicon glyphicon-picture"></span> Gráfico</a> -->
+      </div>
+    </div><!--/col-md-->
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página Inicial</a></li>
+        <li><a href="/scheduling">Agendamento</a></li>
+        <li class="active">Recessos</li>
+      </ol>  
+      <hr>
+      <div>
+        <h1>Recessos <small>adicione aqui uma data de recesso</small></h1>
+      </div>
+      <hr>
+      <div>
+        <?=$this->form?>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<style type="text/css">
+  .container {
+    width: auto;
+    max-width: 680px;
+    padding: 0 15px;
+    }
+</style>
+
+<!-- Wrap all page content here -->
+    <div id="wrap">
+
+      <!-- Begin page content -->
+      <div class="container">
+        <div class="page-header text-center">
+          <h1>Agendamento Online de Vistoria</h1>
+        </div>
+        <p class="lead text-center">Escolha uma data e horário disponíveis e preencha corretamente os dados.</p>
+        <div class="row">
+          <div class="col-md-4">
+            <div id="calendar" class="col">
+              <div></div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <form class="form-horizontal hide" role="form" id="formSchedule" method="post">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Horário</label>
+                <div class="col-sm-10">
+                  <select class="form-control text-center" name="hour" id="hour">
+                    <option value="0">-- Escolha um horário --</option>
+                    <?foreach($this->hour as $hour){?>
+                    <option value="<?=$hour->id?>"><?=$hour->hour?></option>
+                    <?}?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" id='btnSchedule' class="btn btn-default btn-primary">Agendar</button>
+                  <input type="hidden" name="name" id="name" value="<?=$this->vehicle->external_number?>">
+                  <input type="hidden" name="date" id="date" value="<?=date('Y-m-d')?>">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

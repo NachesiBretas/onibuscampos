@@ -1,0 +1,67 @@
+<div class="container"><br>
+	<table style="text-align: center; height: 60%;width: 100%; margin: 0 auto" class="table table-bordered" border='2'>
+      <tr>
+        <th style="border: 2px solid white; border-color: #000; height: 185px ;width: 200px"><img alt="" src="/img/brasao2.jpg" height="100%" width="100%" align="center"></th>
+        <th style="border: 2px solid white; border-color: #000; text-align: center; line-height: 55px"><font size="3" face="verdana">Superintendência de Transporte Metropolitano</font><br>
+        <img width="100%" height="25%" src="/img/barra.jpg"><br><font face="verdana" size="3">Relatório de produção por hora</font></th>
+      </tr>
+    </table>
+    <br>
+    <h3 align="center"><?=$this->date[0]?> até <?=$this->date[1]?></h3> 
+	<br>
+	<div class="row">
+		<div class="col-sm-12"><br><br>
+			<table class="table table-bordered table-hover" border="1">
+				<thead><tr><th colspan="15">TOTAL</th></tr></thead>
+				<thead>
+					<tr>
+						<th width="102px">Hora</th>
+						<th>Viagens realizadas</th>
+						<th>Viagens interrompidas</th>
+						<th colspan="3">
+						<table>
+						<tr>
+						<th colspan="3">Produção quilométrica (Km)</th>
+						</tr>
+						<tr>
+						<th>Asfalto</th>
+						<th>Terra</th>
+						<th>Poliédrico</th>
+						</tr>
+						</table>
+						</th>
+						<th>Total de passageiros</th>
+						<th>IPK</th>
+						<th>Passageiros por viagens</th>
+						<th>Tempo médio de viagem (min)</th>
+						<th>Velocidade média (Km/hora)</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?
+				$hour1='0:00';
+          		$hour2='0:59';
+				foreach ($this->totals as $data){
+					foreach ($data as $value){?>
+					<tr>
+						<td><b><?=$hour1?> - <?=$hour2?></b></td>
+						<td><?=$value->travel?></td>
+						<td><?if($value->realized_travel != '') echo $value->realized_travel; else echo"0";?></td>
+						<td width="75px"><?=number_format($value->kilometric_production_a, 2, ",", ".");?></td>
+						<td width="55px"><?=number_format($value->kilometric_production_t, 2, ",", ".");?></td>
+						<td width="100px"><?=number_format($value->kilometric_production_p, 2, ",", ".");?></td>
+						<td><?if($value->total_passenger !=0) echo $value->total_passenger; else echo"0";?></td>
+						<td><?=number_format($value->ipk, 4, ",", ".");?></td>
+						<td><?=number_format($value->travel_passenger, 2, ",", ".");?></td>
+						<td><?=number_format($value->travel_time, 2, ",", ".");?></td>
+						<td><?=number_format($value->km_hour, 2, ",", ".");?></td>
+					</tr>
+				<?	}
+				   $hour1=Application_Model_General::convertToHour(Application_Model_General::convertToMinute($hour1) + 60).':00';
+            	   $hour2=Application_Model_General::convertToHour(Application_Model_General::convertToMinute($hour1)).':59';	
+				}?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

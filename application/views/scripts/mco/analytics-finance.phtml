@@ -1,0 +1,71 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+	  	<div class="list-group">
+	  		<a href="/mco" class="list-group-item">
+	  			<h4 class="list-group-item-heading">MCO</h4>
+    				<p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+	  		</a>
+			  <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+			  <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+			  <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+			  <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item active"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+			  <?$mcoData = new Application_Model_DbTable_Mco();
+          $lockDay = $mcoData->fetchRow($mcoData->select()->where('id = ?',$this->mcoId));
+          if($lockDay->lock_day ==1){?>
+           <a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item"><span class="fa fa-bookmark"></span> Perda de Log</a> 
+        <?}?>
+			</div>
+		</div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/view">Pesquisa</a></li>
+        <li><a href="/mco/analytics-by-day/id/<?=$this->mcoId?>">Análise</a></li>
+        <li class="active">Receita</li>
+      </ol> 
+      <div class="page-header">
+        <h1>MCO<small> dados da bilhetagem eletrônica</small></h1>
+        <hr>
+          <form class="form-inline" action="/mco/analytics-finance/id/<?=$this->mcoId?>" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="Digite o número linha" name="field" value="<?=$this->field?>" id="textSearch">
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Linha</th>
+            <th>Tipo</th>
+            <th>Quantidade</th>
+            <th>Valor</th>
+            <th>Valor Total</th>
+          </thead>
+          <tbody>
+            <?$total=0;
+              if(is_object($this->list) && !isset($this->list->name)){
+                foreach($this->list as $body){?>
+                  <tr>
+                    <td><?=$body->line?></td>
+                    <td><?=$body->type?></td>
+                    <td><?=$body->amount?></td>
+                    <td><?='R$ '.number_format($body->value,2,",",".");?></td>
+                    <td><?='R$ '.number_format($body->amount * $body->value,2,",",".")?></td>
+                  </tr>
+                <?
+                }
+              } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrado nenhum veículo na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div>
+  </div>
+</div>

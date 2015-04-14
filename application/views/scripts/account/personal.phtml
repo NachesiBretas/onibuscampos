@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/account" class="list-group-item">
+          <h4 class="list-group-item-heading">Minha conta</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da sua conta</p>
+        </a>
+        <a href="/account/personal" class="list-group-item active"><i class="fa fa-home"></i> Dados pessoais</a>
+        <a href="/account/password" class="list-group-item"><i class="fa fa-key"></i> Redefinição de senha</a>
+      </div>
+    </div><!--/col-md-->
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/account">Minha conta</a></li>
+        <li class="active">Dados pessoais</li>
+      </ol> 
+    	<div class="page-header">
+        <h1>Dados Pessoais <small>defina aqui seus dados</small></h1>
+        <hr>
+        <form class="form-horizontal" action="/account/personal" method="post">
+          <div class="form-group">
+              <label class="col-lg-2 control-label" for="name">Nome</label>
+              <div class="col-lg-5">
+                  <input type="text" name="name" value="<?=$this->user->name?>" class="form-control" id="name" placeholder="nome completo">
+              </div><!--/.form-group -->
+          </div><!--/.form-group -->
+          <div class="form-group">
+              <label class="col-lg-2 control-label" for="phone">Telefone</label>
+              <div class="col-lg-5">
+                  <input type="text" name="phone" value="<?=$this->user->phone?>" class="form-control" id="phone" placeholder="telefone">
+              </div><!--/.form-group -->
+          </div><!--/.form-group -->
+          <div class="form-group">
+              <label class="col-lg-2 control-label" for="email">Email</label>
+              <div class="col-lg-5">
+                  <input type="email" name="email" value="<?=$this->user->email?>" class="form-control" id="email" placeholder="email">
+              </div><!--/.form-group -->
+          </div><!--/.form-group -->
+          <div class="form-actions">
+            <div class="col-lg-offset-2 col-lg-10">
+              <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

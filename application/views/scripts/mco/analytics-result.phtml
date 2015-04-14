@@ -1,0 +1,128 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+	  	<div class="list-group">
+	  		<a href="/mco" class="list-group-item">
+	  			<h4 class="list-group-item-heading">MCO</h4>
+    				<p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+	  		</a>
+			   <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item active"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+			  <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+			  <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+			  <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+        <?$mcoData = new Application_Model_DbTable_Mco();
+          $lockDay = $mcoData->fetchRow($mcoData->select()->where('id = ?',$this->mcoId));
+          if($lockDay->lock_day ==1){?>
+			     <a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item"><span class="fa fa-bookmark"></span> Perda de Log</a>
+        <?}?>
+			</div>
+		</div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/view">Pesquisa</a></li>
+        <li><a href="/mco/analytics-by-day/id/<?=$this->mcoId?>">Análise</a></li>
+        <li class="active">Dados Operacionais</li>
+      </ol> 
+      <div class="page-header">
+        <h1>MCO<small> dados da bilhetagem eletrônica</small></h1>
+        <hr>
+        <form class="form-inline" action="/mco/analytics-result/id/<?=$this->mcoId?>" method="get" role="form">
+          <div class="form-group col-md-5">
+            <input type="text" class="form-control" placeholder="pesquisa" name="field" value="<?=$this->field?>" id="textSearch">
+          </div>
+          <div class="form-group col-md-3">
+            <select name="option" class="form-control" id="search">
+              <option value="0">Pesquisar por:</option>
+              <option value="1" <?if($this->option == 1) echo 'selected="selected"';?>>Linha</option>
+              <option value="2" <?if($this->option == 2) echo 'selected="selected"';?>>Veículo</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </form>
+        <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Linha</th>
+            <th>Tipo</th>
+            <th>Veículo</th>
+            <th>Roleta Inicial</th>
+            <th>Roleta Retorno</th>
+            <th>Roleta Final</th>
+            <th>Hora Inicial</th>
+            <th>Hora Retorno</th>
+            <th>Hora Final</th>
+            <th>Data</th>
+            <?if($lockDay->lock_day ==1){?>
+                <th>Alteração de viagem</th>
+                <th>Excluir</th>
+            <?}?>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){
+                ?>
+                <tr>
+                  <td><?=$body->line?></td>
+                  <td><?=$body->type?></td>
+                  <td><?=$body->vehicle_number?></td>
+                  <td><?=$body->start_roulette?></td>
+                  <td><?=$body->mid_roulette?></td>
+                  <td><?=$body->end_roulette?></td>
+                  <td><?=$body->start_hour?></td>
+                  <td><?=$body->mid_hour?></td>
+                  <td><?=$body->end_hour?></td>
+                  <td><?=Application_Model_General::dateToBr($body->start_date)?></td>
+                  <?if($lockDay->lock_day ==1){?>
+                    <td><a href="/mco/edit-lost-log/id/<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Alteração de viagem"><span class="glyphicon glyphicon-edit"></span></a></td>
+                    <td>
+                    <?$mcoData = new Application_Model_DbTable_McoData();
+                      $mco_data = $mcoData->fetchAll($mcoData->select()->where('id = ?', $body->id)
+                                                                       ->where('status = 1'));
+                      foreach ($mco_data as $dataLog) {
+                        if($dataLog->imported == 0) {?>
+                          <a href="#delete_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir"><span class="glyphicon glyphicon-trash"></span></a>
+                      <?}
+                      }?>
+                    </td>
+                  <?}?>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrado nenhum veículo na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml', array('field' => $this->field,'option' => $this->option)); }?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?foreach($this->list as $body){?>
+<form method="post" action="/mco/delete-lost-log">
+  <div class="modal fade" id="delete_<?=$body->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Excluir</h4>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja excluir esta perda de log?
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" value="<?=$body->id?>" name="id">
+          <input type="hidden" value="<?=$body->mco?>" name="mco_id">
+          <input type="hidden" value="0" name="action">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <input type="submit" class="btn btn-success" value="Excluir">
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</form>
+<?}?>

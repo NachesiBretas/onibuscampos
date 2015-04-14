@@ -1,0 +1,52 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+	  	<div class="list-group">
+	  		<a href="/mco" class="list-group-item">
+	  			<h4 class="list-group-item-heading">MCO</h4>
+    				<p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+	  		</a>
+			   <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+			  <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+			  <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item active"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+			  <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+			  <a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item"><span class="fa fa-bookmark"></span> Perda de Log</a>
+			</div>
+		</div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/analytics-by-day/id/<?=$this->mcoId?>">Análise</a></li>
+        <li class="active">Diferenças</li>
+      </ol> 
+      <div class="page-header">
+        <h1>MCO<small> dados da bilhetagem eletrônica</small></h1>
+        <hr>       
+        <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){?>
+              	<form class="form-horizontal" action='/mco/accredit-passenger/id/<?=$body->id?>' method='post'>
+					<div class="form-group">
+		              <label class="col-lg-3 control-label" for="accredit_passenger">Abonar passageiro</label>
+		              <div class="col-lg-5">
+		                  <input type="text" name="accredit_passenger" id="accredit_passenger" placeholder="Quantidade de passageiros a abonar" class="form-control" value="<?=$body->accredit_passenger?>">
+		              </div><!--/.controls -->
+		          	</div><!--/.form-group -->
+		          	<div class="form-group">
+		              <label class="col-lg-3 control-label" for="justify">Justificativa do abono</label>
+		              <div class="col-lg-5">
+		                  <textarea type="text" name="justify" id="justify" rows="5" class="form-control" placeholder="Justificativa do abono de passageiro"><?=$body->justify?></textarea>
+		              </div><!--/.controls -->
+		          	</div><!--/.form-group -->
+		          	<div class="col-lg-5">
+		              	<input type="hidden" name="diff_roulette_id" value="<?=$body->id?>">
+		              	<input type="hidden" name="mco_id" value="<?=$body->mco_id?>">
+		              	<input type="submit" class="btn btn-primary" value="Salvar">
+		            </div>
+	           	</form>
+            <?} } ?>
+      </div>
+    </div>
+  </div>
+</div>

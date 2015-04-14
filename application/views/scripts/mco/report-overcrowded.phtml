@@ -1,0 +1,54 @@
+<div class="container"><br>
+	<table style="text-align: center; height: 60%;width: 80%; margin: 0 auto" class="table table-bordered" border='2'>
+      <tr>
+        <th style="border: 2px solid white; border-color: #000; height: 185px ;width: 200px"><img alt="" src="/img/brasao2.jpg" height="100%" width="100%" align="center"></th>
+        <th style="border: 2px solid white; border-color: #000; text-align: center; line-height: 55px"><font size="3" face="verdana">Superintendência de Transporte Metropolitano</font><br>
+        <img width="100%" src="/img/barra.jpg"><br><font face="verdana" size="3">Relatório de Superlotação das linhas</font></th>
+      </tr>
+    </table>
+    <br>
+    <h3 align="center"><?=$this->date[0]?> até <?=$this->date[1]?></h3> 
+	<br>
+	<div class="row">
+		<div class="col-sm-12"><br><br>
+			<table class="table table-bordered table-hover" border="1">
+				<thead>
+					<tr>
+						<th>Linha</th>
+						<th>Número do veículo</th>
+						<th>Data da viagem</th>
+						<th>Horário de início da viagem</th>
+						<th>Horário de fim da viagem</th>
+						<th>Padrão do veículo</th>
+						<th>Fator de roratividade</th>
+						<th>Fator de gratuidade</th>
+						<th>Qtd. de passageiros na ida</th>
+						<th>Qtd. de passageiros na volta</th>
+						<th>Qtd. total de passageiros</th>
+						<th>Capacidade total do veículo</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?foreach($this->report as $data){
+					if ($data->exceed_fp == 1) {?>
+					<tr>
+						<td><?=$data->line?></td>
+						<td><?=$data->vehicle_number?></td>
+						<td><?=$data->date_exibition?></td>
+						<td><?=$data->start_hour?></td>
+						<td><?=$data->end_hour?></td>
+						<td><?=$data->name?></td>
+						<td><?=$data->turnover_factor?></td>
+						<td><?=$data->gratuity_factor?></td>
+						<td><?if($data->qtd_passenger_way =='') echo"--"; else echo number_format($data->qtd_passenger_way, 2, ".", ".");?></td>
+						<td><?if($data->qtd_passenger_back =='') echo"--"; else echo number_format($data->qtd_passenger_back, 2, ".", ".");?></td>
+						<td><?if($data->exceed_p == 1) echo"<span style='color:red''>".number_format($data->qtd_passenger, 2, ".", ".")."</span>"; else echo number_format($data->qtd_passenger, 2, ".", ".");?></td>
+						<td><?=$data->capacity?></td>
+					</tr>
+				<?	}
+				}?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

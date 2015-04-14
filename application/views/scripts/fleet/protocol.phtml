@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/fleet" class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;
+          if($institution == 1){?>
+        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados</a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/fleet">Frota</a></li>
+        <li class="active">Conclusão</li>
+      </ol>
+      <div class="page-header">
+        <div class="jumbotron">
+          <h1>Veículo salvo!</h1>
+          <p class="lead">O processo de cadastro do veículo foi concluído com sucesso. Após a vistoria do DER-MG, a SETOP analisará toda a documentação e encaminhará a certidão do veículo ao consórcio proprietário do ônibus.</p>
+          <p><a class="btn btn-lg btn-success" href="/agendamento/index/id/<?=$this->id?>">Agende a vistoria do veículo</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

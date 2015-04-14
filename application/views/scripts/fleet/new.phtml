@@ -1,0 +1,126 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/fleet" class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <a href="/fleet/new" class="list-group-item active"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;
+          if($institution == 1){?>
+        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
+        <a href="/fleet/review-edited" class="list-group-item"><span class="glyphicon glyphicon-edit"></span> Cadastros editados <?if($this->vehiclesEdited){?><span class="badge"><?=$this->vehiclesEdited?></span><?}?></a>
+        <a href="/fleet/review-transfer" class="list-group-item"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>
+        <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+          <?if($this->institution == 4){?>
+            <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/fleet">Frota</a></li>
+        <li class="active">Novo</li>
+      </ol>
+      <div class="page-header">
+        <h1>Cadastro de veículo <small>defina aqui os dados principais do veículo</small></h1>
+        <hr>
+        <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+          <div class="form-group" id="form-service">
+            <label for="service" class="col-lg-3 control-label optional">Serviço</label>
+            <div class="col-lg-7">
+              <select name="service" id="service" class="form-control" required>
+                  <option value="0">-- Selecione um tipo de serviço --</option>
+                  <?foreach ($this->vehicleService as $vehicleService) {?>
+                  <option value="<?=$vehicleService->id?>"><?=$vehicleService->name?></option>
+                  <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="form-plate">
+            <label for="plate" class="col-lg-3 control-label optional">Placa</label>
+            <div class="col-lg-7">
+              <input type="text" name="plate" id="plate" value="" placeholder="placa do veículo" class="form-control" required>
+              <span id="feedback-success-plate" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+              <span id="feedback-error-plate" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+            </div>
+          </div>
+          <div class="form-group" id="form-renavam">
+            <label for="renavam" class="col-lg-3 control-label optional">Renavam</label>
+            <div class="col-lg-7">
+              <input type="number" name="renavam" id="renavam" value="" placeholder="número do renavam" class="form-control" maxlength="11" required>
+              <span id="feedback-success-renavam" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+              <span id="feedback-error-renavam" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+            </div>
+          </div>
+          <div class="form-group" id="form-consortium">
+            <label for="consortium" class="col-lg-3 control-label optional">Consórcio</label>
+            <div class="col-lg-7">
+              <select name="consortium" id="consortium" class="form-control" required>
+                <option value="0">-- Selecione um consórcio --</option>
+                <?foreach ($this->consortium as $consortium) {?>
+                  <option value="<?=$consortium->id?>"><?=$consortium->name?></option>
+                <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="form-external-number">
+            <label for="external-number" class="col-lg-3 control-label optional">Número de ordem</label>
+            <div class="col-lg-7">
+              <input type="number" name="external_number" id="external-number" value="" placeholder="número do externo do veículo" class="form-control" maxlength="7" required>
+              <span id="feedback-success-external-number" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+              <span id="feedback-error-external-number" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+            </div>
+          </div>
+          <div class="form-group" id="form-pattern">
+            <label for="pattern" class="col-lg-3 control-label optional">Padrão</label>
+            <div class="col-lg-7">
+              <select name="pattern" id="pattern" class="form-control" required>
+                <option value="0">-- Selecione um padrão --</option>
+                <?foreach ($this->vehiclePattern as $vehiclePattern) {?>
+                  <option value="<?=$vehiclePattern->id?>"><?=$vehiclePattern->name?></option>
+                <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="form-color">
+            <label for="color" class="col-lg-3 control-label optional">Cor</label>
+            <div class="col-lg-7">
+              <select name="color" id="color" class="form-control" required>
+                <option value="0">-- Selecione uma cor --</option>
+                <?foreach ($this->vehicleColor as $vehicleColor) {?>
+                <option value="<?=$vehicleColor->id?>"><?=$vehicleColor->name?></option>
+                <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="form-type">
+            <label for="type" class="col-lg-3 control-label optional">Tipo do Veículo</label>
+            <div class="col-lg-7">
+              <select name="type" id="type" class="form-control" required>
+                  <option value="0">-- Selecione um tipo de veículo --</option>
+                  <?foreach ($this->vehicleType as $vehicleType) {?>
+                  <option value="<?=$vehicleType->id?>"><?=$vehicleType->name?></option>
+                  <?}?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-7">
+              <input type="submit" name="submit" id="submit" value="Próximo" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

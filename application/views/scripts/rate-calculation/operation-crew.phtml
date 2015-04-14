@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/rate-calculation/fix-cost" class="list-group-item">
+          <h4 class="list-group-item-heading">Custos fixos</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos custos fixos</p>
+        </a>
+        <a href="/rate-calculation/vehicle-depreciation" class="list-group-item"><i class="fa fa-line-chart"></i> Depreciação do veículo</a>
+        <a href="/rate-calculation/vehicle-remuneration" class="list-group-item"><i class="fa fa-money"></i> Remuneração do veículo </a>
+        <a href="/rate-calculation/lift-remuneration" class="list-group-item"><i class="fa fa-sort"></i> Remuneração do elevador </a>
+        <a href="/rate-calculation/equipment-remuneration" class="list-group-item"><i class="fa fa-lightbulb-o"></i> Remuneração de instalações e equipamentos </a>
+        <a href="/rate-calculation/warehouse-remuneration" class="list-group-item"><i class="fa fa-scissors"></i> Remuneração de almoxarifado </a>
+        <a href="/rate-calculation/eletronic-ticketing" class="list-group-item"><i class="fa fa-credit-card"></i> Sistema de bilhetagem eletrônica</a>
+        <a href="/rate-calculation/operation-crew" class="list-group-item active"><i class="fa fa-group"></i> Pessoal de operação </a>
+        <a href="/rate-calculation/fixed-expenses" class="list-group-item"><i class="fa fa-dollar"></i> Despesas fixas </a>
+        <a href="/rate-calculation/social-charges" class="list-group-item"><i class="fa fa-paste"></i> Encargos sociais </a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/rate-calculation">Cálculo de tarifa</a></li>
+        <li><a href="/rate-calculation/cost">Custos</a></li>
+        <li class="active">Custos fixos</li>
+      </ol> 
+
+      <div class="page-header">
+      <h1>Cadastro de veículo <small>defina aqui os dados principais do veículo</small></h1>
+      <hr>
+      <?=$this->mainForm?>
+      </div>
+      <div class="col-sm-13">
+        <br><br>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Categoria</th>
+            <th>Para Dimensionamento de Salários e Encargos</th>
+            <th>Para Dimensionamento de Benefícios</th>
+            <th>Excluir</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><?=$body->categorie?></td>
+                  <td><?=$body->charges_salaries_scaling?></td>
+                  <td><?=$body->benefits_scaling?></td>
+                  <td><a href="#delete_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir o dia"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhum dado pré-cadastrado.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+      </div>
+
+     </div>
+    </div>
+  </div>

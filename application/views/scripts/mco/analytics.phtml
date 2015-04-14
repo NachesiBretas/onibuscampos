@@ -1,0 +1,122 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/mco" class="list-group-item">
+          <h4 class="list-group-item-heading">MCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+        </a>
+        <a href="/mco/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/mco/view" class="list-group-item active"> Edição</a>
+        <a href="/mco/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/mco/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco">MCO</a></li>
+        <li class="active">Pesquisa</li>
+      </ol>
+      <div class="page-header">
+        <h1>Pesquisa <small>gerencie aqui os dados da bilhetagem</small></h1>
+        <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th rowspan=>Data da operação</th>
+            <th>Ações</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+                foreach($this->list as $body){?>
+                  <tr>
+                  <td><a href="/mco/analytics-by-day/id/<?=$body->id?>"><?=Application_Model_General::dateToBr($body->date_operation)?></a></td>
+                <?$mcoData = new Application_Model_DbTable_Mco();
+                  $lockDay = $mcoData->fetchRow($mcoData->select()->where('id = ?',$body->id));
+                  if($lockDay->lock_day ==1){?>
+                      <td><a href="#delete_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir o dia"><span class="glyphicon glyphicon-trash"></span></a>
+                      <a href="#lock_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Bloquear o dia"><span class="glyphicon glyphicon-lock"></span></a></td>
+                    </tr>
+                <?} else{?>
+                      <td>&nbsp;<span class="glyphicon glyphicon-lock"> Dia bloqueado!</span></td>
+                  <?}
+                } 
+              } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhuma linha na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div><!--/span-->
+  </div>
+</div>
+
+<?foreach($this->list as $body){?>
+<form method="post" action="/mco/delete-by-day">
+  <div class="modal fade" id="delete_<?=$body->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Excluir</h4>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja excluir este dia?
+        </div>
+        <div class="modal-footer" id="deleteMCO">
+          <input type="hidden" value="<?=$body->id?>" name="id">
+          <?
+            $date = explode("-",$body->date_operation);
+            $month = $date[1];
+            $year = $date[0];
+            $dateNew = $month."-".$year;
+          ?>
+          <input type="hidden" value="<?=$dateNew?>" name="month">
+          <input type="hidden" value="0" name="action">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <input type="submit" id='delete' class="btn btn-success" value="Excluir">
+        </div>
+        <div class="modal-footer" id="statusDelete" style="display:none;">
+          <div style="margin-right:200px;">
+            <img src='/img/loading.gif' id='loading' style="margin-right:40px;">
+            <p>Excluindo dados... </p>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</form>
+
+<form method="post" action="/mco/lock-day">
+  <div class="modal fade" id="lock_<?=$body->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Bloquear o dia</h4>
+        </div>
+        <div class="modal-body">
+          Após o bloqueio não será mais possível alterar nada do MCO deste dia. <br>
+          Tem certeza que deseja bloquear?
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" value="<?=$body->id?>" name="id">
+          <?
+            $date = explode("-",$body->date_operation);
+            $month = $date[1];
+            $year = $date[0];
+            $dateNew = $month."-".$year;
+          ?>
+          <input type="hidden" value="<?=$dateNew?>" name="month">
+          <input type="hidden" value="0" name="action">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <input type="submit" class="btn btn-success" value="Bloquear">
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</form>
+<?}?>

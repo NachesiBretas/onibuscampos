@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/gsection" class="list-group-item">
+          <h4 class="list-group-item-heading">Grupo de Seções</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados sobre os Grupos de Seções</p>
+        </a>
+        <a href="/gsection/new" class="list-group-item active"><i class="glyphicon glyphicon-arrow-up"></i> Upload da Tabela Tarifária</a>
+        <a href="/gsection/view" class="list-group-item"><span class="fa fa-bar-chart-o"></span> Visualização</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li class="active">Upload da Tabela Tarifária</li>
+      </ol> 
+      <div class="page-header">
+        <h1>Upload da Tabela Tarifária <br><small>Carregue aqui os dados dos Grupos de Seções</small></h1>
+        <hr>
+        <?if($this->success){?>
+        	<div class="well well-lg">
+        		<span class="glyphicon glyphicon-thumbs-up"></span> Arquivo inserido corretamente no sistema.<br>
+        		<p>Para poder visualizar os Grupos de Seções, clique <a href="#">aqui</a></p>
+        	</div>
+        <?}else{?>
+        <form enctype="multipart/form-data" class="form-horizontal" method="post" action="/gsection/new" id='Gsection' name='Gsection'>
+					<div class="form-group"><label for="start_date" class="col-lg-2 control-label required">Arquivo</label>
+						<div class="col-lg-5">
+						<input type="file" name="gsection_file" id="gsection_file"></div>
+					</div>
+					<div class="form-group"><div class="col-lg-5">
+						<input type="submit" name="submit" id="submitGsection" value="Salvar" class="col-lg-offset-5 btn btn-primary"></div>
+					</div>
+				</form>
+				<?}?>
+				<div id="barProgressMCO" style='margin-left: 80px; display: none'>
+				  <img src='/img/loading.gif' id='loading' style='margin-left: 70px;'> <br><br>
+				  <p>Salvando e fazendo os cálculos</p>
+				  <p style='margin-left: 40px;'>Por favor aguarde...</p>
+				</div>
+      </div>
+    </div>
+  </div>
+</div>

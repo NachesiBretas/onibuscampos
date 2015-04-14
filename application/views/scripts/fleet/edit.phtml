@@ -1,0 +1,321 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+      <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;
+          $vehicle = new Application_Model_Vehicle();?>
+        <a <?if($institution !=2) echo"href=\"/fleet\""; else echo"href=\"/fleet/view\"";?> class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <?if($institution == 1 || $this->institution == 3){ ?>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <?}?>
+        <a href="#" class="list-group-item active">Edição</a>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+          <?if($this->institution == 1){?>
+        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
+        <a href="/fleet/review-edited" class="list-group-item"><span class="glyphicon glyphicon-edit"></span> Cadastros editados <?if($this->vehiclesEdited){?><span class="badge"><?=$this->vehiclesEdited?></span><?}?></a>
+        <a href="/fleet/review-transfer" class="list-group-item"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>
+        <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a <?if($institution !=2) echo"href=\"/fleet\""; else echo"href=\"/fleet/view\"";?>>Frota</a></li>
+        <li><a href="/fleet/view">Pesquisa</a></li>
+        <li class="active">Edição</li>
+      </ol>
+      <div class="page-header">
+        <h1><?=$this->vehicleRow->plate?> <small>defina aqui os dados do veículo</small></h1>
+        <hr>
+        <ul class="nav nav-tabs" id="myTab">
+          <li <?if($this->result == 1){?>class="active"<?}?>><a href="#data">Principal</a></li>
+          <li <?if($this->result == 2){?>class="active"<?}?>><a href="#chassi">Carroceria</a></li>
+          <li <?if($this->result == 3){?>class="active"<?}?>><a href="#measure">Medidas</a></li>
+          <li <?if($this->result == 4){?>class="active"<?}?>><a href="#others">Outros Dados</a></li>
+          <?if($this->status != 1 && $this->institution == 1){?><li <?if($this->result == 5){?>class="active"<?}?>><a href="#historic">Operacionais</a></li><?}?>
+          <li><a href="#documents">Documentos</a></li>
+          <?if($this->institution == 3 && $this->result == 6 && $this->status == 1){?>
+          <li class="active"><a href="#finally">Finalizar</a></li>
+          <?}?>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane <?if($this->result == 1){?>active<?}?>" id="data">
+            <hr>
+            <?=$this->mainForm?>
+          </div>
+          <div class="tab-pane <?if($this->result == 2){?>active<?}?>" id="chassi">
+            <hr>
+            <?=$this->bodyForm?>
+          </div>
+          <div class="tab-pane <?if($this->result == 3){?>active<?}?>" id="measure">
+            <hr>
+            <?=$this->measuresForm?>
+          </div>
+          <div class="tab-pane <?if($this->result == 4){?>active<?}?>" id="others">
+            <hr>
+            <?=$this->otherForm?>
+          </div>
+          <?if($this->status == 1 || $this->institution == 1){?>
+          <div class="tab-pane <?if($this->result == 5){?>active<?}?>" id="historic">
+            <hr>
+            <div class="panel-group" id="accordion">
+              <?if(isset($this->historic)){
+                foreach($this->historic as $historic){?>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse_<?=$historic->id?>"><?if($this->institution == 3){ echo 'Atual';}else{?>
+                      <?=$historic->start_historic_date?> - <?if($historic->end_historic_date) echo $historic->end_historic_date; else echo 'Atual';?><?}?>
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse_<?=$historic->id?>" class="panel-collapse collapse">
+                  <div class="panel-body">
+                  <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+                    <div class="form-group">
+                      <label for="external_number" class="col-lg-2 control-label optional">Número externo</label>
+                      <div class="col-lg-5">
+                      <input type="text" name="external_number" id="external_number" value="<?=$historic->external_number?>" placeholder="número externo do veículo" class="form-control" maxlength="8"></div>
+                    </div>
+                    <?if($this->institution != 3){?>
+                    <div class="form-group">
+                      <label for="consortium" class="col-lg-2 control-label optional">Consórcio</label>
+                      <div class="col-lg-5">
+                        <select name="consortium" id="consortium" class="form-control consortium">
+                            <option value="0" label="-- Selecione o consórcio --">-- Selecione o consórcio --</option>
+                            <?foreach($this->consortiums as $consortium){?>
+                            <option value="<?=$consortium->id?>" label="<?=$consortium->name?>" <?if($consortium->id == $historic->consortium) echo "selected='selected'";?>><?=$consortium->name?></option>
+                            <?}?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="consortium_company" class="col-lg-2 control-label optional">Célula operacional</label>
+                      <div class="col-lg-5">
+                        <select name="consortium_company" id="consortium_company" class="form-control consortium_company">
+                            <? $consortiumCompanies = $this->consortiumCompanies->fetchAll('consortium_id = '.$historic->consortium); ?>
+                            <option value="0" label="-- Selecione o consórcio --">-- Selecione um consórcio --</option>
+                            <?foreach($consortiumCompanies as $consortiumCompany){?>
+                            <option value="<?=$consortiumCompany->id?>" label="<?=$consortiumCompany->name?>" <?if($consortiumCompany->id == $historic->consortium_company) echo "selected='selected'";?>><?=$consortiumCompany->name?></option>
+                            <?}?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="start_historic_date" class="col-lg-2 control-label optional">Data de início</label>
+                      <div class="col-lg-5">
+                      <input type="text" name="start_historic_date" id="start_historic_date" value="<?=$historic->start_historic_date?>" placeholder="data do início do veículo" class="form-control dateMask"></div>
+                    </div>
+                    <div class="form-group">
+                      <label for="end_historic_date" class="col-lg-2 control-label optional">Data de baixa</label>
+                      <div class="col-lg-5">
+                      <input type="text" name="end_historic_date" id="end_historic_date" value="<?=$historic->end_historic_date?>" placeholder="data de baixa do veículo" class="form-control dateMask"></div>
+                    </div>
+                    <?}?>
+                    <div class="form-group">
+                      <div class="col-lg-5">
+                        <input type="submit" name="submit" id="submit" value="Salvar" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary"> 
+                        <?if($this->institution == 1){?>
+                        <a data-toggle="modal" href="#removeLog_<?=$historic->id?>" class="btn btn-danger">Remover</a>
+                        <?}?>
+                      </div>
+                    </div>
+                    <input type="hidden" name="id" value="<?=$historic->id?>" id="id">
+                    <input type="hidden" name="vehicle_id" value="<?=$this->vehicleId?>" id="vehicle_id">
+                  </form>
+                  </div>
+                </div>
+              </div>
+              <?}}?>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                      Novo Histórico
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <? $array = array('vehicle_id' => $this->vehicleId); echo $this->historicForm->populate($array);?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?}?>
+          <div class="tab-pane" id="documents">
+            <hr>
+            <div class="panel-group" id="accordion">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#crlv">
+                      CRLV e DPVAT
+                    </a>
+                  </h4>
+                </div>
+                <div id="crlv" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?$document = $vehicle->returnDocument($this->vehicleId,'crlv');
+                    if(!$document){
+                      echo $this->crlvForm?>
+                    <?}
+                    else{?>
+                       <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                      <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Excluir 
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#maintenance">
+                      Termo de Manutenção
+                    </a>
+                  </h4>
+                </div>
+                <div id="maintenance" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?$document = $vehicle->returnDocument($this->vehicleId,'maintenance');
+                    if(!$document){
+                      echo $this->documentsForm?>
+                    <?}else{?>
+                       <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                      <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Excluir
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#comodato">
+                      Termo de Comodato
+                    </a>
+                  </h4>
+                </div>
+                <div id="comodato" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?if(!$vehicle->returnDocument($this->vehicleId,'comodato')){?>
+                    <?=$this->comodatoForm?>
+                    <?}else{
+                      $document = $vehicle->returnDocument($this->vehicleId,'comodato');?>
+                      <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                      <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Excluir
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#inspection">
+                      Laudo de vistoria
+                    </a>
+                  </h4>
+                </div>
+                <div id="inspection" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?$document = $vehicle->returnDocument($this->vehicleId,'inspection');
+                    if(!$document){?>
+                    <?=$this->inspectionForm?>
+                    <?}else{?>
+                      <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?if($this->institution == 3 && $this->result == 6 && $this->status == 1){?>
+          <div class="tab-pane active" id="finally">
+            <hr>
+            <a href="#saveAll_<?=$this->vehicleRow['id']?>" data-toggle="modal" class="btn btn-success btn-lg" <?if(!$this->completed){?>disabled<?}?>>
+              <span class="glyphicon glyphicon-thumbs-up"></span> Finalizar
+            </a><br><br>
+            <?if(!$this->completed){?>
+            <div class="jumbotron">
+              <h2>Desabilitado</h2>
+              <p class="lead">Para habilitar o botão de finalizar o processo, preencha <strong>todos</strong> os dados relativos ao veículo e anexe os documentos obrigatórios.</p>
+            </div>
+            <?}?>
+          </div>
+          <?}?>
+        </div>
+      </div>
+    </div><!--/col-md-->
+  </div><!--/row-->
+</div><!--/container-->
+
+
+<?if(isset($this->historic)){
+  foreach($this->historic as $historic){?>
+  <form action="/fleet/remove/id/<?=$historic->id?>" method="post">
+    <div class="modal fade" id="removeLog_<?=$historic->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Remover Histórico</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Tem certeza que deseja excluir este histórico?</h4>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="vehicleId" value="<?=$this->vehicleRow['id']?>">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-danger">Excluir</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+<?} }?>
+
+<?if($this->completed){?>
+  <form action="/fleet/save-all" method="post">
+    <div class="modal fade" id="saveAll_<?=$this->vehicleRow['id']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Finalizar Processo</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Tem certeza que deseja salvar todos os dados e enviá-los para a vistoria do DER-MG?</h4>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="vehicleId" value="<?=$this->vehicleRow['id']?>">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-success">Salvar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+<?}?>

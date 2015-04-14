@@ -1,0 +1,410 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/qco" class="list-group-item">
+          <h4 class="list-group-item-heading">QCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados das QCOs</p>
+        </a>
+        <a href="/qco/new" class="list-group-item"><i class="fa fa-pencil"></i> Novo</a>
+        <a href="#" class="list-group-item active"> Edição</a>
+        <a href="/qco/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar</a>
+        <a href="/qco/export" class="list-group-item"><i class="fa fa-share"></i> Exportar</a>
+        <a href="/qco/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/qco">QCO</a></li>
+        <li class="active">Edição</li>
+      </ol> 
+      <div class="page-header">
+        <h1><?=$this->qcoMain->number_communication?> <small><?=$this->qcoMain->name?></small></h1>
+        <hr>
+        <a href="/qco/historic?field=<?=$this->qcoMain->number_communication?>" target= "_blank" class="btn btn-default help" data-toggle="tooltip" title="Histórico da Linha"><i class="glyphicon glyphicon-book"></i></a> 
+        <a href="#" target= "_blank" class="btn btn-default help" data-toggle="tooltip" title="Clonar"><i class = "fa fa-copy"></i></a>
+        <hr>
+        <ul class="nav nav-tabs" id="myTab">
+         <li id="prin" class="active"><a href="#data">Principal</a></li>
+            <li><a href="#route">Itinerário</a></li>
+            <li><a href="#hour">Horários</a></li>
+            <li><a href="#fleet">Frota</a></li>
+            <li><a href="#paralyse">Paralisação</a></li>
+            <li><a href="#file">Arquivo QH</a></li>
+            <li><a href="#shape">Georreferenciamento</a></li>
+            <li><a href="#historic">Histórico</a></li>
+        </ul>
+          <div class="tab-content">
+          <div class="tab-pane active" id="data">
+            <br>
+            <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+              <div class="form-group">
+                <label for="number_communication" class="col-lg-3 control-label required">Número de comunicação</label>
+                <div class="col-lg-7">
+                  <input type="number" name="number_communication" id="number_communication" value="<?=$this->qcoMain->number_communication?>" placeholder="número de comunicação" class="form-control" maxlength="6">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="col-lg-3 control-label required">Nome</label>
+                <div id="buttons" class="col-lg-7">
+                  <textarea rows="3" cols="3" name="name" id="name" value="" placeholder="nome da linha" class="form-control"><?=$this->qcoMain->name?></textarea>
+                  <br>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="consortium" class="col-lg-3 control-label optional">Consórcio</label>
+                <div class="col-lg-7">
+                  <select name="consortium" id="consortium" class="form-control consortium">
+                      <option value="0" label="-- Selecione o consórcio --">-- Selecione o consórcio --</option>
+                      <?foreach($this->consortiums as $consortium){?>
+                      <option value="<?=$consortium->id?>" label="<?=$consortium->name?>" <?if($consortium->id == $this->qcoMain->consortium_id) echo "selected='selected'";?>><?=$consortium->name?></option>
+                      <?}?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="consortium_company" class="col-lg-3 control-label optional">Célula Operacional</label>
+                <div class="col-lg-7">
+                  <select name="consortium_company" id="consortium_company" class="form-control consortium_company">
+                      <? $consortiumCompanies = $this->consortiumCompanies->fetchAll('consortium_id = '.$this->qcoMain->consortium_id); ?>
+                      <option value="0" label="-- Célula Operacional --">-- Célula Operacional --</option>
+                      <?foreach($consortiumCompanies as $consortiumCompany){?>
+                      <option value="<?=$consortiumCompany->id?>" label="<?=$consortiumCompany->name?>" <?if($consortiumCompany->id == $this->qcoMain->cell_id) echo "selected='selected'";?>><?=$consortiumCompany->name?></option>
+                      <?}?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group"><label for="finance_fare_id" class="col-lg-3 control-label optional">Tarifa</label>
+                <div class="col-lg-7">
+                  <select name="finance_fare_id" id="finance_fare_id" class="form-control">
+                    <option value="0" label="-- Selecione o Grupo Tárifario --">-- Selecione o Grupo Tárifario --</option>
+                    <?foreach($this->fares as $fare){?>
+                    <option value="<?=$fare->id?>" label="<?=$fare->name.' - R$ '.$fare->value?>" <?if($fare->id == $this->qcoMain->finance_fare_id) echo "selected='selected'";?>><?=$fare->name.' - R$ '.$fare->value?></option>
+                    <?}?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group"><label for="integration_finance_fare_id" class="col-lg-3 control-label optional">Tarifa de Integração</label>
+                <div class="col-lg-7">
+                  <select name="integration_finance_fare_id" id="integration_finance_fare_id" class="form-control">
+                    <option value="0" label=" Não Possui Integração "> Não Possui Integração </option>
+                    <?foreach($this->fares as $fare){?>
+                    <option value="<?=$fare->id?>" label="<?=$fare->name.' - R$ '.$fare->value?>" <?if($fare->id == $this->qcoMain->integration_finance_fare_id) echo "selected='selected'";?>><?=$fare->name.' - R$ '.$fare->value?></option>
+                    <?}?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-7">
+                  <input type="submit" name="submit" id="submit" value="Salvar" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane" id="hour">
+            <br>
+            <div class="panel-group" id="accordion">
+              
+            </div>
+          </div>
+          <div class="tab-pane" id="route">
+            <br>
+            <div class="panel-group" id="accordion">
+              <?foreach($this->qcoRoute as $qcoRoute){?>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#qcoRoute_<?=$qcoRoute->id?>"><?=$qcoRoute->type_journey_name?></a>
+                    </h4>
+                  </div>
+                  <div class="panel-collapse collapse" id="qcoRoute_<?=$qcoRoute->id?>">
+                    <div class="panel-body">
+                      <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+                        <input type="hidden" name="id" value="1078" id="id">
+                        <div class="form-group">
+                          <label for="name_route" class="col-lg-3 control-label required">Nome</label>
+                          <div class="col-lg-7">
+                          <textarea name="name_route" id="name_route" placeholder="nome do itinerário" class="form-control" cols="5" rows="2"><?=$qcoRoute->name_route?></textarea></div>
+                        </div>
+                        <div class="form-group">
+                          <label for="pc" class="col-lg-3 control-label optional">PC</label>
+                          <div class="col-lg-7">
+                            <select name="pc" id="pc" class="form-control">
+                                <option value="1" <?if($qcoRoute->pc == 1){?>selected="selected"<?}?>>PC 1</option>
+                                <option value="2" <?if($qcoRoute->pc == 2){?>selected="selected"<?}?>>PC 2</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="pc_location" class="col-lg-3 control-label required">Localização do PC</label>
+                          <div class="col-lg-7">
+                            <textarea name="pc_location" id="pc_location" class="form-control" placeholder="endereço do pc" cols="5" rows="2"><?=$qcoRoute->pc_location?></textarea>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="type_journey" class="col-lg-3 control-label optional">Tipo de viagem</label>
+                          <div class="col-lg-7">
+                            <select name="type_journey" id="type_journey" class="form-control">
+                                <option value="0">-- Selecione um tipo de viagem --</option>
+                                <?foreach($this->typeJourney as $typeJourney){?>
+                                <option value="<?=$typeJourney->id?>" <?if($qcoRoute->type_journey == $typeJourney->id){?>selected="selected"<?}?>><?=$typeJourney->name?></option>
+                                <?}?>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="ext_asphalt" class="col-lg-3 control-label required">Extensão em asfalto</label>
+                          <div class="col-lg-7">
+                            <input type="text" name="ext_asphalt" id="ext_asphalt" value="<?=$qcoRoute->ext_asphalt?>" class="form-control" placeholder="extensão em asfalto (em metros)">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="ext_poli" class="col-lg-3 control-label required">Extensão em poliédrico</label>
+                          <div class="col-lg-7">
+                            <input type="text" name="ext_poli" id="ext_poli" value="<?=$qcoRoute->ext_poli?>" class="form-control" placeholder="extensão em poliédrico (em metros)">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="ext_land" class="col-lg-3 control-label required">Extesão de terra</label>
+                          <div class="col-lg-7">
+                            <input type="text" name="ext_land" id="ext_land" value="<?=$qcoRoute->ext_land?>" class="form-control" placeholder="extensão de terra (em metros)">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="route" class="col-lg-3 control-label required">Itinerário</label>
+                          <div class="col-lg-7">
+                            <textarea name="route" id="route" placeholder="itinerários" class="form-control" cols="5" rows="5"><?=$qcoRoute->route?></textarea>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="ped" class="col-lg-3 control-label required">Pontos de parada</label>
+                          <div class="col-lg-7">
+                            <textarea name="ped" id="ped" placeholder="pontos de parada" class="form-control" cols="5" rows="5"><?=$qcoRoute->ped?></textarea>
+                          </div>
+                        </div>
+
+                        <input type="submit" name="submit" id="submit" value="Salvar" buttons="danger info primary success warning inverse link" class="btn col-lg-offset-3 btn-primary">
+
+                        <button name="remove" id="remove" type="button" value="
+                        Remover" buttons="danger info primary success warning inverse link" data-toggle="modal" data-target="#remove_route_<?=$qcoRoute->id?>" class="btn btn-danger">
+                        Remover</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <?}?>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#newRoute">Novo Itinerário</a>
+                  </h4>
+                </div>
+                <div class="panel-collapse collapse" id="newRoute">
+                  <div class="panel-body">
+                    <?$this->routeForm->reset(); echo $this->routeForm;?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="fleet">
+            <br>
+            <div class="panel-group" id="accordion">
+              <?foreach($this->qcoFleet as $qcoFleet){?>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#qcoFleet_<?=$qcoFleet->id?>"><?=$qcoFleet->type_day_name?></a>
+                    </h4>
+                  </div>
+                  <div class="panel-collapse collapse" id="qcoFleet_<?=$qcoFleet->id?>">
+                    <div class="panel-body">
+                      <table border="1" class="table table-bordered">
+                        <th>00</th>
+                        <th>01</th>
+                        <th>02</th>
+                        <th>03</th>
+                        <th>04</th>
+                        <th>05</th>
+                        <th>06</th>
+                        <th>07</th>
+                        <th>08</th>
+                        <th>09</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13</th>
+                        <th>14</th>
+                        <th>15</th>
+                        <th>16</th>
+                        <th>17</th>
+                        <th>18</th>
+                        <th>19</th>
+                        <th>20</th>
+                        <th>21</th>
+                        <th>22</th>
+                        <th>23</th>
+                        <tr>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_00?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_01?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_02?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_03?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_04?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_05?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_06?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_07?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_08?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_09?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_10?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_11?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_12?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_13?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_14?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_15?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_16?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_17?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_18?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_19?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_20?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_21?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_22?>"></td>
+                          <td><input type="text" style="width: 18px;" value="<?=$qcoFleet->hour_23?>"></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              <?}?>
+            </div>
+          </div>
+          <div class="tab-pane" id="file">
+            <br>
+            <div class="row">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="/qco/new-shape" name='formQCO'>
+                <div class="col-lg-6 form-group"><label for="start_date" class="col-lg-2 control-label required">Arquivo shape zipado</label>
+                  <div class="col-lg-4">
+                    <input type="file" name="qco_file" id="qco_file">
+                    <input type="hidden" name="qco_id" id="qco_id" value="<?=$this->qcoId?>">
+                  </div>
+                </div>
+                <div class="form-group"><div class="col-lg-2">
+                  <input type="submit" name="submit" value="Salvar" class="col-lg-offset-5 btn btn-primary"></div>
+                </div>
+              </form>
+              <br>
+                <? if(is_dir(APPLICATION_PATH.'/shape/'.$this->qcoId)){ ?>
+                  <a href="/qco/download-file/id/<?=$this->qcoId?>" class="btn btn-default">
+                    <span class="glyphicon glyphicon-download"></span> Download
+                  </a>
+                  <a href="/qco/remove-file/id/<?=$this->qcoId?>" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Excluir
+                  </a>
+                  <br>
+                <?}else{?>
+              </div>
+              <div class="row">
+              <form enctype="multipart/form-data" class="form-horizontal" method="post" action="/qco/new-qh" name='formQCO'>
+                <div class="col-md-6 form-group"><label for="start_date" class="col-lg-2 control-label required">Arquivo QH</label>
+                  <div class="col-lg-4">
+                    <input type="file" name="qco_file" id="qco_file">
+                    <input type="hidden" name="qco_id" id="qco_id" value="<?=$this->qcoId?>">
+                  </div>
+                </div>
+                <div class="form-group"><div class="col-lg-2">
+                  <input type="submit" name="submit" value="Salvar" class="col-lg-offset-5 btn btn-primary"></div>
+                </div>
+              </form>
+              <?}?>
+            </div>
+          </div>
+          <div class="tab-pane" id="shape">
+            <br>
+            <div class="row">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post" action="/qco/new-shape" name='formQCO'>
+                <div class="col-lg-6 form-group"><label for="start_date" class="col-lg-2 control-label required">Arquivo shape zipado</label>
+                  <div class="col-lg-4">
+                    <input type="file" name="qco_file" id="qco_file">
+                    <input type="hidden" name="qco_id" id="qco_id" value="<?=$this->qcoId?>">
+                  </div>
+                </div>
+                <div class="form-group"><div class="col-lg-2">
+                  <input type="submit" name="submit" value="Salvar" class="col-lg-offset-5 btn btn-primary"></div>
+                </div>
+              </form>
+              <br>
+                <? if(is_dir(APPLICATION_PATH.'/shape/'.$this->qcoId)){ ?>
+                  <a href="/qco/download-file/id/<?=$this->qcoId?>" class="btn btn-default">
+                    <span class="glyphicon glyphicon-download"></span> Download
+                  </a>
+                  <a href="/qco/remove-file/id/<?=$this->qcoId?>" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Excluir
+                  </a>
+                  <br>
+                <?}else{?>
+              </div>
+              <div class="row">
+              <form enctype="multipart/form-data" class="form-horizontal" method="post" action="/qco/new-qh" name='formQCO'>
+                <div class="col-md-6 form-group"><label for="start_date" class="col-lg-2 control-label required">Arquivo QH</label>
+                  <div class="col-lg-4">
+                    <input type="file" name="qco_file" id="qco_file">
+                    <input type="hidden" name="qco_id" id="qco_id" value="<?=$this->qcoId?>">
+                  </div>
+                </div>
+                <div class="form-group"><div class="col-lg-2">
+                  <input type="submit" name="submit" value="Salvar" class="col-lg-offset-5 btn btn-primary"></div>
+                </div>
+              </form>
+              <?}?>
+            </div>
+          </div>
+          <div class="tab-pane" id="paralyse">
+            <br>
+            <div>
+            <form id="paralysed" enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+              Modais com histórico de paralizações
+            </form>      
+            </div>
+          </div>
+          <div class="tab-pane" id="historic">
+            <br>
+            <label for="name" class="col-lg-3 control-label required">Histórico</label><br>
+              <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+                <div class="panel-group" id="accordion">
+                    <textarea name="historic" id="historic_text" placeholder="histórico" class="form-control" rows="20" cols="70"><?=$this->qcoMain->historic?></textarea>
+                </div><br>
+                <div>
+                  <input type="submit" name="submit" id="submit" value="Salvar" buttons="danger info primary success warning inverse link" class="btn btn-primary">
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?foreach($this->qcoRoute as $qcoRoute){?>
+  <form action="/qco/remove-route" method="post">
+    <div class="modal fade" id="remove_route_<?=$qcoRoute->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Remover Itinerário</h4>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza que deseja excluir o itinerário <b><?=$qcoRoute->name_route?></b>?</p>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="routeId" value="<?=$qcoRoute->id?>">
+            <input type="hidden" name="qcoId" value="<?=$qcoRoute->qco_id?>">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-danger">Excluir</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </form>
+<?}?>

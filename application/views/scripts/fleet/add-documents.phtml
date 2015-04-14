@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+      <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;
+          $vehicle = new Application_Model_Vehicle(); echo $this->vehicleId?>
+        <a <?if($institution !=2) echo"href=\"/fleet\""; else echo"href=\"/fleet/view\"";?> class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <?if($institution == 1 || $this->institution == 3 || $this->institution == 4){ ?>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <?}?>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="#" class="list-group-item active"> Edição</a>
+        <?if($institution == 1){?>
+        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
+        <a href="/fleet/review-transfer" class="list-group-item"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>
+        <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+          <?if($this->institution == 4){?>
+            <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a <?if($institution !=2) echo"href=\"/fleet\""; else echo"href=\"/fleet/view\"";?>>Frota</a></li>
+        <li class="active">Edição</li>
+      </ol>
+      <div class="page-header">
+        <h1>Edição <small>gerencie aqui os documentos do veículo</small></h1>
+        <hr>
+        <div class="panel-group" id="accordion">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#crlv">
+                      CRLV e DPVAT
+                    </a>
+                  </h4>
+                </div>
+                <div id="crlv" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?$document = $vehicle->returnDocument($this->vehicleId,'crlv');
+                    if(!$document){
+                      echo $this->crlvForm?>
+                    <?}
+                    else{?>
+                       <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                      <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Excluir 
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#maintenance">
+                      Termo de Manutenção
+                    </a>
+                  </h4>
+                </div>
+                <div id="maintenance" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?$document = $vehicle->returnDocument($this->vehicleId,'maintenance');
+                    if(!$document){
+                      echo $this->documentsForm?>
+                    <?}else{?>
+                       <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                      <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Excluir
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#comodato">
+                      Termo de Comodato
+                    </a>
+                  </h4>
+                </div>
+                <div id="comodato" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <?if(!$vehicle->returnDocument($this->vehicleId,'comodato')){?>
+                    <?=$this->comodatoForm?>
+                    <?}else{
+                      $document = $vehicle->returnDocument($this->vehicleId,'comodato');?>
+                      <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download"></span> Download
+                      </a>
+                      <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Excluir
+                      </a>
+                    <?}?>
+                  </div>
+                </div>
+              </div>
+            </div>
+     	</div>
+    </div>
+  </div>
+</div>

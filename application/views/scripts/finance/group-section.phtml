@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/finance" class="list-group-item">
+          <h4 class="list-group-item-heading">Grupos de Seções</h4>
+        </a>
+        <a href="/finance/group-section-new" class="list-group-item"><i class="fa fa-pencil"></i> Novo</a>
+        <a href="/finance/group-section" class="list-group-item active"><i class="fa fa-search"></i> Pesquisar</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/finance">Financeiro</a></li>
+        <li class="active">Grupos de Seções</li>
+      </ol> 
+      <hr>
+      <div class="page-header">
+        <h1>Pesquisa <small>Gerencie os grupos de seções</small></h1>
+        <hr>
+          <form class="form-inline" action="/finance/group-section" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="nome do grupo de seções" name="field" value="<?=$this->field?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Número da Seção</th>
+            <th>Nome da Seção</th>
+            <th>Tarifa</th>
+          </thead>
+          <tbody>
+          	<tr>
+          		<td>02</td>
+          		<td>Nordeste</td>
+          		<td>R$2,85</td>
+          	</tr>
+          	<tr>
+          		<td>03</td>
+          		<td>Norte</td>
+          		<td>R$3,20</td>
+          	</tr>
+          	<tr>
+          		<td>05</td>
+          		<td>Centro</td>
+          		<td>R$1,65</td>
+          	</tr>
+          		<td>12</td>
+          		<td>Completa</td>
+          		<td>R$15,30</td>
+          	</tr>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+     </div>
+    </div>
+  </div>

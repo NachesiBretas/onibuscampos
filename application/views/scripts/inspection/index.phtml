@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/inspection" class="list-group-item">
+          <h4 class="list-group-item-heading">Vistoria</h4>
+            <p class="list-group-item-text">Gerencie aqui as vistorias</p>
+        </a>
+        <a href="/fleet/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar veículo</a>
+        <a href="/inspection/view" class="list-group-item"><i class="fa fa-check-square-o"></i> Vistoriar veículo</a>
+        <a href="/inspection/down" class="list-group-item"><i class="fa fa-trash"></i> Baixa de veículo</a>
+        <a href="/inspection/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+      </div>
+    </div>
+    <div class="col-md-9">
+    	<ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li class="active">Vistoria</li>
+      </ol>
+      <div class="jumbotron">
+        <h1>Vistoria</h1>
+        <p class="lead">A vistoria define se o veículo esta apto ou não para executar o transporte de passageiros.</p>
+      </div>
+      <div class="text-center">
+        <img class="img-responsive img-thumbnail" src="/img/vistoria.jpg"><br><br>
+      </div>
+    </div>
+  </div>
+</div>

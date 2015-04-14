@@ -1,0 +1,93 @@
+ 
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+	  	<div class="list-group">
+	  		<a href="/mco" class="list-group-item">
+	  			<h4 class="list-group-item-heading">MCO</h4>
+    			<p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+	  		</a>
+		    <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+	        <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item active"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+	        <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+	        <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+	        <?$mcoData = new Application_Model_DbTable_Mco();
+          $lockDay = $mcoData->fetchRow($mcoData->select()->where('id = ?',$this->mcoId));
+          if($lockDay->lock_day ==1){?>
+           <a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item"><span class="fa fa-bookmark"></span> Perda de Log</a>
+        <?}?>
+		</div>
+	</div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/view">Pesquisa</a></li>
+        <li><a href="/mco/analytics-by-day/id/<?=$this->mcoId?>">Análise</a></li>
+        <li class="active">Ajustes</li>
+      </ol> 
+      <div class="page-header">
+        <h1>MCO<small> dados da bilhetagem eletrônica</small></h1>
+        <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Linha</th>
+            <th>Veículo</th>
+            <th>Roleta anterior</th> 
+            <th>Roleta ajustada</th>
+            <th>Data anterior</th>
+            <th>Data ajustada</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><?=$body->line?></td>
+                  <td><?=$body->vehicle?></td>
+                  <td><?
+                    $mcoData = new Application_Model_DbTable_McoData();
+                    // get mco
+                    $select = $mcoData->select()->setIntegrityCheck(false);
+                    $select ->from(array('m' => 'mco_data'),array('id') )
+                            ->where('m.mco = ?',$this->mcoId)
+                            ->where('m.vehicle_number = ?',$body->vehicle)
+                            ->where('m.start_roulette = ?',$body->roulette)
+                            ->group('m.vehicle_number');
+                    $row = $mcoData->fetchRow($select);
+                    unset($select);
+
+                    // get last id of vehicle
+                    $select = $mcoData->select()->setIntegrityCheck(false);
+                    $select ->from(array('m' => 'mco_data'),array('end_date', 'id', 'mco', 'end_roulette', 'end_date') )
+                            ->where('m.vehicle_number = ?',$body->vehicle)
+                            ->where('m.id < ?',$row->id)
+                            ->where('end_date = (SELECT MAX(end_date)
+                                      FROM mco_data AS mc
+                                      WHERE mc.vehicle_number = '.$body->vehicle.'
+                                        AND mc.id < '.$row->id.')')
+                            ->order('id DESC');
+                    $rowLast = $mcoData->fetchRow($select);
+                    unset($select);
+
+                    if(count($rowLast)){
+                      echo $rowLast->end_roulette;
+                    }else{
+                      echo 'não há dados';
+                    }
+                  ?></td>
+                  <td><?=$body->roulette?></td>
+                  <td><?=Application_Model_General::dateToBr($rowLast->end_date)?></td>
+                  <td><?=Application_Model_General::dateToBr($body->date)?></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrado nenhum veículo na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/mco" class="list-group-item">
+          <h4 class="list-group-item-heading">MCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+        </a>
+         <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+        <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+        <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+        <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+        <a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item active"><span class="fa fa-bookmark"></span> Perda de Log</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/view">Pesquisa</a></li>
+        <li><a href="/mco/analytics-by-day/id/<?=$this->mcoId?>">Análise</a></li>
+        <li class="active">Perda de log</li>
+      </ol> 
+      <div class="page-header">
+        <h1><?=Application_Model_General::dateToBr($this->date)?><small> dados da perda de log</small></h1>
+        <hr>       
+      <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+        <div class="form-group" id="form-type">
+          <label for="type" class="col-lg-3 control-label optional">Tipo</label>
+          <div class="col-lg-7">
+            <select name="type" id="type" class="form-control" required>
+              <option value="0">-- Selecione um tipo de viagem --</option>
+              <option value="1">PD</option>
+              <option value="2">PI</option>
+              <option value="3">RI</option>
+              <option value="4">NT</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" id="form-line">
+          <label for="line" class="col-lg-3 control-label optional">Linha</label>
+          <div class="col-lg-7">
+            <input type="number" name="line" id="line" value="" placeholder="linha" class="form-control" maxlength="4" required>
+            <span id="feedback-success-line" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-line" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-start-roulette">
+          <label for="start_roulette" class="col-lg-3 control-label optional">Roleta inicial</label>
+          <div class="col-lg-7">
+            <input type="number" name="start_roulette" id="start_roulette" value="" placeholder="número da roleta inicial" class="form-control" required>
+            <span id="feedback-success-start-roulette" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-start-roulette" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-mid-roulette">
+          <label for="mid_roulette" class="col-lg-3 control-label optional">Roleta de retorno</label>
+          <div class="col-lg-7">
+            <input type="number" name="mid_roulette" id="mid_roulette" value="" placeholder="número da roleta de retorno" class="form-control">
+            <span id="feedback-success-mid-roulette" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-mid-roulette" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-end-roulette">
+          <label for="end_roulette" class="col-lg-3 control-label optional">Roleta final</label>
+          <div class="col-lg-7">
+            <input type="number" name="end_roulette" id="end_roulette" value="" placeholder="número da roleta final" class="form-control" required>
+            <span id="feedback-success-end-roulette" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-end-roulette" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-start-hour">
+          <label for="start_hour" class="col-lg-3 control-label optional">Hora inicial</label>
+          <div class="col-lg-7">
+            <input type="text" name="start_hour" id="start_hour" value="" placeholder="hora inicial" class="hour form-control" required>
+            <span id="feedback-success-start-hour" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-start-hour" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-mid-hour">
+          <label for="mid_hour" class="col-lg-3 control-label optional">Hora retorno</label>
+          <div class="col-lg-7">
+            <input type="text" name="mid_hour" id="mid_hour" value="" placeholder="hora retorno" class="hour form-control">
+            <span id="feedback-success-mid-hour" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-mid-hour" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-end-hour">
+          <label for="end_hour" class="col-lg-3 control-label optional">Hora final</label>
+          <div class="col-lg-7">
+            <input type="text" name="end_hour" id="end_hour" value="" placeholder="hora final" class="hour form-control"required>
+            <span id="feedback-success-end-hour" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-end-hour" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-start-date">
+          <label for="start_date" class="col-lg-3 control-label optional">Data inicial</label>
+          <div class="col-lg-7">
+            <input type="text" name="start_date" id="start_date" value="" placeholder="data inicial" class="dateMask form-control" required>
+            <span id="feedback-success-start-date" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-start-date" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-mid-date">
+          <label for="mid_date" class="col-lg-3 control-label optional">Data retorno</label>
+          <div class="col-lg-7">
+            <input type="text" name="mid_date" id="mid_date" value="" placeholder="data retorno" class="dateMask form-control">
+            <span id="feedback-success-mid-date" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-mid-date" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-end-date">
+          <label for="end_date" class="col-lg-3 control-label optional">Data final</label>
+          <div class="col-lg-7">
+            <input type="text" name="end_date" id="end_date" value="" placeholder="data final" class="dateMask form-control" required>
+            <span id="feedback-success-end-date" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-end-date" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-7">
+            <input type="submit" name="submit" id="submit" value="Salvar" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary">
+          </div>
+        </div>
+      </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

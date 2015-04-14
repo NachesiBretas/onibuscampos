@@ -1,0 +1,172 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/qco" class="list-group-item">
+          <h4 class="list-group-item-heading">QCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados das QCOs</p>
+        </a>
+        <a href="/qco/new" class="list-group-item"><i class="fa fa-pencil"></i> Novo</a>
+        <a href="/qco/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar</a>
+        <a href="/qco/export" class="list-group-item"><i class="fa fa-share"></i> Exportar</a>
+        <a href="/qco/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/qco/historic" class="list-group-item active"><span class="glyphicon glyphicon-book"></span> Histórico</a>
+        <a href="/qco/calendar" class="list-group-item"><span class="fa fa-calendar"></span> Calendário anual</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/qco">QCO</a></li>
+        <li class="active">Edição</li>
+      </ol> 
+      <div class="page-header">
+        <h1><?=$this->qcoMain->number_communication?> <small><?=$this->qcoMain->name?></small></h1>
+        <hr>
+        <ul class="nav nav-tabs" id="myTab">
+         <li <?if(!$this->result || $this->result == 1){?>class="active"<?}?> ><a href="#data">Principal</a></li>
+            <li <?if($this->result == 2){?>class="active"<?}?> ><a href="#route">Itinerário</a></li>
+            <li <?if($this->result == 3){?>class="active"<?}?> ><a href="#hour">Horários</a></li>
+            <li <?if($this->result == 6){?>class="active"<?}?> ><a href="#fleet">Frota</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane <?if(!$this->result || $this->result == 1){?>active<?}?>" id="data">
+            <hr>
+            <?=$this->mainForm->populate($this->qcoMain->toArray())?>
+          </div>
+          <div class="tab-pane <?if($this->result == 3){?>active<?}?>"  id="hour">
+            <hr>
+            <div class="panel-group" id="accordion">
+
+              <?foreach($this->qcoHour as $hour){?>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#QH_<?=$hour->id?>"><?=$hour->name?></a>
+                  </h4>
+                </div>
+                <div class="panel-collapse collapse" id="QH_<?=$hour->id?>">
+                  <div class="panel-body" id="qhour_<?=$hour->id?>">
+                      <?$qco = new Application_Model_DbTable_QcoHourHistoric();
+                      $qcoRow = $qco->fetchAll($qco->select()->where('qco_historic_id = ?',$hour->qco_historic_id)->where('id_type_day = ?',$hour->id_type_day)->where('pc = ?',$hour->pc)->order('hour'));
+                      foreach($qcoRow as $hours){?>
+                      <div class="row">
+                        <div class="col-xs-1">
+                          &nbsp;
+                        </div>
+                        <div class="col-xs-2">
+                          <input disabled="disabled" type="text" name="hour[]" class="form-control hour" value="<?=$hours->hour?>">
+                        </div>
+                        <div class="col-xs-2">
+                          <select class="form-control" disabled="disabled">
+                            <option value="0"> -- Selecione um tipo de viagem -- </option>
+                            <option value="1" <?if($hours->id_type_journey == 1) echo 'selected="selected"';?>>PD</option>
+                            <option value="2" <?if($hours->id_type_journey == 2) echo 'selected="selected"';?>>RI</option>
+                            <option value="3" <?if($hours->id_type_journey == 3) echo 'selected="selected"';?>>PI</option>
+                            <option value="4" <?if($hours->id_type_journey == 4) echo 'selected="selected"';?>>NOTURNO</option>
+                            <option value="5" <?if($hours->id_type_journey == 5) echo 'selected="selected"';?>>OUTROS</option>
+                            <option value="6" <?if($hours->id_type_journey == 6) echo 'selected="selected"';?>>ALTERNAT.</option>
+                          </select> 
+                        </div>
+                      </div>
+                    <?}?><br>
+                  </div>
+                </div>
+              </div>
+              <?}?>
+            </div>
+          </div>
+          <div class="tab-pane <?if($this->result == 2){?>active<?}?>" id="route">
+            <hr>
+            <div class="panel-group" id="accordion">
+              <?foreach($this->qcoRoute as $qcoRoute){?>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#qcoRoute_<?=$qcoRoute->id?>"><?=$qcoRoute->type_journey_name?></a>
+                    </h4>
+                  </div>
+                  <div class="panel-collapse collapse" id="qcoRoute_<?=$qcoRoute->id?>">
+                    <div class="panel-body">
+                      <?=$this->routeForm->populate($qcoRoute->toArray())?>
+                    </div>
+                  </div>
+                </div>
+              <?}?>
+            </div>
+          </div>
+          <div class="tab-pane <?if($this->result == 6){?>active<?}?>" id="fleet">
+            <hr>
+            <div class="panel-group" id="accordion">
+              <?foreach($this->qcoFleet as $qcoFleet){?>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#qcoFleet_<?=$qcoFleet->id?>"><?=$qcoFleet->type_day_name?></a>
+                    </h4>
+                  </div>
+                  <div class="panel-collapse collapse" id="qcoFleet_<?=$qcoFleet->id?>">
+                    <div class="panel-body">
+                      <table border="1" class="table table-bordered">
+                        <th>00</th>
+                        <th>01</th>
+                        <th>02</th>
+                        <th>03</th>
+                        <th>04</th>
+                        <th>05</th>
+                        <th>06</th>
+                        <th>07</th>
+                        <th>08</th>
+                        <th>09</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13</th>
+                        <th>14</th>
+                        <th>15</th>
+                        <th>16</th>
+                        <th>17</th>
+                        <th>18</th>
+                        <th>19</th>
+                        <th>20</th>
+                        <th>21</th>
+                        <th>22</th>
+                        <th>23</th>
+                        <tr>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_00?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_01?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_02?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_03?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_04?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_05?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_06?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_07?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_08?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_09?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_10?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_11?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_12?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_13?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_14?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_15?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_16?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_17?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_18?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_19?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_20?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_21?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_22?>"></td>
+                          <td><input disabled="disabled" type="text" style="width: 18px;" value="<?=$qcoFleet->hour_23?>"></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              <?}?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

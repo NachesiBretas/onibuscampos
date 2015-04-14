@@ -1,0 +1,37 @@
+<div class="pagination-centered">	
+	<ul class="pagination">
+		<li>
+			<?php if(isset($this->previous)){ ?>
+				<a href="<?php echo $this->url(array_merge(array('field' => $this->field),array('option' => $this->option),array('page' => $this->first)));?>">Inicio</a>
+			<?php } ?>
+		</li>
+
+		<li>
+			<?php if(isset($this->previous)){?>
+				<a href="<?php echo $this->url(array_merge(array('field' => $this->field),array('option' => $this->option),array('page' => $this->previous)));?>">&lt; Anterior</a>
+			<?php } ?>
+		</li>
+
+		<li>
+			<?php foreach($this->pagesInRange as $page){ ?>
+				<?php if($page != $this->current) { ?>
+					<a href="<?php echo $this->url(array_merge(array('field' => $this->field),array('option' => $this->option),array('page' => $page))); ?>"><?php echo $page; ?></a>
+				<?php }else{ ?>
+					<a href="#"><strong><?php echo $page; ?></strong></a>
+				<?php } ?>
+			<?php } ?>
+		</li>
+
+		<li>
+			<?php if(isset($this->next)){ ?>
+				<a href="<?php echo $this->url(array_merge(array('field' => $this->field),array('option' => $this->option),array('page' => $this->next)));?>">Próximo &gt;</a>
+			<?php } ?>
+		</li>
+
+		<li>
+			<?php if(isset($this->next)){ ?>
+				<a href="<?php echo $this->url(array_merge(array('field' => $this->field),array('option' => $this->option),array('page' => $this->last)));?>">Final <?php //echo $this->last; ?></a>
+			<?php } ?>
+		</li>
+	</ul>
+</div>

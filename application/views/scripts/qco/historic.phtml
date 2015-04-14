@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/qco" class="list-group-item">
+          <h4 class="list-group-item-heading">QCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados das QCOs</p>
+        </a>
+        <a href="/qco/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/qco/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <a href="/qco/export" class="list-group-item"><i class="fa fa-share"></i> Exportar</a>
+        <a href="/qco/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/qco/historic" class="list-group-item active"><span class="glyphicon glyphicon-book"></span> Histórico</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/qco">QCO</a></li>
+        <li class="active">Pesquisa</li>
+      </ol>
+      <div class="page-header">
+        <h1>Histórico <small>visualize aqui os dados do histórico de QCOs</small></h1>
+        <hr>
+          <form class="form-inline" action="/qco/historic" method="get" role="form">
+            <div class="form-group col-md-5">
+              <input type="text" class="form-control" placeholder="número da linha" name="field" value="<?=$this->field?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+          </form>
+          <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Número da linha</th>
+            <th>Nome</th>
+            <th>Data de Gravação no Histórico</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><a href="/qco/complete-historic/id/<?=$body->id?>"><?=$body->number_communication?></a></td>
+                  <td><?=$body->name?></td>
+                  <td><?=Application_Model_General::dateTimeToBr($body->insert_date)?></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhuma linha na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div><!--/span-->
+  </div>
+</div>

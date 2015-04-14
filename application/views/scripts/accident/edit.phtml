@@ -1,0 +1,56 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="list-group">
+        <a href="/accident" class="list-group-item">
+          <h4 class="list-group-item-heading">Acidentes</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos Acidentes</p>
+        </a>
+        <a href="/accident/new" class="list-group-item"><i class="glyphicon glyphicon-arrow-up"></i> Upload do Arquivo REDS</a>
+        <a href="/accident/view" class="list-group-item"><i class="glyphicon glyphicon-search"></i> Pesquisar</a>
+        <a href="#" class="list-group-item active"><span></span> Edição</a>
+        <a href="/accident/report" class="list-group-item"><span class="fa fa-list-alt"></span> Relatórios</a>
+        <a href="/accident/vis" class="list-group-item"><span class="fa fa-bar-chart-o"></span> Visualização</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/accident">Acidentes</a></li>
+        <li class="active">Edição</li>
+      </ol>
+      <div class="page-header">
+        <h1>Acidentes <small>visualize os dados dos acidentes</small></h1>
+      	<hr>
+      	<table class="table table-hover table-bordered">
+          <thead>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Placa</th>
+            <th>Cidade</th>
+            <th>Bairro</th>
+            <th>Local</th>
+          </thead>
+          <tbody>
+            <?if(is_object($this->list) && !isset($this->list->name)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><?=$body->cause?></td>
+                  <td><?=$body->accident_time?></td>
+                  <td><?=$body->plate?></td>
+                  <td><?=$body->city?></td>
+                  <td><?=$body->neighborhood?></td>
+                  <td><?=$body->area_name?></td>
+                </tr>
+            <?} } else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhum acidente na pesquisa.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+      </div>
+    </div>
+  </div>
+</div>

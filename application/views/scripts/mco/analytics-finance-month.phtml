@@ -1,0 +1,143 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/mco" class="list-group-item">
+          <h4 class="list-group-item-heading">MCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+        </a>
+        <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-euro"></span> Financeiro</a>
+        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-cog"></span> Operacionais</a>
+        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-flash"></span> Erros</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco">MCO</a></li>
+        <li class="active">Financeiro</li>
+      </ol>
+      <div class="page-header">
+        <h1>Dados Financeiros <small>&nbsp;</small></h1>
+        <hr>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Tipo de Receita</th>
+            <th>Valor</th>
+          </thead>
+          <tbody>
+            <?
+            	$cash = 0;
+            	$off = explode('-',$this->month);
+            	$mcoCash = new Application_Model_DbTable_McoCash();
+							$select = $mcoCash->select()->setIntegrityCheck(false);
+							$select ->from(array('mc' => 'mco_cash'),array('total' => 'SUM((amount*value))','line','passengers' => 'SUM(amount)'))
+											->joinInner(array('m' => 'mco'),'m.id=mc.mco_id')
+											->where('MONTH(m.date_operation) = ?', $off[0])
+											->where('YEAR(m.date_operation) = ?', $off[1])
+											->group('mc.line');
+							// echo $select;exit;
+							$aux = $mcoCash->fetchAll($select);
+							foreach($aux as $po)
+							{
+	            	$mcoData = new Application_Model_DbTable_McoData();
+								$select = $mcoData->select()->setIntegrityCheck(false);
+								$select ->from(array('mc' => 'mco_data'),array('end_roulette', 'start_roulette', 'line'))
+												->joinInner(array('m' => 'mco'),'m.id=mc.mco')
+												->where('MONTH(m.date_operation) = ?', $off[0])
+												->where('YEAR(m.date_operation) = ?', $off[1])
+												->where('mc.line = ?',$po->line);
+
+								$aux1 = $mcoData->fetchAll($select);
+
+								$totalRoulette = 0;
+								foreach($aux1 as $roulette)
+								{
+										$partialRoulette = $roulette->end_roulette - $roulette->start_roulette;
+										if($partialRoulette < 0)
+										{
+											$totalRoulette = (100000 - $roulette->start_roulette) + $roulette->end_roulette + $totalRoulette;
+										}
+										else
+										{
+											$totalRoulette = $totalRoulette + $partialRoulette;
+										}
+								}
+
+								$select = $mcoCash->select()->setIntegrityCheck(false);
+								$select ->from(array('mc' => 'mco_cash'),array('value' => 'MAX(mc.value)'))
+												->joinInner(array('m' => 'mco'),'m.id=mc.mco_id')
+												->where('MONTH(m.date_operation) = ?', $off[0])
+												->where('YEAR(m.date_operation) = ?', $off[1])
+												->where('mc.line = ?',$po->line)
+												->where('mc.type = "VTE"');
+
+									$unitValue = $mcoCash->fetchRow($select);
+
+								// echo $po->line.' - '.$po->total.' - '.$po->passengers.' - '.$totalRoulette.' - '.$unitValue->value."<br>";
+								$cash = $cash + ( ($totalRoulette - $po->passengers)*$unitValue->value );
+								unset($unitValue);
+							}
+
+
+
+            	$imo = (0);
+            	$iom = (0);
+            	$ioo = (0);
+            	$vte = (0);
+
+            	foreach($this->finance as $finance)
+            	{
+	            	switch ($finance->type) 
+	            	{
+
+	            		case 'IMO':
+	            			$imo = ($imo) + ( ($finance->value) * ($finance->amount) );
+	            			break;
+
+	            		case 'IOM':
+	            			$iom = ($iom) + ( ($finance->value) * ($finance->amount) );
+	            			break;
+
+	            		case 'IOO':
+	            			$ioo = ($ioo) + ( ($finance->value) * ($finance->amount) );
+	            			break;
+
+	            		case 'VTE':
+	            			$vte = ($vte) + ( ($finance->value) * ($finance->amount) );
+	            			break;
+	            	}
+
+            	?>
+          	<?}?>
+              <tr>
+                <td>IMO</td>
+                <td>R$ <?=number_format($imo,2,',','.')?></td>
+              </tr>
+              <tr>
+                <td>IOM</td>
+                <td>R$ <?=number_format($iom,2,',','.')?></td>
+              </tr>
+              <tr>
+                <td>IOO</td>
+                <td>R$ <?=number_format($ioo,2,',','.')?></td>
+              </tr>
+              <tr>
+                <td>VTE</td>
+                <td>R$ <?=number_format($vte,2,',','.')?></td>
+              </tr>
+              <tr>
+                <td>Dinheiro</td>
+                <td>R$ <?=number_format($cash,2,',','.')?></td>
+              </tr>
+              <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>R$ <? $total = $imo + $iom + $ioo + $vte + $cash;
+                		echo number_format($total,2,',','.')?></strong></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!--/span-->
+  </div>
+</div>

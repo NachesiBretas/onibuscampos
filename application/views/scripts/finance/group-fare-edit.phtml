@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/finance" class="list-group-item">
+          <h4 class="list-group-item-heading">Grupos Tarifários</h4>
+        </a>
+        <a href="/finance/group-fare-new" class="list-group-item"><i class="fa fa-pencil"></i> Novo</a>
+        <a href="/finance/group-fare-new" class="list-group-item active"> Edição</a>
+        <a href="/finance/group-fare" class="list-group-item"><i class="fa fa-search"></i> Pesquisar</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/finance">Financeiro</a></li>
+        <li><a href="/finance/group-fare">Grupos Tarifários</a></li>
+        <li class="active">Edição</li>
+      </ol> 
+      <hr>
+      <div class="page-header">
+        <h1><?=$this->groupFare->name?> <small>R$ <?=$this->groupFare->value?></small></h1>
+        <hr>
+        <?=$this->groupFareForm?>
+        <div class='panel-group' id='accordion'>
+        	<?foreach($this->historicGroupFare as $historicGroupFare){?>
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+        			<h4 class="panel-title">
+        				<a data-toggle="collapse" data-parent="#accordion" href="#historic_<?=$historicGroupFare->id?>">
+        					<?=Application_Model_General::dateToBr($historicGroupFare->start_date)?> - <?=Application_Model_General::dateToBr($historicGroupFare->end_date)?>
+        				</a>
+        			</h4>
+        		</div>
+        		<div id="historic_<?=$historicGroupFare->id?>" class="panel-collapse collapse">
+        			<div class="panel-body">
+        				<p>O grupo <b><?=$historicGroupFare->name?></b> foi alterado para o valor de <b>R$ <?=number_format($historicGroupFare->value,2,',','')?></b> do período de <b><?=Application_Model_General::dateToBr($historicGroupFare->start_date)?></b> a <b><?=Application_Model_General::dateToBr($historicGroupFare->end_date)?></b></p>
+        			</div>
+        		</div>
+        	</div>
+        	<?}?>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

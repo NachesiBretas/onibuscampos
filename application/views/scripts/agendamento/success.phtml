@@ -1,0 +1,11 @@
+<div class="jumbotron">
+	
+	<h1>Vistoria agendada!</h1><hr>
+	<p>Sua vistoria foi agendada com sucesso. Os dados de agendamento são:<br><br>
+	<b>Veículo:</b> <?=$this->vehicle->plate?><br>
+	<b>Data:</b> <?=Application_Model_General::DateToBr($this->schedule->date)?><br>
+	<b>Hora:</b> <?=$this->schedule->str_hour?><br>
+
+	<br><br>Qualquer dúvida, ligue para o DER-MG (31) 3379-1100.</p><hr>
+	<p><a href="/fleet/view" class="btn btn-success btn-lg">Ok!</a></p>
+</div>

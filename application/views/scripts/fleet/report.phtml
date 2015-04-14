@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="list-group">
+        <a href="/fleet" class="list-group-item">
+          <h4 class="list-group-item-heading">Frota</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
+        </a>
+        <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
+        <?$authNamespace = new Zend_Session_Namespace('userInformation');
+          $institution = $authNamespace->institution;
+          if($institution == 1){?>
+        <a href="/fleet/report" class="list-group-item active"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+        <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
+        <a href="/fleet/review-edited" class="list-group-item"><span class="glyphicon glyphicon-edit"></span> Cadastros editados <?if($this->vehiclesEdited){?><span class="badge"><?=$this->vehiclesEdited?></span><?}?></a>
+        <a href="/fleet/review-transfer" class="list-group-item"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>
+        <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
+          <?}?>
+          <?if($this->institution == 3){?>
+        <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
+          <?}?>
+          <?if($this->institution == 4){?>
+            <a href="/fleet/report" class="list-group-item active"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
+          <?}?>
+      </div>
+    </div>
+    <div class="span9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/fleet">Frota</a></li>
+        <li class="active">Relatórios</li>
+      </ol>
+      <div class="row-fluid">
+        <div class="span6 well">
+          <h2>Relação de Veículos Ativos</h2>
+          <p>Lista completa dos veículos ativos do sistema.</p>
+          <p><a href="/fleet/report-active" class="btn btn-default">emitir relatório</a></p>
+        </div>
+        <div class="span6 well">
+          <h2>Relação de Todos Veículos</h2>
+          <p>Lista completa dos veículos do sistema.</p>
+          <p><a href="/fleet/report-all" class="btn btn-default">emitir relatório</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

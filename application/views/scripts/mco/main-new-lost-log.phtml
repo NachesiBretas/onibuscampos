@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/mco" class="list-group-item">
+          <h4 class="list-group-item-heading">MCO</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos MCO's</p>
+        </a>
+         <a href="/mco/analytics-result/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-inbox"></span> Dados Operacionais</a>
+        <a href="/mco/analytics-adjustments/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-transfer"></span> Ajustes de Catraca</a>
+        <a href="/mco/analytics-diff/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-minus-sign"></span> Diferenças de Catraca</a>
+        <a href="/mco/analytics-finance/id/<?=$this->mcoId?>" class="list-group-item"><span class="glyphicon glyphicon-log-in"></span> Receita</a>
+        <a href="/mco/main-new-lost-log/id/<?=$this->mcoId?>" class="list-group-item active"><span class="fa fa-bookmark"></span> Perda de Log</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li><a href="/mco/">MCO</a></li>
+        <li><a href="/mco/view">Pesquisa</a></li>
+        <li><a href="/mco/analytics-by-day/id/<?=$this->mcoId?>">Análise</a></li>
+        <li class="active">Perda de log</li>
+      </ol> 
+      <div class="page-header">
+        <h1><?=Application_Model_General::dateToBr($this->date)?><small> dados da perda de log</small></h1>
+        <hr>       
+      <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+        <div class="form-group" id="form-vehicle-number">
+          <label for="vehicle_number" class="col-lg-3 control-label optional">Nº do veículo</label>
+          <div class="col-lg-7">
+            <input type="number" name="vehicle_number" id="vehicle_number" value="" placeholder="Nº do veículo" class="form-control" required>
+            <span id="feedback-success-vehicle-number" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-vehicle-number" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group" id="form-craft">
+          <label for="craft" class="col-lg-3 control-label optional">Nº do ofício</label>
+          <div class="col-lg-7">
+            <input type="text" name="craft" id="craft" value="" placeholder="Nº do ofício" class="form-control" required>
+            <span id="feedback-success-craft" class="glyphicon glyphicon-ok form-control-feedback hide"></span>
+            <span id="feedback-error-craft" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-7">
+            <input type="submit" name="submit" id="submit" value="Próximo" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary">
+          </div>
+        </div>
+      </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

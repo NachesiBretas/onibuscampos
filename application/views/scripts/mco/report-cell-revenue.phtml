@@ -1,0 +1,111 @@
+<div class="container"><br>
+  <table style="text-align: center; height: 60%;width: 80%; margin: 0 auto" class="table table-bordered" border='2'>
+      <tr>
+        <th style="border: 2px solid white; border-color: #000; height: 185px ;width: 200px"><img alt="" src="/img/brasao2.jpg" height="100%" width="100%" align="center"></th>
+        <th style="border: 2px solid white; border-color: #000; text-align: center; line-height: 55px"><font size="3" face="verdana">Superintendência de Transporte Metropolitano</font><br>
+        <img width="100%" src="/img/barra.jpg"><br><font face="verdana" size="3">Relatório de Composição da Receita por Célula</font></th>
+      </tr><br>
+    </table><br>
+    <h3 align="center"><?=$this->list5[0]?> até <?=$this->list5[1]?></h3>
+    <h3 align="center">[<?=$this->list5[3]?>] <?=$this->list5[2]?></h3>
+	<div class="row">
+	</div>
+	<div class="row">
+		<div class="col-sm-12"><br><br>
+			<table class="table table-bordered table-hover" border="1">
+				<thead>
+					<tr>
+						<th>Tarifa</th>
+						<th>Quantidade de Passageiros</th>
+						<th>Porcentagem</th>
+						<th>Receita Bruta</th>
+						<th>Porcentagem</th>
+						<th>Repasse CBTU</th>
+						<th>Porcentagem</th>
+						<th>Receita líquida</th>
+						<th>Porcentagem</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?if (count($this->list3)) 
+					{
+						foreach ($this->list3 as $value)
+						 {?>
+							<tr>
+								<td>R$ <?=$value->value?></td>
+								<td><?=$value->amount?></td>
+								<td><?=str_replace(".", ",",$value->amount_percent)?> %</td>
+								<td>R$ <?=number_format($value->full_composition, 3, ",", ".")?></td>
+								<td><?=str_replace(".", ",",$value->full_composition_percentage)?> %</td>
+								<td>R$ <?=number_format($value->cbtu_transfer, 3, ",", ".")?></td>
+								<td><?=str_replace(".", ",",$value->cbtu_transfer_percentage)?> %</td>
+								<td>R$ <?=number_format($value->liquid_composition, 3, ",", ".")?></td>
+								<td><?=str_replace(".", ",",$value->liquid_composition_percentage)?> %</td>
+							</tr>
+						<?}?>
+							<tr>
+								<td><strong>Total</strong></td>
+								<td><strong><?=$this->list4->total_passenger?></strong></td>
+								<td><strong>100%</strong></td>
+								<td><strong>R$ <?=number_format($this->list->total_revenue, 3, ",", ".")?></strong></td>
+								<td><strong>100%</strong></td>
+								<td><strong>R$ <?=number_format($this->list->total_cbtu_transfer, 3, ",", ".")?></strong></td>
+								<td><strong>100%</strong></td>
+								<td><strong>R$ <?=number_format($this->list->total_liquid_revenue, 3, ",", ".")?></strong></td>
+								<td><strong>100%</strong></td>
+							</tr>
+				<?}?>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<div class="row">
+		<div class="col-sm-12">
+			<table class="table table-bordered table-hover" border="1">
+				<thead>
+					<tr>
+						<th>Tipo de Pagamento</th>
+						<th>Quantidade de Passageiros</th>
+						<th>Porcentagem</th>
+						<th>Receita Bruta</th>
+						<th>Porcentagem</th>
+						<th>Repasse CBTU</th>
+						<th>Porcentagem</th>
+						<th>Receita líquida</th>
+						<th>Porcentagem</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?if (count($this->list2)) 
+					{foreach ($this->list2 as $type)
+					{?>
+					<tr>
+						<td><?=$type->type?></td>
+						<td><?=$type->amount?></td>
+						<td><?=str_replace(".", ",",$type->amount_percent)?> %</td>
+						<td>R$ <?=number_format($type->full_composition, 3, ",", ".")?></td>
+						<td><?=str_replace(".", ",",$type->full_composition_percentage)?> %</td>
+						<td>R$ <?=number_format($type->cbtu_transfer, 3, ",", ".")?></td>
+						<td><?=str_replace(".", ",",$type->cbtu_transfer_percentage)?> %</td>
+						<td>R$ <?=number_format($type->liquid_composition, 3, ",", ".")?></td>
+						<td><?=str_replace(".", ",",$type->liquid_composition_percentage)?> %</td>
+					</tr>
+					<?}?>
+							<tr>
+								<td><strong>Total</strong></td>
+								<td><strong><?=$this->list4->total_passenger?></strong></td>
+								<td><strong>100%</strong></td>
+								<td><strong>R$ <?=number_format($this->list->total_revenue, 3, ",", ".")?></strong></td>
+								<td><strong>100%</strong></td>
+								<td><strong>R$ <?=number_format($this->list->total_cbtu_transfer, 3, ",", ".")?></strong></td>
+								<td><strong>100%</strong></td>
+								<td><strong>R$ <?=number_format($this->list->total_liquid_revenue, 3, ",", ".")?></strong></td>
+								<td><strong>100%</strong></td>
+							</tr>
+				<?}?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+						

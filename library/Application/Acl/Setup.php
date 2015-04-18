@@ -96,10 +96,10 @@ class Application_Acl_Setup
     protected function _setupPrivileges()
     {
         $this->_acl	->allow( 'guest', 'index', 'index' )
-        			      ->allow( 'guest', 'auth', array('index', 'login') );
+        			->allow( 'guest', 'auth', array('index', 'login') );
 
         $this->_acl	->allow( 'user', 'index', 'index' )
-			              ->allow( 'user', 'auth', array('index', 'login') )
+			        ->allow( 'user', 'auth', array('index', 'login') )
                     ->allow( 'user', 'doesntallow', array('index') )
                     ->allow( 'user', 'api', array(  'consortium-companies', 'return-user', 'return-accidents', 'return-accidents-city',
                                                     'consortium-companies-name') )

@@ -11,6 +11,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 * @access protected
 	 * @return null
 	 */
+	protected function _initView()
+    {
+        // Initialize view
+        $view = new Zend_View();
+        $view->doctype('XHTML1_STRICT');
+        $view->headTitle('My First Zend Framework Application');
+ 
+        // Add it to the ViewRenderer
+        $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper(
+            'ViewRenderer'
+        );
+        $viewRenderer->setView($view);
+ 
+        // Return it, so that it can be stored by the bootstrap
+        return $view;
+    }
+    
 	protected function _initConnection()
 	{
 		$options    = $this->getOption('resources');

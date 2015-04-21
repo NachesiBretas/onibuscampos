@@ -25,8 +25,7 @@ class Application_Form_Vehicle extends Twitter_Bootstrap_Form_Horizontal
                                         1 => 'COMERCIAL',
                                         2 => 'COMERCIAL EXECUTIVO',
                                         3 => 'CONVENCIONAL',
-                                        4 => 'CONVENCIONAL EXECUTIVO',
-                                        5 => 'MOVE METROPOLITANO'
+                                        4 => 'CONVENCIONAL EXECUTIVO'
       																)
   		) );
 

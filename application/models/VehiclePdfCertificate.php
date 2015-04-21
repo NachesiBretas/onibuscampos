@@ -568,7 +568,7 @@ class Application_Model_VehiclePdfCertificate
                         ->drawLine(233, $relative + 546, 370, $relative + 546);
         // Descrição
         $this->page     ->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_TIMES),10)
-                        ->drawText($userRow->name . ' - SETOP', 55, $relative + 515, 'UTF-8');
+                        ->drawText($userRow->name . ' - IMTT', 55, $relative + 515, 'UTF-8');
 
         // Descrição
         $this->page     ->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_TIMES),8)

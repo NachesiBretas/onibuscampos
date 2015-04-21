@@ -54,7 +54,7 @@ class Application_Form_User extends Twitter_Bootstrap_Form_Horizontal
           'class'             => 'form-control',
           'MultiOptions'      => array(
                       0 => '-- Selecione uma organização --',
-                      1 => 'SETOP',
+                      1 => 'IMTT',
                       2 => 'DER-MG',
                       3 => 'CONSÓRCIO',
                       4 => 'SINTRAM'

@@ -41,11 +41,11 @@
                 	<td>
                 		<div class="progress">
                       <?if($body->status == 9){?>
-                        <div class="progress-bar progress-bar-info help" title="Aguardando transferência SETOP" style="width: 50%">
+                        <div class="progress-bar progress-bar-info help" title="Aguardando transferência IMTT" style="width: 50%">
                         <span class="sr-only">50% Completo</span>
                       </div>
                       <?}elseif($body->status == 8){?>
-                      <div class="progress-bar progress-bar-danger help" title="Rejeitado - SETOP" style="width: 10%">
+                      <div class="progress-bar progress-bar-danger help" title="Rejeitado - IMTT" style="width: 10%">
                         <span class="sr-only">1% Completo</span>
                       </div>
                       <?}else{?>
@@ -58,7 +58,7 @@
                 			</div>
                       <?}?>
                       <?if($body->status >= 3){?>
-                      <div class="progress-bar progress-bar-success help" title="<?if($body->status == 3) echo 'Aguardando aprovação  - SETOP'; elseif($body->status >= 4) echo 'Aprovado - SETOP';?> " style="width: <?if($body->status >= 2) echo '25%'?>">
+                      <div class="progress-bar progress-bar-success help" title="<?if($body->status == 3) echo 'Aguardando aprovação  - IMTT'; elseif($body->status >= 4) echo 'Aprovado - IMTT';?> " style="width: <?if($body->status >= 2) echo '25%'?>">
                         <span class="sr-only">75% Completo</span>
                       </div>
                       <?}?>

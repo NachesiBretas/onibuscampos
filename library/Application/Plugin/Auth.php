@@ -55,12 +55,12 @@ class Application_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         {
             if(!isset($_SESSION['userInformation']))
             {
-                header('Location: auth/login');
+                header('Location: /auth/login');
                 exit;
             }
             else
             {
-                header("Location: auth/login");
+                header("Location: /auth/login");
                 return;
             }
         }

@@ -10,7 +10,6 @@
         <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
         <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
         <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
-        <a href="/fleet/review-edited" class="list-group-item active"><span class="glyphicon glyphicon-edit"></span> Cadastros editados <?if($this->vehiclesEdited){?><span class="badge"><?=$this->vehiclesEdited?></span><?}?></a>
         <a href="/fleet/review-transfer" class="list-group-item"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>
         <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
       </div>

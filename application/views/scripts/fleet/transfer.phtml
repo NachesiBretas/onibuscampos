@@ -12,7 +12,6 @@
         <?$authNamespace = new Zend_Session_Namespace('userInformation');
           $institution = $authNamespace->institution;
           if($institution == 1){?>
-        <a href="/fleet/report" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Relatórios</a>
         <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados</a>
           <?}?>
           <?if($this->institution == 3){?>

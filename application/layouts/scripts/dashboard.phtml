@@ -2,7 +2,7 @@
 <html lang="pt_BR">
   <head>
     <meta charset="utf-8">
-    <title>SIMETRO</title>
+    <title>SGTM</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -20,10 +20,10 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/datepicker.css" rel="stylesheet">
     <link href="/css/general.css" rel="stylesheet">
-    <?if($this->treatment){?>
+    <?php if($this->treatment){?>
     <link href="/css/fullcalendar.css" rel="stylesheet">
     <link href="/css/fullcalendar.print.css" rel="stylesheet">
-    <?}?>
+    <?php }?>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
   </head>
   <body>
 
-    <? 
+    <?php 
       $authNamespace = new Zend_Session_Namespace('userInformation');
       $institution = $authNamespace->institution;
       $userId = $authNamespace->user_id; 
@@ -47,11 +47,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/dashboard">SIMETRO</a>
+          <a class="navbar-brand" href="/dashboard">SGTM</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <?if($institution == 1){?>
+            <?php if($institution == 1){?>
             <li><a href="/fleet/view">Frota</a></li>
             <li class="dropdown">
               <a href="#qco" class="dropdown-toggle" data-toggle="dropdown">QCO <b class="caret"></b></a>
@@ -83,14 +83,14 @@
             </li>
 
 
-            <?}?>
-            <?if($institution == 2){?>
+            <?php }
+            if($institution == 2){?>
             <li><a href="/inspection">Vistoria</a></li>
             <li><a href="/scheduling">Agendamento Online</a></li>
-            <?}?>
-            <?if($institution == 3 || $institution == 4){?>
+            <?php }?>
+            <?php if($institution == 3 || $institution == 4){?>
             <li><a href="/fleet">Frota</a></li>
-            <?}?>
+            <?php }?>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li>
@@ -102,9 +102,9 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="/account"><i class="fa fa-wrench"></i> Minha conta</a></li>
-                <?if($institution == 1){?>
+                <?php if($institution == 1){?>
                 <li> <a href="/administration"><i class="fa fa-eye"></i> Administração</a></li>
-                <?}?>
+                <?php }?>
                 <li class="divider"></li>
                 <li> <a href="/auth/logout"><i class="fa fa-sign-out"></i> Sair</a></li>
               </ul>
@@ -116,7 +116,7 @@
 
     <div class="container">
 
-      <?
+      <?php
         switch ($this->save) {
           case 'success':
             $title = 'Ok!';
@@ -161,22 +161,22 @@
             break;
         }
       ?>
-      <?if($this->save){?>
+      <?php if($this->save){?>
       <div class="row">
         <div class="col-md-12 text-center alert alert-<?=$class?> fade in">
           <button type="button" class="close" data-dismiss="alert">×</button>
           <h3><?=$title?></h3> <?=$message?>
         </div>
       </div>
-      <?}?>
-      <?if($this->password_error){?>
+      <?php }
+      if($this->password_error){?>
       <div class="row">
         <div class="col-md-12 text-center alert alert-danger fade in">
           <button type="button" class="close" data-dismiss="alert">×</button>
           <strong>Ops!</strong> Senha antiga não confere ou senhas não conferem.
         </div>
       </div>
-      <?}?>
+      <?php }?>
 
       <?php echo $this->layout()->content; ?>
 
@@ -192,16 +192,16 @@
     <script src="/js/bootstrap3-typeahead.min.js"></script>
     <script src="/js/jquery.typing-0.2.0.min.js"></script>
     <script src="/js/general_2.js"></script>
-    <?if($this->accident){?>
+    <?php if($this->accident){?>
     <script src="/js/accident.js"></script>
-    <?}?>
-    <?if($this->treatment){?>
+    <?php }
+    if($this->treatment){?>
     <script src="/js/fullcalendar.js"></script>
     <script src="/js/gcal.js"></script>
     <script src="/js/jquery.livequery.js"></script>
     <script src="/js/scheduling_v3.js"></script>
-    <?}else{?>
+    <?php }else{?>
     <script src="/js/schedule.js"></script>
-    <?}?>
+    <?php }?>
 
 </html>

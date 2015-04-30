@@ -8,7 +8,7 @@ class InspectionController extends Zend_Controller_Action
       $this->_helper->layout()->setLayout('dashboard');
       $authNamespace = new Zend_Session_Namespace('userInformation');
       $institution = $authNamespace->institution;
-      if($institution != 2)
+      if($institution != 1)
       {
         $this->_redirect('/doesntallow');
       }

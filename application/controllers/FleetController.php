@@ -166,6 +166,20 @@ class FleetController extends Zend_Controller_Action
               $this->view->save = 'error';
             }
           }
+
+          $this->view->documentsForm = new Application_Form_VehicleDocuments();
+          $this->view->inspectionForm = new Application_Form_VehicleInspection();
+          $this->view->crlvForm = new Application_Form_VehicleDocumentCRLV();
+          $this->view->comodatoForm = new Application_Form_VehicleDocumentComodato();
+          $this->view->completed = $vehicle->checkMinimumRequirements($vehicleId);
+          if($this->view->institution == 3 && $this->view->completed && $vehicleStatusRow->status != 4 && $vehicleStatusRow->status != 2)
+          {
+            $this->view->result = 6;
+          }
+
+        }
+        else if($this->view->save = 'waiting'){
+            $this->view->save = 'waiting';
         }
 
         $this->view->result = $vehicle->returnTab($vehicleId);
@@ -195,15 +209,6 @@ class FleetController extends Zend_Controller_Action
         $this->view->consortiums = $consortium->fetchAll();
         $this->view->consortiumCompanies = new Application_Model_DbTable_ConsortiumCompanies();
 
-        $this->view->documentsForm = new Application_Form_VehicleDocuments();
-        $this->view->inspectionForm = new Application_Form_VehicleInspection();
-        $this->view->crlvForm = new Application_Form_VehicleDocumentCRLV();
-        $this->view->comodatoForm = new Application_Form_VehicleDocumentComodato();
-        $this->view->completed = $vehicle->checkMinimumRequirements($vehicleId);
-        if($this->view->institution == 3 && $this->view->completed && $vehicleStatusRow->status != 4 && $vehicleStatusRow->status != 2)
-        {
-          $this->view->result = 6;
-        }
       }catch(Zend_Exception $e){
         $this->view->save = 'error';
       }

@@ -6,7 +6,9 @@
           <h4 class="list-group-item-heading">Frota</h4>
             <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
         </a>
+        <?if($this->institution == 3){?>
         <a href="/fleet/new" class="list-group-item active"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <?}?>
         <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
         <?$authNamespace = new Zend_Session_Namespace('userInformation');
           $institution = $authNamespace->institution;
@@ -16,7 +18,7 @@
         <a href="/fleet/review-crv" class="list-group-item"><i class="fa fa-file"></i> Segunda via CRV <?if($this->vehiclesAskedCrv){?><span class="badge"><?=$this->vehiclesAskedCrv?></span><?}?></a>
         <a href="/inspection/down" class="list-group-item"><i class="fa fa-trash"></i> Baixa de veículo</a>
         <?}?>
-          <?if($this->institution == 3){?>
+        <?if($this->institution == 3){?>
         <a href="/fleet/process" class="list-group-item"><span class="glyphicon glyphicon-list-alt"></span> Veículos em processo</a>
           <?}?>
           <?if($this->institution == 4){?>
@@ -61,6 +63,7 @@
               <span id="feedback-error-renavam" class="glyphicon glyphicon-remove form-control-feedback hide"></span>
             </div>
           </div>
+          <?if($this->institution == 1){?>
           <div class="form-group" id="form-consortium">
             <label for="consortium" class="col-lg-3 control-label optional">Consórcio</label>
             <div class="col-lg-7">
@@ -72,6 +75,7 @@
               </select>
             </div>
           </div>
+          <?}?>
           <div class="form-group" id="form-external-number">
             <label for="external-number" class="col-lg-3 control-label optional">Número de ordem</label>
             <div class="col-lg-7">

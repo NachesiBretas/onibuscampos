@@ -6,7 +6,9 @@
           <h4 class="list-group-item-heading">Frota</h4>
             <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
         </a>
+        <?if($this->institution == 3){?>
         <a href="/fleet/new" class="list-group-item"><i class="fa fa-pencil"></i> Novo</a>
+        <?}?>
         <a href="/fleet/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar</a>
         <?$authNamespace = new Zend_Session_Namespace('userInformation');
           $institution = $authNamespace->institution;

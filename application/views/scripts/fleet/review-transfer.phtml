@@ -6,7 +6,9 @@
           <h4 class="list-group-item-heading">Frota</h4>
             <p class="list-group-item-text">Gerencie aqui os dados da frota</p>
         </a>
+        <?if($this->institution == 3){?>
         <a href="/fleet/new" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Novo</a>
+        <?}?>
         <a href="/fleet/view" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Pesquisar</a>
         <a href="/fleet/review" class="list-group-item"><span class="glyphicon glyphicon-check"></span> Cadastros realizados <?if($this->vehiclesReviewed){?><span class="badge"><?=$this->vehiclesReviewed?></span><?}?></a>
         <a href="/fleet/review-transfer" class="list-group-item active"><i class="fa fa-exchange"></i> Transferências <?if($this->vehiclesTransfered){?><span class="badge"><?=$this->vehiclesTransfered?></span><?}?></a>

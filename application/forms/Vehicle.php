@@ -38,7 +38,8 @@ class Application_Form_Vehicle extends Twitter_Bootstrap_Form_Horizontal
       $this->addElement('text', 'external_number', array(
           'label'         => 'Número de ordem',
           'placeholder'   => 'número de ordem',
-          'class'         => 'form-control'
+          'class'         => 'form-control',
+          'disabled'      => 'disabled'
       ));
 
       $this->addElement('text', 'renavam', array(

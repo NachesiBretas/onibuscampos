@@ -237,11 +237,9 @@ class Application_Model_Vehicle
 
 				if($edit){
 					if($change1 == 1){
-						$change_crv = 1;
-					}				
-					return $change_crv;
+						return $change_crv = 1;
+					}		 	
 				}
-			}
 		}
 		return false;
 	}
@@ -398,13 +396,6 @@ class Application_Model_Vehicle
 				$vehicleRow->vehicle_id = $vehicleId;
 			}
 
-			if($vehicleRow->external_number != $data['external_number']){
-				$change1=1;
-			}
-			else{
-				$change1=2;
-			}
-
 			$authNamespace = new Zend_Session_Namespace('userInformation');
 			if($authNamespace->institution == 3){
 				if(isset($data['consortium']) && $data['consortium'] != '')
@@ -429,7 +420,18 @@ class Application_Model_Vehicle
 				$vehicleRow->consortium_company = $data['consortium_company'];
 			}
 			$vehicleRow->vehicle_id = $data['vehicle_id'];
-			$vehicleRow->external_number = $data['external_number'];
+			$last_seq = $this->returnENSeq();
+			if(!$last_seq){
+				$seq = '001';
+			}
+			elseif(substr($last_seq->lastSeq,0,1) == '0' && substr($last_seq->lastSeq,1,1) == '0')
+				$seq = '00'.strval(substr($last_seq->lastSeq,2,1)+1);
+			elseif(substr($last_seq->lastSeq,0,1) == '0' && substr($last_seq->lastSeq,1,1) != '0')
+				$seq = '0'.strval(substr($last_seq->lastSeq,-2)+1);
+			else
+				$seq = $last_seq->lastSeq+1;
+			$external_number = $authNamespace->consortium.$authNamespace->company.$seq;
+			$vehicleRow->external_number = $external_number;
 			if(isset($data['authorization'])) $vehicleRow->authorization = $data['authorization'];
 			if(isset($data['start_historic_date'])) $vehicleRow->start_historic_date = Application_Model_General::dateToUs($data['start_historic_date']);
 			if(isset($data['end_historic_date'])) $vehicleRow->end_historic_date = Application_Model_General::dateToUs($data['end_historic_date']);
@@ -442,6 +444,14 @@ class Application_Model_Vehicle
 		}catch(Zend_Exception $e){
 			return false;
 		}
+	}
+	public function returnENSeq()
+	{
+		$vehicle = new Application_Model_DbTable_VehicleHistoric();
+		$select = $vehicle->select()->setIntegrityCheck(false);
+		$select	->from(array('v' => 'vehicle_historic'),array('substr(v.external_number,-3) as lastSeq'))
+ 								->order('v.id DESC');
+		return $vehicle->fetchRow($select);
 	}
 
 	public function saveLog($vehicleId, $status,$data)

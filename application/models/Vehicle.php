@@ -225,33 +225,18 @@ class Application_Model_Vehicle
 			else{
 				$change1=2;
 			}
-			$vehicleRow->start_date = Application_Model_General::dateToUs($data['start_date']);
-			$vehicleRow->service = $data['service'];
-			$vehicleRow->plate = $data['plate'];
-			$vehicleRow->renavam = $data['renavam'];
-			$vehicleRow->pattern = $data['pattern'];
-			$vehicleRow->color = $data['color'];
-			$vehicleRow->type = $data['type'];
-			$vehicleRow->floor = 1; //$data['floor'];
-			$edit = $vehicleRow->save();
+				$vehicleRow->start_date = Application_Model_General::dateToUs($data['start_date']);
+				$vehicleRow->service = $data['service'];
+				$vehicleRow->plate = $data['plate'];
+				$vehicleRow->renavam = $data['renavam'];
+				$vehicleRow->pattern = $data['pattern'];
+				$vehicleRow->color = $data['color'];
+				$vehicleRow->type = $data['type'];
+				$vehicleRow->floor = 1; //$data['floor'];
+				$edit = $vehicleRow->save();
 
-			if($edit){
-				$vehicleHistoric = new Application_Model_DbTable_VehicleHistoric();
-				$vehicleHistoricRow = $vehicleHistoric->fetchRow($vehicleHistoric->select()
-													  ->where('vehicle_id = ?',$vehicleId)
-													  ->where('end_historic_date is NULL'));
-				if($vehicleHistoricRow){
-					if($vehicleHistoricRow->external_number != $data['external_number']){
-						$change2=1;
-					}
-					else{
-						$change2=2;
-					}
-
-					$vehicleHistoricRow->external_number = $data['external_number'];
-					$vehicleHistoricRow->save();
-
-					if($change1 == 1 || $change2 == 1){
+				if($edit){
+					if($change1 == 1){
 						$change_crv = 1;
 					}				
 					return $change_crv;

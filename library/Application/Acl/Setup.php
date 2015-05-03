@@ -83,6 +83,7 @@ class Application_Acl_Setup
       $this->_acl->addResource( new Zend_Acl_Resource('gsection') );
       $this->_acl->addResource( new Zend_Acl_Resource('rate-calculation') );
       $this->_acl->addResource( new Zend_Acl_Resource('indicators') );
+      $this->_acl->addResource( new Zend_Acl_Resource('validator') );
     }
 
     /**
@@ -144,7 +145,8 @@ class Application_Acl_Setup
                     ->allow( 'user', 'rate-calculation', array('index', 'new', 'view', 'edit', 'coefficient','cost','fix-cost','variable-cost',
                         'fuel','km-production','tread','accessories','lubricant', 'vehicle-depreciation', 'vehicle-remuneration', 'lift-remnuneration', 'equipment-remuneration',
                                                     'warehouse-remuneration', 'eletronic-ticketing', 'operation-crew', 'fixed-expenses', 'social-charges' ) )
-                    ->allow( 'user', 'indicators', array('index'));
+                    ->allow( 'user', 'indicators', array('index'))
+                    ->allow( 'user', 'validator', array('index', 'new', 'view', 'edit'));
 
     }
 

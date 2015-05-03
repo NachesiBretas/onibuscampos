@@ -244,6 +244,12 @@
         <controllerFile controllerName="Indicators">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Validator">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="new"/>
+          <actionMethod actionName="edit"/>
+          <actionMethod actionName="view"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false">
         <formFile formName="Vehicle"/>
@@ -347,6 +353,7 @@
           <dbTableFile dbTableName="RateCalculationOperationCrew"/>
           <dbTableFile dbTableName="RateCalculationFixedExpenses"/>
           <dbTableFile dbTableName="RateCalculationSocialCharges"/>
+          <dbTableFile dbTableName="Validator"/>
         </dbTableDirectory>
         <modelFile modelName="VehiclePattern"/>
         <modelFile modelName="VehicleChassi"/>
@@ -367,6 +374,7 @@
         <modelFile modelName="QcoQH"/>
         <modelFile modelName="Scheduling"/>
         <modelFile modelName="RateCalculation"/>
+        <modelFile modelName="Validator"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -976,6 +984,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Fleet">
             <viewScriptFile forActionName="addDocuments"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Validator">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Validator">
+            <viewScriptFile forActionName="edit"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Validator">
+            <viewScriptFile forActionName="new"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Validator">
+            <viewScriptFile forActionName="view"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

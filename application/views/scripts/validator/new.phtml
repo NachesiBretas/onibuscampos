@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="/fleet" class="list-group-item">
+          <h4 class="list-group-item-heading">Validador</h4>
+            <p class="list-group-item-text">Gerencie aqui os dados dos validadores</p>
+        </a>
+        <?if($this->institution == 3){?>
+        <a href="/validator/new" class="list-group-item"><i class="fa fa-pencil"></i> Novo</a>
+        <a href="/validator/view" class="list-group-item"><i class="fa fa-search"></i> Pesquisar</a>
+        <?}?>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ol class="breadcrumb">
+        <li><a href="/dashboard">Página inicial</a></li>
+        <li class="active">Frota</li>
+      </ol>  
+      <div class="jumbotron">
+        <h1>Frota</h1>
+        <p class="lead">A frota de ônibus do transporte municipal é constituída de todos os veículos, previamente vistoriados, capazes de transportar passageiros.</p>
+      </div>
+      <div class="text-center">
+        <img src='/img/fleet.jpg' class="img-responsive img-thumbnail"><br><br>
+      </div>
+     </div>
+    </div>
+  </div>

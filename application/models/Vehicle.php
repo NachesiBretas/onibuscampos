@@ -494,7 +494,8 @@ class Application_Model_Vehicle
 															'insurer_date'  => new Zend_Db_Expr ('DATE_FORMAT(insurer_date,"%d/%m/%Y")'),
 															'elevator','seal_roulette','seal_floor','seal_support','insurer','eletronic_roulette','collector_area',
 															'air_conditioning','gps','wifi','bike_support','tv','camera','amount_validator'))
-						->joinLeft(array('vh' => 'vehicle_historic'),'vh.vehicle_id=v.id AND end_historic_date IS NULL', array('external_number', 'end_historic_date'))
+						->joinLeft(array('vh' => 'vehicle_historic'),'vh.vehicle_id=v.id AND end_historic_date IS NULL', array('external_number','validator_id','end_historic_date'))
+						->joinLeft(array('va' => 'validator'),'va.id=vh.validator_id',array('number'))
 						->joinLeft(array('c' => 'consortium'),'c.id=vh.consortium',array('consortium_name' => 'name'))
 						->joinLeft(array('co' => 'consortium_companies'),'co.id=vh.consortium_company',array('cell_name' => 'name'))
 						->joinLeft(array('com' => 'company'),'com.id=co.company',array('company_name' => 'company'))

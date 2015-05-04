@@ -84,11 +84,6 @@
                       <div class="col-lg-5">
                       <input type="text" name="external_number" id="external_number" value="<?=$historic->external_number?>" disabled='disabled' placeholder="número externo do veículo" class="form-control" maxlength="8"></div>
                     </div>
-                    <div class="form-group">
-                      <label for="validator" class="col-lg-2 control-label optional">Validador principal</label>
-                      <div class="col-lg-5">
-                      <input type="text" name="validator" id="validator" value="<?=$historic->validator_id?>" disabled='disabled' placeholder="número do validador principal" class="form-control" maxlength="8"></div>
-                    </div>
                     <?if($this->institution != 3){?>
                     <div class="form-group">
                       <label for="consortium" class="col-lg-2 control-label optional">Consórcio</label>
@@ -310,7 +305,7 @@
             <h4 class="modal-title">Finalizar Processo</h4>
           </div>
           <div class="modal-body">
-            <h4>Tem certeza que deseja salvar todos os dados e enviá-los para a vistoria do DER-MG?</h4>
+            <h4>Tem certeza que deseja salvar todos os dados e enviá-los para a vistoria?</h4>
           </div>
           <div class="modal-footer">
             <input type="hidden" name="vehicleId" value="<?=$this->vehicleRow['id']?>">

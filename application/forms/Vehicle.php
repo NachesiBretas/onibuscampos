@@ -42,7 +42,7 @@ class Application_Form_Vehicle extends Twitter_Bootstrap_Form_Horizontal
           'disabled'      => 'disabled'
       ));
 
-      $this->addElement('text', 'validator_id', array(
+      $this->addElement('text', 'number', array(
           'label'         => 'Validador principal',
           'placeholder'   => 'validador principal',
           'class'         => 'form-control',

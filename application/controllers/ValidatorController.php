@@ -21,42 +21,21 @@ class ValidatorController extends Zend_Controller_Action
     public function newAction()
     {
       try{
-        $vehicleService = new Application_Model_DbTable_VehicleService();
-        $vehicleServiceSelect = $vehicleService->select()->order("name ASC");
-        $this->view->vehicleService = $vehicleService->fetchAll($vehicleServiceSelect);
-
-        $vehiclePattern = new Application_Model_DbTable_VehiclePattern();
-        $vehiclePatternSelect = $vehiclePattern->select()->order("name ASC");
-        $this->view->vehiclePattern = $vehiclePattern->fetchAll($vehiclePatternSelect);
-
-        $vehicleColor = new Application_Model_DbTable_VehicleColor();
-        $vehicleColorSelect = $vehicleColor->select()->order("name ASC");
-        $this->view->vehicleColor = $vehicleColor->fetchAll($vehicleColorSelect);
-
-        $vehicleType = new Application_Model_DbTable_VehicleType();
-        $vehicleTypeSelect = $vehicleType->select()->order("name ASC");
-        $this->view->vehicleType = $vehicleType->fetchAll($vehicleTypeSelect);
-
-        $consortium = new Application_Model_DbTable_Consortium();
-        $consortiumRow = $consortium->select()->order("name ASC");
-        $this->view->consortium = $vehicleType->fetchAll($consortiumRow);
-
+        $this->view->save = $this->getRequest()->getParam('save');
+        $validator = new Application_Model_Validator();
+        $consortium_company = 1;
+        $this->view->percentage = $validator->reservationValidator($consortium_company);
         if ( $this->getRequest()->isPost() ) 
         {
           $data = $this->getRequest()->getPost();
-          $vehicle = new Application_Model_Vehicle();
-          $vehicleId = $vehicle->newVehicle($data);
-          $vehicle->newStatus($vehicleId,$this->view->userId);
-          $data['vehicle_id'] = $vehicleId;
-          if($this->view->institution == 3) 
+          $validatorId = $validator->newValidator($data);
+          if($validatorId)
           {
-            $vehicle->saveHistoric($data,$vehicleId);
-            $this->_redirect('/fleet/edit/id/'.$vehicleId.'/save/waiting');
+            $this->_redirect('/validator/new/save/success');
           }
-          $this->_redirect('/fleet/edit/id/'.$vehicleId.'/save/success');
         }
       }catch(Zend_Exception $e){
-        $this->view->save = 'error';
+        $this->view->error = true;
       }
     }
 
@@ -64,63 +43,34 @@ class ValidatorController extends Zend_Controller_Action
     {
       try
       {
-        $this->view->save = $this->getRequest()->getParam('save');
-        $vehicle = new Application_Model_Vehicle();
+        $validator = new Application_Model_Validator();
         $pagination = new Application_Model_Pagination();
-        $field = $this->getRequest()->getParam('field');
         $page = $this->getRequest()->getParam('page');
-        $option = $this->getRequest()->getParam('option');
-        if($page == '') $page = 1;
-        if($field != "")
-        {
-          if($option == 1)
-          {
-            $vehicles = $vehicle->returnByPlate(urldecode($field));
-          }
-          if($option == 2)
-          {
-            $vehicles = $vehicle->returnByRenavam(urldecode($field));
-          }
-          if($option == 3)
-          {
-            $vehicles = $vehicle->returnByExternalNumber(urldecode($field));
-          }
-          if(isset($vehicles) && count($vehicles))
-            $this->view->list = $pagination->generatePagination($vehicles,$page,10);
-          $this->view->field = $field;
-          $this->view->option = $option;
-        }
-        else
-        {
-          $vehicles = $vehicle->lists();
-          if(isset($vehicles) && count($vehicles))
-            $this->view->list = $pagination->generatePagination($vehicles,$page,10);
-        }
+        $validator = $validator->listValidators();
+        $this->view->list = $pagination->generatePagination($validator,$page,10);
+
       }catch(Zend_Exception $e){
-        // $this->view->save = 'error';
+        $this->view->save = 'error';
+        echo $e->getMessage();
       }
     }
 
-    public function reportAction()
+    public function deleteValidatorAction()
     {
-        // action body
-    }
-
-    public function visAction()
-    {
-      $historicId = $this->getRequest()->getParam('id');
-      if(!$historicId)
+      try
       {
-        $this->_redirect('/fleet/view');
-        return;
+        $validator = new Application_Model_Validator();
+        $id = $this->getRequest()->getParam('id');
+        $validatorId = $validator->deleteValidator($id);
+        if($validatorId)
+          {
+            $this->_redirect('/validator/view');
+          }
+
+      }catch(Zend_Exception $e){
+        $this->view->save = 'error';
+        echo $e->getMessage();
       }
-      $vehicle = new Application_Model_Vehicle();
-      $this->view->vehicleRow = $vehicle->returnByHistoricId($historicId);
-    }
-
-    public function editAction()
-    {
-
     }
 
 }

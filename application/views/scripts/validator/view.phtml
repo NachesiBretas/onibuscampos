@@ -17,13 +17,73 @@
         <li><a href="/dashboard">Página inicial</a></li>
         <li class="active">Validador</li>
       </ol>  
-      <div class="jumbotron">
-        <h1>Frota</h1>
-        <p class="lead">A frota de ônibus do transporte municipal é constituída de todos os veículos, previamente vistoriados, capazes de transportar passageiros.</p>
-      </div>
-      <div class="text-center">
-        <img src='/img/fleet.jpg' class="img-responsive img-thumbnail"><br><br>
+      <div class="page-header">
+        <h1>Pesquisa <small> Gerencie aqui os dados dos validadores</small></h1>
+        <hr>
+        <div class="col-sm-13">
+        <br><br>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Número</th>
+            <th>Serial</th>
+            <th>Tipo de validador</th>
+            <th>Excluir</th>
+          </thead>
+          <tbody>
+            <?
+            $validator = new Application_Model_DbTable_Validator();
+            if(is_object($this->list) && !isset($this->list->number)){
+              foreach($this->list as $body){?>
+                <tr>
+                  <td><?=$body->number?></td>
+                  <td><?=$body->serial?></td>
+                  <?if($body->type == 1){?>
+                    <td>Principal</td>
+                  <?}else{?>
+                    <td>Reserva</td>
+                  <?}?>
+                  <td><a href="#delete_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+            <?}} else{?>
+              <tr>
+                <td colspan="7">Não foi encontrada nenhum validador cadastrado.</td>
+              </tr>
+            <?}?>
+          </tbody>
+        </table>
+        <?if(is_object($this->list) && !isset($this->list->name)){ echo $this->paginationControl($this->list,'Sliding','pagination.phtml'); }?>
+        </div>
       </div>
      </div>
     </div>
   </div>
+
+  <?foreach($this->list as $body){?>
+<form method="post" action="/validator/delete-validator/id/<?=$body->id?>">
+  <div class="modal fade" id="delete_<?=$body->id?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Excluir</h4>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja excluir este validador?
+        </div>
+        <div class="modal-footer" id="deleteValidator">
+          <input type="hidden" value="<?=$body->id?>" name="id">
+          <input type="hidden" value="0" name="action">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <input type="submit" id='delete_validator' class="btn btn-success" value="Excluir">
+        </div>
+        <div class="modal-footer" id="statusDelete" style="display:none;">
+          <div style="margin-right:200px;">
+            <img src='/img/loading.gif' id='loading' style="margin-right:40px;">
+            <p>Excluindo dados... </p>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</form>
+<?}?>

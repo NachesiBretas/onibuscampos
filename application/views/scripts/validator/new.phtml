@@ -18,7 +18,7 @@
         <li class="active">Validador</li>
       </ol>  
       <div class="page-header">
-        <h1>Validador <small> cadastre aqui os validadores</small></h1>
+        <h1>Cadastro de validador <small> cadastre aqui os validadores</small></h1>
         <hr>
         <form class="form-horizontal" role="form" id="formValidator" method="post">
           <div class="form-group"> 
@@ -37,9 +37,7 @@
               <select class="form-control text-center" name="type" id="type">
                 <option value="0">-- Escolha o tipo do validador --</option>
                 <option value="1">Principal</option>
-                <?$teste=1;
-                  $porcentagem=2;
-                if($teste == $porcentagem){
+                <?if($this->percentage == 0){
                     echo"<option value='2'>Reserva</option>";
                 }?>
               </select>

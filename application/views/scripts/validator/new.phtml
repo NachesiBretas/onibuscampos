@@ -1,4 +1,14 @@
 <div class="container">
+  <?if ($this->save == 'failed') {?>
+    <div class="page-header">
+      <div class="row">
+        <div class="col-md-12 text-center alert alert-danger fade in">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          Você já cadastrou a quantidade máxima de validadores para sua frota.
+        </div>
+      </div>
+    </div>
+  <?}?>
   <div class="row">
     <div class="col-md-3">
       <div class="list-group">
@@ -37,7 +47,7 @@
               <select class="form-control text-center" name="type" id="type">
                 <option value="0">-- Escolha o tipo do validador --</option>
                 <option value="1">Principal</option>
-                <?if($this->percentage == 0){
+                <?if($this->percentage){
                     echo"<option value='2'>Reserva</option>";
                 }?>
               </select>

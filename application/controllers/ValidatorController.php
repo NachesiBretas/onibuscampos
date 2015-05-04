@@ -27,15 +27,20 @@ class ValidatorController extends Zend_Controller_Action
         $this->view->percentage = $validator->reservationValidator($consortium_company);
         if ( $this->getRequest()->isPost() ) 
         {
-          $data = $this->getRequest()->getPost();
-          $validatorId = $validator->newValidator($data);
-          if($validatorId)
-          {
-            $this->_redirect('/validator/new/save/success');
+          if($validator->allowReg($consortium_company)){
+            $data = $this->getRequest()->getPost();
+            $validatorId = $validator->newValidator($data);
+            if($validatorId)
+            {
+              $this->_redirect('/validator/new/save/success');
+            }
+          }
+          else{
+            $this->_redirect('/validator/new/save/failed');
           }
         }
       }catch(Zend_Exception $e){
-        $this->view->error = true;
+       // $this->view->error = true;
       }
     }
 

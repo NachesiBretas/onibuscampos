@@ -563,6 +563,16 @@ $('#type').change(function(){
 	}
 });
 
+$('#validator').change(function(){
+	if(this.value > 0) {
+		$('#form-validator').addClass('has-success');
+		$('#form-validator').addClass('has-feedback');
+	} else {
+		$('#form-validator').removeClass('has-success');
+		$('#form-validator').removeClass('has-feedback');
+	}
+});
+
 
 $('#line').keyup(function(){
 	$('#feedback-success-line').css('color','#468847');

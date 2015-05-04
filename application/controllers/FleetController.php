@@ -49,6 +49,9 @@ class FleetController extends Zend_Controller_Action
         $consortiumRow = $consortium->select()->order("name ASC");
         $this->view->consortium = $vehicleType->fetchAll($consortiumRow);
 
+        $validator = new Application_Model_Validator();
+        $this->view->validator = $validator->listValidators();
+
         if ( $this->getRequest()->isPost() ) 
         {
           $data = $this->getRequest()->getPost();

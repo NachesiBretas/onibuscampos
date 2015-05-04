@@ -109,6 +109,17 @@
               </select>
             </div>
           </div>
+          <div class="form-group" id="form-validator">
+            <label for="validator" class="col-lg-3 control-label optional">Validador Principal</label>
+            <div class="col-lg-7">
+              <select name="validator" id="validator" class="form-control" required>
+                  <option value="0">-- Selecione o validador principal --</option>
+                  <?foreach ($this->validator as $validator) {?>
+                  <option value="<?=$validator->id?>"><?=$validator->number?></option>
+                  <?}?>
+              </select>
+            </div>
+          </div>
           <div class="form-group">
             <div class="col-lg-7">
               <input type="submit" name="submit" id="submit" value="Próximo" buttons="danger info primary success warning inverse link" class="col-lg-offset-5 btn btn-primary">

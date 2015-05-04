@@ -432,6 +432,7 @@ class Application_Model_Vehicle
 				$seq = $last_seq->lastSeq+1;
 			$external_number = $authNamespace->consortium.$authNamespace->company.$seq;
 			$vehicleRow->external_number = $external_number;
+			$vehicleRow->validator_id = $data['validator'];
 			if(isset($data['authorization'])) $vehicleRow->authorization = $data['authorization'];
 			if(isset($data['start_historic_date'])) $vehicleRow->start_historic_date = Application_Model_General::dateToUs($data['start_historic_date']);
 			if(isset($data['end_historic_date'])) $vehicleRow->end_historic_date = Application_Model_General::dateToUs($data['end_historic_date']);
@@ -556,7 +557,7 @@ class Application_Model_Vehicle
 		$vehicle = new Application_Model_DbTable_VehicleHistoric();
 		$select = $vehicle->select()->setIntegrityCheck(false);
 		$select	->from(array('v' => 'vehicle_historic'),array(
-															'id', 'vehicle_id', 'consortium', 'consortium_company', 'external_number', 'authorization',
+															'id', 'vehicle_id', 'consortium', 'consortium_company', 'external_number','validator_id','authorization',
 															'start_historic_date' => new Zend_Db_Expr ('DATE_FORMAT(start_historic_date,"%d/%m/%Y")'), 
 															'end_historic_date' => new Zend_Db_Expr ('DATE_FORMAT(end_historic_date,"%d/%m/%Y")'),
 															'consortium_companies_hidden' => 'consortium_company'))

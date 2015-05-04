@@ -42,7 +42,14 @@
                   <?}else{?>
                     <td>Reserva</td>
                   <?}?>
-                  <td><a href="#delete_<?=$body->id?>" class="btn btn-default btn-sm help" data-toggle="modal" title="Excluir"><span class="glyphicon glyphicon-trash"></span></a></td>
+                  <td>
+                  <?foreach($this->avaliable_validator as $av){
+                        if($av->id == $body->id){
+                          echo"<a href='#delete_<?=$body->id?>' class='btn btn-default btn-sm help' data-toggle='modal' title='Excluir'><span class='glyphicon glyphicon-trash'></span></a>";
+                        }
+                  }
+                  ?>
+                  </td>
                 </tr>
             <?}} else{?>
               <tr>

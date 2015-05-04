@@ -49,10 +49,13 @@ class Application_Model_Validator
 	* @return array
 	*/
 	public function listValidators(){
+		$authNamespace = new Zend_Session_Namespace('userInformation');
 		$validator = new Application_Model_DbTable_Validator();
 
 		$select = $validator->select()->setIntegrityCheck(false);
-		$select	->from(array('v' => 'validator'),array('id','number','serial','type'));
+		$select	->from(array('v' => 'validator'),array('id','number','serial','type'))
+				->where('v.consortium = ?',$authNamespace->consortium)
+				->where('v.company = ?',$authNamespace->company);
 		return $validator->fetchAll($select);
 	}
 	

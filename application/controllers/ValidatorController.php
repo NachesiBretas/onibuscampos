@@ -50,6 +50,8 @@ class ValidatorController extends Zend_Controller_Action
       {
         $validator = new Application_Model_Validator();
         $pagination = new Application_Model_Pagination();
+        $validator = new Application_Model_Validator();
+        $this->view->avaliable_validator = $validator->listAvaliableValidators();
         $page = $this->getRequest()->getParam('page');
         $validator = $validator->listValidators();
         $this->view->list = $pagination->generatePagination($validator,$page,10);

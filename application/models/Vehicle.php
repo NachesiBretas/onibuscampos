@@ -436,7 +436,11 @@ class Application_Model_Vehicle
 			if(isset($data['authorization'])) $vehicleRow->authorization = $data['authorization'];
 			if(isset($data['start_historic_date'])) $vehicleRow->start_historic_date = Application_Model_General::dateToUs($data['start_historic_date']);
 			if(isset($data['end_historic_date'])) $vehicleRow->end_historic_date = Application_Model_General::dateToUs($data['end_historic_date']);
-			$vehicleRow->save();
+			$vehicleHistoricId = $vehicleRow->save();
+			if($vehicleHistoricId){
+				$validator = new Application_Model_Validator();
+        		$validator->changeStatus($data['validator'],2);
+			}
 
 			if($change1 == 1 || $change2 == 1){
 				$change_crv = 1;

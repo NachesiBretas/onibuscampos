@@ -55,6 +55,24 @@ class Application_Model_Validator
 		$select	->from(array('v' => 'validator'),array('id','number','serial','type'));
 		return $validator->fetchAll($select);
 	}
+	
+	/**
+	*	List the avaliable validators.
+	*	
+	* @access public
+	* @return array
+	*/
+	public function listAvaliableValidators(){
+		$authNamespace = new Zend_Session_Namespace('userInformation');
+		$validator = new Application_Model_DbTable_Validator();
+
+		$select = $validator->select()->setIntegrityCheck(false);
+		$select	->from(array('v' => 'validator'),array('id','number','serial','type'))
+				->where('v.consortium = ?',$authNamespace->consortium)
+				->where('v.company = ?',$authNamespace->company)
+				->where('v.status = 1');
+		return $validator->fetchAll($select);
+	}
 
 	/**
 	*	Calculate if is possibel make the registration of another reservation validator 
@@ -116,6 +134,20 @@ class Application_Model_Validator
 		else
 			return false;
 		
+	}
+
+	/**
+	*	change status of validator.
+	*	
+	* @access public
+	* @return integer
+	*/
+	public function changeStatus($validatorId,$status)
+	{
+		$validator = new Application_Model_DbTable_Validator();
+		$validatorStatusRow = $validator->fetchRow($validator->select()->where('id = ?',$validatorId));
+		$validatorStatusRow->status = $status;
+		return $validatorStatusRow->save();
 	}
 
 }

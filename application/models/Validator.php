@@ -57,31 +57,65 @@ class Application_Model_Validator
 	}
 
 	/**
-	*	Calculate the quantity of reservation validator (they have right of 5% from the fleet).
+	*	Calculate if is possibel make the registration of another reservation validator 
+	*	(they have right of 5% from the fleet).
 	*	
 	* @access public
 	* @return integer
 	*/
 	public function reservationValidator($consortium_company){
+		$authNamespace = new Zend_Session_Namespace('userInformation');
 		$validator = new Application_Model_DbTable_Validator();
 
 		$select = $validator->select()->setIntegrityCheck(false);
-		$select	->from(array('v' => 'vehicle'),array('COUNT(id)' => 'count'))
+		$select	->from(array('v' => 'vehicle'),array('id'))
 				->joinInner(array('vh' => 'vehicle_historic'),'vh.vehicle_id=v.id',array('consortium_company'))
-				->where('vh.consortium_company = ?',$consortium_company)
-				->where('type = 1');
-		$qtd = $validator->fetchRow($select);
-		$allowed_qtd = ceil($qdt->count*0.05);
+				->where('vh.consortium_company = ?',$consortium_company);
+		$qtd = count($validator->fetchAll($select));
+		$allowed_qtd = ceil($qtd*0.05);
 
 		$select = $validator->select()->setIntegrityCheck(false);
-		$select	->from(array('v' => 'vehicle'),array('COUNT(id)' => 'count'))
-				->joinInner(array('vh' => 'vehicle_historic'),'vh.vehicle_id=v.id',array('consortium_company'))
-				->where('vh.consortium_company = ?',$consortium_company)
+		$select	->from(array('v' => 'validator'),array('id'))
+				->where('v.consortium = ?',$authNamespace->consortium)
+				->where('v.company = ?',$authNamespace->company)
 				->where('type = 2');
-		$qtd = $validator->fetchRow($select);
-		$real_qdt = $qtd->count;
+		$qtd = count($validator->fetchAll($select));
 
-		return 2;
+		if($allowed_qtd < $qtd)
+			return true;
+		else
+			return false;
+		
+	}
+
+	/**
+	*	Calculate if is possible registrate another main validator.
+	*	
+	* @access public
+	* @return integer
+	*/
+	public function allowReg($consortium_company){
+		$authNamespace = new Zend_Session_Namespace('userInformation');
+		$validator = new Application_Model_DbTable_Validator();
+
+		$select = $validator->select()->setIntegrityCheck(false);
+		$select	->from(array('v' => 'vehicle'),array('id'))
+				->joinInner(array('vh' => 'vehicle_historic'),'vh.vehicle_id=v.id',array('consortium_company'))
+				->where('vh.consortium_company = ?',$consortium_company);
+		$allowed_qtd = count($validator->fetchAll($select));
+
+		$select = $validator->select()->setIntegrityCheck(false);
+		$select	->from(array('v' => 'validator'),array('id'))
+				->where('v.consortium = ?',$authNamespace->consortium)
+				->where('v.company = ?',$authNamespace->company)
+				->where('type = 1');
+		$qtd = count($validator->fetchAll($select));
+
+		if($allowed_qtd > $qtd)
+			return true;
+		else
+			return false;
+		
 	}
 
 }

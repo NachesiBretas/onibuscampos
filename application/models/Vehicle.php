@@ -1011,6 +1011,7 @@ class Application_Model_Vehicle
 		{
 			return false;
 		}
+		
 		return true;
 	}
 

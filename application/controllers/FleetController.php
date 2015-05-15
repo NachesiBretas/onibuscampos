@@ -135,6 +135,11 @@ class FleetController extends Zend_Controller_Action
         $vehicleId = $this->getRequest()->getParam('id');
         $this->view->save = $this->getRequest()->getParam('save');
         $vehicle = new Application_Model_Vehicle();
+        $this->view->documentsForm = new Application_Form_VehicleDocuments();
+        $this->view->inspectionForm = new Application_Form_VehicleInspection();
+        $this->view->crlvForm = new Application_Form_VehicleDocumentCRLV();
+        $this->view->comodatoForm = new Application_Form_VehicleDocumentComodato();
+
         if(!$vehicle->verifyAccess($vehicleId,$this->view->institution))
           return $this->redirect('doesntallow');
         
@@ -170,10 +175,6 @@ class FleetController extends Zend_Controller_Action
             }
           }
 
-          $this->view->documentsForm = new Application_Form_VehicleDocuments();
-          $this->view->inspectionForm = new Application_Form_VehicleInspection();
-          $this->view->crlvForm = new Application_Form_VehicleDocumentCRLV();
-          $this->view->comodatoForm = new Application_Form_VehicleDocumentComodato();
           $this->view->completed = $vehicle->checkMinimumRequirements($vehicleId);
           if($this->view->institution == 3 && $this->view->completed && $vehicleStatusRow->status != 4 && $vehicleStatusRow->status != 2)
           {

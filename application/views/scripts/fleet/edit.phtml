@@ -169,7 +169,7 @@
                       echo $this->crlvForm?>
                     <?}
                     else{?>
-                       <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                       <a href="/application/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-download"></span> Download
                       </a>
                       <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
@@ -193,7 +193,7 @@
                     if(!$document){
                       echo $this->documentsForm?>
                     <?}else{?>
-                       <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                       <a href="/application/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-download"></span> Download
                       </a>
                       <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
@@ -217,7 +217,7 @@
                     <?=$this->comodatoForm?>
                     <?}else{
                       $document = $vehicle->returnDocument($this->vehicleId,'comodato');?>
-                      <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                      <a href="/application/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-download"></span> Download
                       </a>
                       <a href="/fleet/remove-file/id/<?=$this->vehicleId?>/file/<?=$document->document?>" class="btn btn-danger">
@@ -241,7 +241,7 @@
                     if(!$document){?>
                     <?=$this->inspectionForm?>
                     <?}else{?>
-                      <a href="/upload/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
+                      <a href="/application/vehicle/<?=$this->vehicleId?>/<?=$document->document?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-download"></span> Download
                       </a>
                     <?}?>

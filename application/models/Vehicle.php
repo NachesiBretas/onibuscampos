@@ -921,7 +921,7 @@ class Application_Model_Vehicle
 	*/
 	protected function saveFile($file,$ext,$data,$vehicleId)
 	{
-		$target_directory = APPLICATION_PATH.'/../public/upload/vehicle/'.$vehicleId;
+		$target_directory = APPLICATION_PATH.'/vehicle/'.$vehicleId;
 		$this->directory($target_directory);
 		if($data['document'] == 'inspection'){
 			$date = Application_Model_General::dateToUs($data['date_inspection']);

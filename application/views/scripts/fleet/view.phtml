@@ -89,11 +89,12 @@
                       elseif($institution == 3){?>
                         <?if($body->end_historic_date == ''){?>
                         <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
-                        <!-- <a class="btn btn-default btn-sm help" data-toggle="modal" title="Emitir 2 via do CRV" data-target="#crv_<?=$body->vehicle_id?>"><i class="fa fa-file"></i></a> -->
+                        <a href="/fleet/edit/id/<?=$body->vehicle_id?>" class="btn btn-default btn-sm help" title="Editar veículo"><i class="fa fa-pencil"></i></a>
+                        <!-- <a class="btn btn-default btn-sm help" data-toggle="modal" title="Emitir 2 via do CRV" data-target="#crv_<?=$body->vehicle_id?>"><i class="fa fa-file"></i></a> 
                         <a href="/fleet/transfer/id/<?=$body->vehicle_id?>" class="btn btn-default btn-sm help" title="Transferir veículo"><i class="fa fa-exchange"></i></a>
-                        <!-- <a class="btn btn-default btn-sm help" data-toggle="modal" title="Remover veículo" data-target="#remove_<?=$body->vehicle_id?>"><i class="fa fa-trash"></i></a> -->
+                        <!-- <a class="btn btn-default btn-sm help" data-toggle="modal" title="Remover veículo" data-target="#remove_<?=$body->vehicle_id?>"><i class="fa fa-trash"></i></a> 
+                        <a href="/fleet/add-documents/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Anexar documentos"><i class="fa fa-cloud-upload"></i></a> -->
                         <a href="/agendamento/index/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a>
-                        <a href="/fleet/add-documents/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Anexar documentos"><i class="fa fa-cloud-upload"></i></a>
                         <?}else{?>
                         <a href="/fleet/vis/id/<?=$body->historic_id?>" class="btn btn-default btn-sm help" title="Visualizar dados do veículo"><i class="fa fa-eye"></i></a>
                         <a href="/agendamento/index/id/<?=$body->vehicle_id?>" class='btn btn-default btn-sm help' title="Agendar vistoria"><i class="fa fa-calendar"></i></a>

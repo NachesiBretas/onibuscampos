@@ -22,8 +22,8 @@ class Application_Form_VehicleOther extends Twitter_Bootstrap_Form_Horizontal
 
 
       $authNamespace = new Zend_Session_Namespace('userInformation');
-      if($authNamespace->institution == 1)
-      {
+      //if($authNamespace->institution == 1)
+      //{
         $this->addElement('text', 'seal_roulette', array(
             'label'         => 'Lacre da roleta',
             'placeholder'   => 'lacre da roleta',
@@ -47,7 +47,7 @@ class Application_Form_VehicleOther extends Twitter_Bootstrap_Form_Horizontal
             'placeholder'   => 'data de instalação do lacre',
             'class'         => 'form-control dateMask'
         ));
-      }
+      //}
 
       $this->addElement('text', 'insurer', array(
           'label'         => 'Seguradora',

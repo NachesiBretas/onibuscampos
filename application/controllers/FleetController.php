@@ -153,7 +153,7 @@ class FleetController extends Zend_Controller_Action
           {
             $this->view->save = 'error';
           }
-         
+          
           if(isset($_FILES['file']) && !is_null($_FILES['file']))
           { 
             if($vehicle->saveDocument($_FILES,$data,$vehicleId))
@@ -181,7 +181,7 @@ class FleetController extends Zend_Controller_Action
           }
 
         }
-        else if($this->view->save = 'waiting'){
+        else if($this->view->save == 'waiting'){
             $this->view->save = 'waiting';
         }
 

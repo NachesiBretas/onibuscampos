@@ -139,6 +139,11 @@ class FleetController extends Zend_Controller_Action
         $this->view->inspectionForm = new Application_Form_VehicleInspection();
         $this->view->crlvForm = new Application_Form_VehicleDocumentCRLV();
         $this->view->comodatoForm = new Application_Form_VehicleDocumentComodato();
+        $this->view->completed = $vehicle->checkMinimumRequirements($vehicleId);
+        $this->view->vehicleId = $vehicleId;
+        $vehicleStatus = new Application_Model_DbTable_VehicleStatus();
+        $vehicleStatusRow = $vehicleStatus->fetchRow($vehicleStatus->select()->where('vehicle_id = ?',$vehicleId));
+        $this->view->status = $vehicleStatusRow->status;
 
         if(!$vehicle->verifyAccess($vehicleId,$this->view->institution))
           return $this->redirect('doesntallow');
@@ -175,24 +180,19 @@ class FleetController extends Zend_Controller_Action
             }
           }
 
-          $this->view->completed = $vehicle->checkMinimumRequirements($vehicleId);
-          if($this->view->institution == 3 && $this->view->completed && $vehicleStatusRow->status != 4 && $vehicleStatusRow->status != 2)
-          {
-            $this->view->result = 6;
-          }
-
         }
         else if($this->view->save == 'waiting'){
             $this->view->save = 'waiting';
         }
 
         $this->view->result = $vehicle->returnTab($vehicleId);
+        
+        if($this->view->institution == 3 && $this->view->completed && $vehicleStatusRow->status != 4 && $vehicleStatusRow->status != 2)
+        {
+          $this->view->result = 6;
+        }
 
         $this->view->vehicleRow = $vehicle->returnById($vehicleId);
-        $this->view->vehicleId = $vehicleId;
-        $vehicleStatus = new Application_Model_DbTable_VehicleStatus();
-        $vehicleStatusRow = $vehicleStatus->fetchRow($vehicleStatus->select()->where('vehicle_id = ?',$vehicleId));
-        $this->view->status = $vehicleStatusRow->status;
 
         $this->view->mainForm = new Application_Form_Vehicle();
         $this->view->mainForm->populate($this->view->vehicleRow->toArray());
